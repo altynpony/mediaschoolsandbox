@@ -6,97 +6,180 @@
 
 ```
 mediaschool-project/
-├── 🎨 frontend/          # Complete website (7 pages, ready for production)
-├── ⚙️ backend/           # API server planning (Node.js/Express)
+├── 🎨 frontend/          # Static website (7 pages, production ready)
+├── 🚀 backend/           # Next.js full-stack app (admin panel + API)
 ├── 📚 docs/             # Project documentation
 └── 🎯 assets/           # Shared resources (logos, images)
 ```
 
 ## 🚀 Quick Start
 
-### **Current Status: Frontend MVP Complete ✅**
-
-The frontend is a fully functional website with:
-- 7 interactive pages with navigation
-- AI chat functionality
-- Course catalog and events
-- Subscription flow
-- Responsive design
-- Ready for deployment
-
-### **View the Website**
+### **Frontend (Marketing Website) ✅**
 ```bash
 cd frontend/
 python3 -m http.server 8000
 # Open http://localhost:8000
 ```
 
-### **Deploy to Production**
-- **GitHub Pages**: Available at repository settings
-- **Netlify**: Connect GitHub repo for instant deployment
-- **Vercel**: Import project for automatic deployment
+**Features:**
+- Complete 7-page marketing website
+- AI chat functionality
+- Course catalog and events
+- Subscription flow interface
+- Responsive design
+- Ready for deployment
 
-## 🎯 Features
+### **Backend (Admin Panel + API) ✅**
+```bash
+cd backend/
+npm install
+npm run dev
+# Open http://localhost:3000
+```
 
-### ✅ **Completed (MVP)**
-- **Landing Page** - Complete marketing site
-- **Course Catalog** - Browse and filter courses  
-- **Event System** - Workshops and live sessions
-- **Resource Library** - Curated learning materials
-- **AI Chat** - Interactive tutor assistant
-- **Subscription Flow** - Payment and billing interface
+**Features:**
+- Next.js 15 with TypeScript
+- User authentication (Google OAuth)
+- Course management system
+- PostgreSQL database with Drizzle ORM
+- Admin panel for content management
+- API endpoints for frontend integration
 
-### 🚧 **Next Phase**
-- **Backend API** - User authentication and data management
-- **Database** - Course progress and user data
-- **Payment Integration** - Stripe/PayPal processing
-- **Admin Panel** - Content management system
+## 🎯 Complete System Architecture
+
+### ✅ **Production Ready Components**
+
+#### **Frontend (Static Website)**
+- **Technology**: HTML5, Tailwind CSS, Vanilla JS
+- **Pages**: Landing, Courses, Events, Library, Chat, Subscription
+- **Deployment**: GitHub Pages, Netlify, Vercel
+- **Status**: Ready for immediate deployment
+
+#### **Backend (Full-Stack App)**
+- **Technology**: Next.js 15, TypeScript, PostgreSQL
+- **Features**: Authentication, Course Management, User Profiles
+- **Database**: Drizzle ORM + Neon PostgreSQL
+- **API**: RESTful endpoints for frontend integration
+- **Status**: Production ready with authentication
+
+### 🔗 **Integration Flow**
+```
+Frontend Website → Backend API → Database
+     ↓                ↓            ↓
+Static Pages    Admin Panel    User Data
+Course Info     Content Mgmt   Progress
+Subscription    Analytics      Courses
+```
 
 ## 🛠️ Tech Stack
 
-### **Frontend (Production Ready)**
+### **Frontend**
 - **HTML5** - Semantic markup
 - **Tailwind CSS** - Utility-first styling
 - **Vanilla JavaScript** - Interactive features
 - **Responsive Design** - Mobile-first approach
 
-### **Backend (Planned)**
-- **Node.js + Express** - API server
-- **PostgreSQL** - Database
-- **JWT Authentication** - User sessions
-- **Stripe API** - Payment processing
+### **Backend**
+- **Next.js 15** - Full-stack React framework
+- **TypeScript** - Type safety
+- **Better Auth** - Authentication system
+- **Drizzle ORM** - Type-safe database queries
+- **PostgreSQL** - Robust database
+- **Radix UI** - Accessible components
+
+### **Infrastructure**
+- **Frontend Hosting**: GitHub Pages, Netlify, Vercel
+- **Backend Hosting**: Vercel, Railway, Heroku
+- **Database**: Neon (serverless PostgreSQL)
+- **Authentication**: Google OAuth
 
 ## 📋 Development Workflow
 
-### **Working with Frontend**
+### **Frontend Development**
 ```bash
 cd frontend/
 # Edit HTML, CSS, JS files
-# Test locally with: python3 -m http.server 8000
-git add .
-git commit -m "feat: description"
+python3 -m http.server 8000  # Test locally
+git add . && git commit -m "feat: update"
 git push origin main
 ```
 
-### **Future Backend Development**
+### **Backend Development**
 ```bash
 cd backend/
-npm install
-npm run dev
-# API will run on http://localhost:8000
+npm run dev                   # Development server
+npx drizzle-kit studio        # Database GUI
+npm run build                 # Production build
 ```
 
-## 🌐 Deployment Status
+### **Full Integration**
+1. **Backend**: Manage courses, users, content
+2. **API**: Expose data endpoints
+3. **Frontend**: Consume API data for dynamic content
+4. **Deploy**: Both systems independently
 
-- **Repository**: https://github.com/altynpony/mediaschool
-- **Frontend**: Ready for immediate deployment
-- **Backend**: Planning phase
+## 🌐 Deployment Options
 
-## 📞 Support
+### **Frontend Deployment**
+- **GitHub Pages**: Free static hosting
+- **Netlify**: Continuous deployment from Git
+- **Vercel**: Instant deployment with CDN
 
-- **Documentation**: Check `/docs` and individual `/frontend` and `/backend` READMEs
-- **Issues**: Use GitHub Issues for bug reports and feature requests
+### **Backend Deployment**
+- **Vercel**: Seamless Next.js deployment
+- **Railway**: Full-stack with database
+- **Heroku**: Traditional platform-as-a-service
+
+### **Database**
+- **Neon**: Serverless PostgreSQL (recommended)
+- **Supabase**: PostgreSQL with real-time features
+- **PlanetScale**: MySQL with branching
+
+## 📊 Current Status
+
+### ✅ **Completed**
+- **Frontend MVP**: Complete marketing website
+- **Backend System**: Full authentication and course management
+- **Database Schema**: User and course models
+- **Admin Panel**: Content management interface
+- **Integration Ready**: API endpoints for frontend
+
+### 🚧 **Next Steps**
+- **API Integration**: Connect frontend with backend data
+- **Payment System**: Stripe integration for subscriptions
+- **Content Upload**: File management for course materials
+- **Analytics**: User behavior and course progress tracking
+
+## 🎯 Business Value
+
+### **Immediate Benefits**
+- **Marketing Website**: Attracts customers and showcases offerings
+- **User Management**: Handle registrations and authentication
+- **Course Administration**: Manage content and student progress
+- **Scalable Architecture**: Ready for growth and new features
+
+### **Growth Potential**
+- **E-commerce**: Subscription and course sales
+- **Community**: User-generated content and discussions
+- **Analytics**: Data-driven insights and optimization
+- **Mobile**: React Native app using same backend
+
+## 📞 Support & Documentation
+
+- **Frontend Docs**: `/frontend/README.md`
+- **Backend Docs**: `/backend/README.md`
+- **API Documentation**: Available in backend admin panel
+- **Deployment Guides**: `/docs` directory
+
+## 🔐 Security & Performance
+
+- **Authentication**: Industry-standard OAuth implementation
+- **Database**: Type-safe queries prevent SQL injection
+- **Performance**: Optimized for both static and dynamic content
+- **Scalability**: Serverless architecture handles traffic spikes
 
 ---
 
-**Built with ❤️ in Prague** | **© 2025 Prague Media School** 
+**Built with ❤️ in Prague** | **© 2025 Prague Media School**
+
+**Repository**: https://github.com/altynpony/mediaschool 

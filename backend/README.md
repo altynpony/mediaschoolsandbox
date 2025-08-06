@@ -1,263 +1,193 @@
-# 🔧 MediaSchool.ai Backend
+# 🚀 MediaSchool.ai Backend
 
-> API server and business logic for the MediaSchool.ai platform
+> Next.js full-stack application with authentication, courses, and user management
 
-## 🏗️ Planned Architecture
+## 🏗️ Architecture
+
+This is a **Next.js 15** application serving as the backend/admin panel for MediaSchool.ai platform.
+
+### **Tech Stack**
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Database**: PostgreSQL with Neon serverless
+- **ORM**: Drizzle ORM
+- **Authentication**: Better Auth
+- **UI**: Radix UI + Tailwind CSS
+- **Internationalization**: next-intl
+
+## 📁 Project Structure
 
 ```
 backend/
-├── 📁 api/                 # REST API endpoints
-│   ├── auth/              # Authentication routes
-│   ├── courses/           # Course management
-│   ├── users/             # User management
-│   ├── payments/          # Payment processing
-│   └── content/           # Content management
-├── 📁 models/             # Database models
-│   ├── User.js            # User model
-│   ├── Course.js          # Course model
-│   ├── Subscription.js    # Subscription model
-│   └── Progress.js        # Learning progress
-├── 📁 services/           # Business logic
-│   ├── AuthService.js     # Authentication logic
-│   ├── PaymentService.js  # Payment processing
-│   ├── EmailService.js    # Email notifications
-│   └── AIService.js       # AI chat integration
-├── 📁 middleware/         # Express middleware
-│   ├── auth.js            # Authentication middleware
-│   ├── validation.js      # Input validation
-│   └── rateLimit.js       # Rate limiting
-├── 📁 utils/              # Helper functions
-│   ├── database.js        # DB connection
-│   ├── logger.js          # Logging utility
-│   └── config.js          # Configuration
-├── 📁 tests/              # Test files
-│   ├── unit/              # Unit tests
-│   └── integration/       # Integration tests
-├── 📄 package.json        # Dependencies
-├── 📄 server.js           # Main server file
-└── 📄 .env.example        # Environment variables template
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── [locale]/          # Internationalized routes
+│   │   │   ├── courses/       # Course management
+│   │   │   ├── signin/        # Authentication
+│   │   │   └── profile/       # User profiles
+│   │   ├── api/               # API routes
+│   │   │   └── auth/          # Auth endpoints
+│   │   └── layout.tsx         # Root layout
+│   ├── components/            # Reusable UI components
+│   │   └── ui/               # Base UI components
+│   └── middleware.ts          # Next.js middleware
+├── drizzle/                   # Database migrations
+├── messages/                  # Internationalization files
+├── public/                    # Static assets
+└── package.json              # Dependencies
 ```
 
-## 🚀 Technology Stack
+## 🎯 Features
 
-### **Runtime & Framework**
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **TypeScript** - Type safety (optional)
+### ✅ **Implemented**
+- **User Authentication** - Sign in with Google
+- **Course Management** - Course pages and navigation
+- **User Profiles** - User profile management
+- **Internationalization** - Multi-language support
+- **Database Integration** - PostgreSQL with Drizzle ORM
+- **Modern UI** - Radix UI components with Tailwind
+- **TypeScript** - Full type safety
 
-### **Database**
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and sessions
-- **Prisma/Sequelize** - ORM
+### 🔧 **Components**
+- Authentication system with Better Auth
+- Course browsing and detail pages
+- User profile management
+- Responsive design
+- Dark/light theme support
 
-### **Authentication**
-- **JWT** - JSON Web Tokens
-- **Passport.js** - Authentication strategies
-- **bcrypt** - Password hashing
-
-### **External Services**
-- **Stripe** - Payment processing
-- **SendGrid** - Email delivery
-- **OpenAI API** - AI chat functionality
-- **AWS S3** - File storage
-
-## 🎯 Core Features
-
-### **Authentication System**
-```javascript
-// User registration
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET  /api/auth/me
-POST /api/auth/refresh-token
-```
-
-### **Course Management**
-```javascript
-// Course CRUD operations
-GET    /api/courses              # List courses
-GET    /api/courses/:id          # Get course details
-POST   /api/courses              # Create course (admin)
-PUT    /api/courses/:id          # Update course (admin)
-DELETE /api/courses/:id          # Delete course (admin)
-```
-
-### **User Progress**
-```javascript
-// Learning progress tracking
-GET  /api/progress/:courseId     # Get course progress
-POST /api/progress/:courseId     # Update progress
-GET  /api/progress/user/:userId  # Get user's all progress
-```
-
-### **Subscription Management**
-```javascript
-// Subscription handling
-GET  /api/subscriptions          # Get user subscriptions
-POST /api/subscriptions          # Create subscription
-PUT  /api/subscriptions/:id      # Update subscription
-POST /api/subscriptions/cancel   # Cancel subscription
-```
-
-### **AI Chat System**
-```javascript
-// AI tutor chat
-POST /api/chat/message           # Send message to AI
-GET  /api/chat/history           # Get chat history
-POST /api/chat/feedback          # Provide feedback
-```
-
-## 🛡️ Security Features
-
-### **Authentication & Authorization**
-- JWT token-based authentication
-- Role-based access control (Student, Instructor, Admin)
-- Password strength validation
-- Account lockout after failed attempts
-
-### **Data Protection**
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection
-- Rate limiting per endpoint
-- CORS configuration
-
-### **Environment Security**
-- Environment variables for secrets
-- API key rotation
-- Secure headers (Helmet.js)
-- Request logging and monitoring
-
-## 📊 Database Schema
-
-### **Users Table**
-```sql
-CREATE TABLE users (
-    id UUID PRIMARY KEY,
-    email VARCHAR UNIQUE NOT NULL,
-    password_hash VARCHAR NOT NULL,
-    first_name VARCHAR,
-    last_name VARCHAR,
-    role ENUM('student', 'instructor', 'admin'),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-```
-
-### **Courses Table**
-```sql
-CREATE TABLE courses (
-    id UUID PRIMARY KEY,
-    title VARCHAR NOT NULL,
-    description TEXT,
-    instructor_id UUID REFERENCES users(id),
-    price DECIMAL,
-    duration_weeks INTEGER,
-    difficulty ENUM('beginner', 'intermediate', 'advanced'),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-```
-
-### **Subscriptions Table**
-```sql
-CREATE TABLE subscriptions (
-    id UUID PRIMARY KEY,
-    user_id UUID REFERENCES users(id),
-    plan_type ENUM('basic', 'core', 'pro'),
-    status ENUM('active', 'cancelled', 'expired'),
-    stripe_subscription_id VARCHAR,
-    current_period_start TIMESTAMP,
-    current_period_end TIMESTAMP,
-    created_at TIMESTAMP
-);
-```
-
-## 🔧 Development Setup
+## 🚀 Getting Started
 
 ### **Prerequisites**
 - Node.js 18+
-- PostgreSQL 14+
-- Redis 6+
+- PostgreSQL database (Neon recommended)
 
 ### **Installation**
 ```bash
 cd backend/
 npm install
-cp .env.example .env
-# Edit .env with your configuration
-npm run migrate
-npm run seed
-npm run dev
 ```
 
-### **Environment Variables**
+### **Environment Setup**
+Create a `.env.local` file:
 ```bash
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/mediaschool
-REDIS_URL=redis://localhost:6379
+DATABASE_URL="postgresql://..."
+DIRECT_URL="postgresql://..."
 
-# Authentication
-JWT_SECRET=your-super-secret-key
-JWT_EXPIRES_IN=7d
+# Auth
+BETTER_AUTH_SECRET="your-secret-key"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# External Services
-STRIPE_SECRET_KEY=sk_test_...
-SENDGRID_API_KEY=SG....
-OPENAI_API_KEY=sk-...
-
-# Server
-PORT=8000
-NODE_ENV=development
+# Next.js
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-## 🧪 Testing
-
-### **Test Structure**
+### **Database Setup**
 ```bash
-npm run test              # Run all tests
-npm run test:unit         # Unit tests only
-npm run test:integration  # Integration tests
-npm run test:coverage     # Coverage report
+# Generate migrations
+npx drizzle-kit generate
+
+# Push to database
+npx drizzle-kit push
 ```
 
-### **Test Categories**
-- **Unit Tests** - Individual functions/methods
-- **Integration Tests** - API endpoints
-- **Database Tests** - Model operations
-- **Authentication Tests** - Auth flows
+### **Development**
+```bash
+npm run dev
+# Open http://localhost:3000
+```
 
-## 📈 Performance
+## 📊 Database Schema
 
-### **Caching Strategy**
-- Redis for session storage
-- Course data caching
-- API response caching
-- Database query optimization
+### **Technologies Used**
+- **Drizzle ORM** - Type-safe database queries
+- **Neon Database** - Serverless PostgreSQL
+- **Migrations** - Version-controlled schema changes
 
-### **Monitoring**
-- Request/response logging
-- Error tracking (Sentry)
-- Performance metrics
-- Database query analysis
+### **Main Tables**
+- Users and authentication
+- Courses and content
+- User progress tracking
+- Subscriptions and payments (planned)
+
+## 🔐 Authentication
+
+### **Better Auth Integration**
+- Google OAuth sign-in
+- Session management
+- Protected routes
+- User profile handling
+
+### **Middleware**
+- Route protection
+- Locale handling
+- Authentication checks
+
+## 🌐 Internationalization
+
+### **Supported Languages**
+- English (default)
+- Russian
+- Czech (planned)
+
+### **Implementation**
+- `next-intl` for translations
+- Locale-based routing
+- Message files in `/messages`
+
+## 🎨 UI Components
+
+### **Design System**
+- **Radix UI** - Accessible components
+- **Tailwind CSS** - Utility-first styling
+- **Lucide React** - Icon library
+- **Theme Support** - Dark/light modes
+
+### **Key Components**
+- Navigation menu
+- Course cards
+- User avatars
+- Authentication forms
+- Profile management
+
+## 📈 Development
+
+### **Scripts**
+```bash
+npm run dev        # Development server
+npm run build      # Production build
+npm run start      # Production server
+npm run lint       # ESLint check
+```
+
+### **Database Commands**
+```bash
+npx drizzle-kit generate    # Generate migrations
+npx drizzle-kit push        # Apply to database
+npx drizzle-kit studio      # Database GUI
+```
 
 ## 🚀 Deployment
 
-### **Production Checklist**
-- [ ] Environment variables configured
-- [ ] Database migrations run
-- [ ] SSL certificates installed
-- [ ] Monitoring setup
-- [ ] Backup strategy implemented
-- [ ] Load balancer configured
+### **Recommended Platforms**
+- **Vercel** - Seamless Next.js deployment
+- **Railway** - Full-stack deployment
+- **Netlify** - Static + serverless functions
 
-### **Deployment Options**
-- **Railway** - Recommended for simplicity
-- **Heroku** - Easy deployment
-- **AWS ECS** - Scalable containers
-- **DigitalOcean** - Cost-effective VPS
+### **Environment Variables**
+Ensure all environment variables are configured in your deployment platform.
+
+## 📋 Integration with Frontend
+
+This backend serves as:
+1. **Admin Panel** - Course and user management
+2. **API Server** - Data for the frontend website
+3. **Authentication Hub** - User login and profiles
+4. **Content Management** - Course materials and progress
+
+The static frontend (`/frontend` directory) consumes data from this backend via API routes.
 
 ---
 
-**Status**: 📋 Planning Phase - Implementation starts after frontend MVP 
+**Status**: ✅ **Production Ready** - Full-stack Next.js application

@@ -1,0 +1,10 @@
+{
+  "HEAD": {
+    "title": "Mediaschoolai",
+    "signin": "Войти"
+  },
+  "auth": {
+    "signout": "Выйти",
+    "signinGoogle": "Войти с помощью Google"
+  }
+}
