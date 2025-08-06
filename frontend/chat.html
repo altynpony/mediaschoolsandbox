@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - MediaSchool.ai</title>
+    <meta name="description" content="Chat with AI-Tutor to learn about AI and our platform.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/PSM-Logo.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': '#8B5CF6',
+                        'brand-green': '#84CC16',
+                        'brand-light-green': '#C7F59B',
+                        'brand-light-purple': '#C4B5FD',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col">
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-gray-100 flex-shrink-0">
+        <nav class="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="index.html">
+                    <img src="assets/images/PSM-Logo.png" alt="Prague School of Media" class="h-12 w-auto">
+                </a>
+            </div>
+
+            <!-- Back to Main -->
+            <div class="flex items-center">
+                <a href="index.html" class="text-brand-purple hover:text-purple-700 font-medium">
+                    Back to Main
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Chat Container -->
+    <main class="flex-1 flex flex-col max-w-4xl mx-auto w-full px-6 py-8">
+        <!-- Chat Messages -->
+        <div class="flex-1 overflow-y-auto mb-6">
+            <!-- AI Message -->
+            <div class="mb-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm max-w-2xl">
+                    <p class="text-gray-800 mb-2">
+                        Hi! I'm here to help you learn about AI and our platform.<br>
+                        What would you like to know?
+                    </p>
+                    <div class="text-sm text-gray-500">11:55 AM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested Questions -->
+        <div class="mb-6">
+            <div class="flex flex-wrap gap-3">
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    What's included in the subscription?
+                </button>
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    How much does it cost?
+                </button>
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    Show me available courses
+                </button>
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    Do you offer live classes?
+                </button>
+            </div>
+            <div class="flex flex-wrap gap-3 mt-3">
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    How is your school different?
+                </button>
+                <button class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm hover:border-brand-purple hover:text-brand-purple transition-colors">
+                    Is there a community?
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="flex-shrink-0">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    placeholder="Ask me anything about Prague Media School..."
+                    class="w-full bg-white border border-gray-200 rounded-full px-6 py-4 pr-16 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-brand-purple focus:ring-2 focus:ring-brand-purple focus:ring-opacity-20"
+                >
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand-purple text-white p-2 rounded-full hover:bg-purple-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Features -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">
+                AI-powered assistant to help you navigate our courses and community
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // Simple chat functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.querySelector('input[type="text"]');
+            const sendButton = document.querySelector('button[type="button"]');
+            const chatContainer = document.querySelector('.flex-1.overflow-y-auto');
+            const suggestedButtons = document.querySelectorAll('button[class*="bg-white border"]');
+
+            // Handle suggested questions
+            suggestedButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.textContent;
+                    sendMessage(question);
+                });
+            });
+
+            // Handle input submission
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    sendMessage(this.value.trim());
+                    this.value = '';
+                }
+            });
+
+            sendButton.addEventListener('click', function() {
+                if (input.value.trim()) {
+                    sendMessage(input.value.trim());
+                    input.value = '';
+                }
+            });
+
+            function sendMessage(message) {
+                // Add user message
+                const userMessage = createMessage(message, 'user');
+                chatContainer.appendChild(userMessage);
+
+                // Simulate AI response
+                setTimeout(() => {
+                    const aiResponse = getAIResponse(message);
+                    const aiMessage = createMessage(aiResponse, 'ai');
+                    chatContainer.appendChild(aiMessage);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            function createMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'mb-6';
+
+                const messageContent = document.createElement('div');
+                messageContent.className = type === 'user' 
+                    ? 'bg-brand-purple text-white rounded-2xl p-6 shadow-sm max-w-2xl ml-auto'
+                    : 'bg-white rounded-2xl p-6 shadow-sm max-w-2xl';
+
+                const textP = document.createElement('p');
+                textP.className = type === 'user' ? 'text-white mb-2' : 'text-gray-800 mb-2';
+                textP.textContent = text;
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'text-sm';
+                timeDiv.className += type === 'user' ? ' text-purple-200' : ' text-gray-500';
+                timeDiv.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                messageContent.appendChild(textP);
+                messageContent.appendChild(timeDiv);
+                messageDiv.appendChild(messageContent);
+
+                return messageDiv;
+            }
+
+            function getAIResponse(message) {
+                const responses = {
+                    'subscription': 'Our subscription includes access to all courses, live workshops, community access, and priority support. We have three plans: Basic (€19), Core (€29), and Pro (€49) per month.',
+                    'cost': 'We offer flexible pricing: Basic plan at €19/month, Core plan at €29/month (most popular), and Pro plan at €49/month. You can also save 20% with yearly billing.',
+                    'courses': 'We offer courses in AI Photography, Midjourney, ChatGPT, Video AI, and more. All courses are designed for practical application in media and creative work.',
+                    'live': 'Yes! We offer live workshops, community events, and interactive sessions. Core and Pro subscribers get access to monthly live workshops.',
+                    'different': 'We focus on practical, hands-on learning with real projects. Our Kaospilot method means you apply what you learn immediately, with expert guidance and community support.',
+                    'community': 'Absolutely! We have an active community of 2,847+ creators worldwide. Share projects, get feedback, join live channels, and learn together.',
+                    'default': 'That\'s a great question! Our platform combines practical AI education with community support. You can explore our courses, join live events, and connect with fellow creators. Would you like to know more about any specific aspect?'
+                };
+
+                const lowerMessage = message.toLowerCase();
+                for (const [key, response] of Object.entries(responses)) {
+                    if (lowerMessage.includes(key)) {
+                        return response;
+                    }
+                }
+                return responses.default;
+            }
+        });
+    </script>
+</body>
+</html> 
