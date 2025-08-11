@@ -126,6 +126,7 @@ async function seedEvents() {
   try {
     for (const eventData of sampleEvents) {
       const [insertedEvent] = await db.insert(event).values({
+        id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         title: eventData.title,
         slug: eventData.slug,
         type: eventData.type,

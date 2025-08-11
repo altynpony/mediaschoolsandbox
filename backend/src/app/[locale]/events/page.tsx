@@ -44,6 +44,7 @@ async function getEvents() {
 
     return events.map(e => ({
       ...e,
+      tags: Array.isArray(e.tags) ? e.tags : [],
       spotsLeft: e.maxAttendees ? Math.max(0, e.maxAttendees - (e.registrationCount || 0)) : null,
       isRegistered: false,
       attendees: e.registrationCount || 0
