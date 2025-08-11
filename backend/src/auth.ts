@@ -33,6 +33,10 @@ export const auth = betterAuth({
   plugins: [
     nextCookies()
   ],
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_AUTH_CLIENT_ID as string,

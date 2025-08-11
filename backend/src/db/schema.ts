@@ -7,9 +7,9 @@ export const verification = pgTable("verification", {
 	id: text().primaryKey().notNull(),
 	identifier: text().notNull(),
 	value: text().notNull(),
-	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }),
-	updatedAt: timestamp("updated_at", { mode: 'string' }),
+	expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }),
+	updatedAt: timestamp("updated_at", { withTimezone: true }),
 });
 
 export const user = pgTable("user", {
@@ -18,8 +18,8 @@ export const user = pgTable("user", {
 	email: text().notNull(),
 	emailVerified: boolean("email_verified").notNull(),
 	image: text(),
-	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
 	isAnonymous: boolean("is_anonymous"),
 	role: varchar({ length: 16 }).default('user').notNull(),
 }, (table) => [
@@ -67,10 +67,10 @@ export const lessonLive = pgTable("lesson_live", {
 
 export const session = pgTable("session", {
 	id: text().primaryKey().notNull(),
-	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
+	expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 	token: text().notNull(),
-	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
 	ipAddress: text("ip_address"),
 	userAgent: text("user_agent"),
 	userId: text("user_id").notNull(),
@@ -106,12 +106,12 @@ export const account = pgTable("account", {
 	accessToken: text("access_token"),
 	refreshToken: text("refresh_token"),
 	idToken: text("id_token"),
-	accessTokenExpiresAt: timestamp("access_token_expires_at", { mode: 'string' }),
-	refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { mode: 'string' }),
+	accessTokenExpiresAt: timestamp("access_token_expires_at", { withTimezone: true }),
+	refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { withTimezone: true }),
 	scope: text(),
 	password: text(),
-	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
-	updatedAt: timestamp("updated_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.userId],
