@@ -41,7 +41,7 @@ export function ForgotPasswordClient({ content, locale }: ForgotPasswordClientPr
       });
 
       if (result.error) {
-        setError(result.error.message);
+        setError(result.error.message || "An error occurred while sending reset email");
       } else {
         setSuccess(true);
       }

@@ -8,7 +8,7 @@ interface AuthTestClientProps {
   locale: string;
 }
 
-export function AuthTestClient({ locale }: AuthTestClientProps) {
+export function AuthTestClient({ }: AuthTestClientProps) {
   const { data: session, isPending } = authClient.useSession();
   const [testResults, setTestResults] = useState<string[]>([]);
   const [isRunningTests, setIsRunningTests] = useState(false);

@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { auth } from '@/auth';
 import { headers } from 'next/headers';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Get the session from Better Auth
     const session = await auth.api.getSession({
