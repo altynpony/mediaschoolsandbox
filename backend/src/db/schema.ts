@@ -172,3 +172,6 @@ export const enrollment = pgTable("enrollment", {
 	}).onDelete("cascade"),
 	unique("enrollment_user_course_unique").on(table.userId, table.courseId),
 ]);
+
+// Export extended schema tables
+export * from './schema-extended';
