@@ -80,7 +80,7 @@ export default async function Profile({
             </div>
 
             {/* Profile Content */}
-            <ProfileClient content={t} locale={locale} user={session.user} />
+            {session?.user && <ProfileClient content={t} locale={locale} user={session.user} />}
           </div>
         </div>
       </div>

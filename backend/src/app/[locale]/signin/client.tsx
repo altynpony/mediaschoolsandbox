@@ -46,7 +46,7 @@ export function SignInClient({ content, locale }: SignInClientProps) {
       });
 
       if (result.error) {
-        setError(result.error.message);
+        setError(result.error.message || "Sign in failed");
       } else {
         // Redirect to home page or previous page
         router.push(`/${locale}`);

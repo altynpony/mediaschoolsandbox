@@ -107,7 +107,7 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
       });
 
       if (result.error) {
-        setErrors({ ...errors, profile: result.error.message });
+        setErrors({ ...errors, profile: result.error.message || "Profile update failed" });
       } else {
         setSuccess({ ...success, profile: "Profile updated successfully!" });
       }
@@ -143,7 +143,7 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
       });
 
       if (result.error) {
-        setErrors({ ...errors, password: result.error.message });
+        setErrors({ ...errors, password: result.error.message || "Password change failed" });
       } else {
         setSuccess({ ...success, password: "Password changed successfully!" });
         setPasswordData({
@@ -308,7 +308,7 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
             <div>
               <p className="text-sm text-gray-600">{content.currentPlan}</p>
               <p className="font-semibold text-gray-900">
-                {subscription?.planType || 'Free'} Plan
+                {(subscription as any)?.planType || 'Free'} Plan
               </p>
             </div>
             <CustomButton

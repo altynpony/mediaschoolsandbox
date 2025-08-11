@@ -71,7 +71,7 @@ export async function PUT(request: NextRequest) {
       .set({
         name: name || session.user.name,
         image: image || session.user.image,
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date(),
       })
       .where(eq(user.id, session.user.id))
       .returning({

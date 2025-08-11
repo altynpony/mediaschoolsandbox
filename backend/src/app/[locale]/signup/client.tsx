@@ -74,7 +74,7 @@ export function SignUpClient({ content, locale }: SignUpClientProps) {
       });
 
       if (result.error) {
-        setError(result.error.message);
+        setError(result.error.message || "Sign up failed");
       } else {
         // Redirect to sign in page or home
         router.push(`/${locale}/signin`);
