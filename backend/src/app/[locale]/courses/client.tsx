@@ -189,13 +189,13 @@ export function CoursesClient({ courses, locale }: CoursesClientProps) {
 
               {/* Actions */}
               <div className="flex gap-3">
-                <Link href={`/${locale}/courses/${course.slug}`} className="flex-1">
+                <Link href={`/courses/${course.slug}`} className="flex-1">
                   <CustomButton variant="outline" size="sm" className="w-full">
                     Learn More
                   </CustomButton>
                 </Link>
                 {isEnrolled(course.id) ? (
-                  <Link href={`/${locale}/courses/${course.slug}`}>
+                  <Link href={`/courses/${course.slug}`}>
                     <CustomButton variant="primary" size="sm">
                       Continue
                     </CustomButton>
