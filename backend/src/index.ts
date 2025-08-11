@@ -1,7 +1,10 @@
-import { drizzle } from 'drizzle-orm/neon-http';
+import { drizzle } from 'drizzle-orm/postgres-js';
 import * as schema from './db/schema'
 import * as relations from './db/relations'
-import { neon } from '@neondatabase/serverless';
+import postgres from 'postgres';
 
-const sql = neon(process.env.database_url as string)
-export const db = drizzle({ client: sql, schema: { ...schema, ...relations } });
+// PostgreSQL connection for both local and production
+const connectionString = process.env.DATABASE_URL || 'postgresql://yury@localhost:5432/mediaschoolsandbox';
+
+const sql = postgres(connectionString);
+export const db = drizzle(sql, { schema: { ...schema, ...relations } });
