@@ -79,7 +79,7 @@ export function SignUpClient({ content, locale }: SignUpClientProps) {
         // Redirect to sign in page or home
         router.push(`/${locale}/signin`);
       }
-    } catch (err) {
+    } catch {
       setError("Failed to create account. Please try again.");
     } finally {
       setLoading(false);
@@ -92,7 +92,7 @@ export function SignUpClient({ content, locale }: SignUpClientProps) {
         provider: "google",
         callbackURL: `/${locale}`,
       });
-    } catch (error) {
+    } catch {
       setError("Failed to sign up with Google");
     }
   };
@@ -207,13 +207,13 @@ export function SignUpClient({ content, locale }: SignUpClientProps) {
         {/* Terms and Privacy */}
         <div className="text-xs text-gray-600 text-center">
           {content.terms}{" "}
-          <a href="/terms" className="text-brand-purple hover:text-purple-700 underline">
+          <span className="text-brand-purple hover:text-purple-700 underline cursor-pointer">
             {content.termsLink}
-          </a>{" "}
+          </span>{" "}
           {content.andPrivacy}{" "}
-          <a href="/privacy" className="text-brand-purple hover:text-purple-700 underline">
+          <span className="text-brand-purple hover:text-purple-700 underline cursor-pointer">
             {content.privacyLink}
-          </a>
+          </span>
         </div>
 
         {/* Sign Up Button */}

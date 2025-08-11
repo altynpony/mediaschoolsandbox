@@ -45,7 +45,7 @@ export function ForgotPasswordClient({ content, locale }: ForgotPasswordClientPr
       } else {
         setSuccess(true);
       }
-    } catch (err) {
+    } catch {
       setError("Failed to send reset email. Please try again.");
     } finally {
       setLoading(false);

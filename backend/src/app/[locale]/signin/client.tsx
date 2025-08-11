@@ -51,7 +51,7 @@ export function SignInClient({ content, locale }: SignInClientProps) {
         // Redirect to home page or previous page
         router.push(`/${locale}`);
       }
-    } catch (err) {
+    } catch {
       setError("Failed to sign in. Please try again.");
     } finally {
       setLoading(false);

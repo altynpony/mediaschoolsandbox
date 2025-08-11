@@ -101,22 +101,17 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
     setSuccess({ ...success, profile: "" });
 
     try {
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(profileData),
+      // Use Better Auth's update profile method
+      const result = await authClient.updateUser({
+        name: profileData.name,
       });
 
-      if (response.ok) {
-        setSuccess({ ...success, profile: "Profile updated successfully!" });
+      if (result.error) {
+        setErrors({ ...errors, profile: result.error.message });
       } else {
-        const data = await response.json();
-        setErrors({ ...errors, profile: data.error || "Failed to update profile" });
+        setSuccess({ ...success, profile: "Profile updated successfully!" });
       }
-    } catch (error) {
+    } catch {
       setErrors({ ...errors, profile: "Failed to update profile" });
     } finally {
       setLoading({ ...loading, profile: false });
@@ -141,27 +136,23 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
     setSuccess({ ...success, password: "" });
 
     try {
-      const response = await fetch('/api/change-password', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(passwordData),
+      // Use Better Auth's change password method
+      const result = await authClient.changePassword({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
       });
 
-      if (response.ok) {
+      if (result.error) {
+        setErrors({ ...errors, password: result.error.message });
+      } else {
         setSuccess({ ...success, password: "Password changed successfully!" });
         setPasswordData({
           currentPassword: "",
           newPassword: "",
           confirmPassword: ""
         });
-      } else {
-        const data = await response.json();
-        setErrors({ ...errors, password: data.error || "Failed to change password" });
       }
-    } catch (error) {
+    } catch {
       setErrors({ ...errors, password: "Failed to change password" });
     } finally {
       setLoading({ ...loading, password: false });
@@ -347,7 +338,7 @@ export function ProfileClient({ content, locale, user }: ProfileClientProps) {
           </div>
         ) : (
           <div className="space-y-3">
-            {enrolledCourses.map((enrollment: any) => (
+            {enrolledCourses.map((enrollment: {id: string, courseTitle?: string, enrolledAt: string}) => (
               <div key={enrollment.id} className="border border-gray-200 rounded-lg p-4">
                 <h3 className="font-medium text-gray-900">{enrollment.courseTitle || 'Course'}</h3>
                 <p className="text-sm text-gray-600">Enrolled on {new Date(enrollment.enrolledAt).toLocaleDateString()}</p>
