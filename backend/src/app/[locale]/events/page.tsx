@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import { EventsClient } from "./client";
 import { db } from "@/index";
 import { event } from "@/db/schema-extended";
-import { eq, gte, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export const revalidate = 3600; // 1 hour
 export const dynamicParams = false;
