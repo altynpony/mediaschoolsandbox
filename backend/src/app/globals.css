@@ -135,6 +135,8 @@
   --brand-green: #84CC16;
   --brand-light-green: #C7F59B;
   --brand-light-purple: #C4B5FD;
+  --brand-purple-dark: #7C3AED;
+  --brand-green-dark: #65A30D;
 }
 
 /* Custom Scrollbar */
@@ -162,7 +164,7 @@
 }
 
 .btn-purple:hover {
-  background: #7C3AED;
+  background: var(--brand-purple-dark);
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
 }
@@ -173,7 +175,7 @@
 }
 
 .btn-green:hover {
-  background: #65A30D;
+  background: var(--brand-green-dark);
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(132, 204, 22, 0.3);
 }

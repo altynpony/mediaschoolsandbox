@@ -51,17 +51,17 @@ export default async function Home({
         
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold text-brand-neutral-dark mb-8 leading-tight">
               {locale === 'en' ? 'AI Mastery in good company' : 'Мастерство ИИ в хорошей компании'}
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed">
+            <p className="text-xl md:text-2xl text-brand-neutral mb-12 leading-relaxed">
               {t.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <CustomButton variant="primary" size="lg" href="/subscription" className="btn-purple">
+              <CustomButton variant="primary" size="lg" href="/subscription">
                 {t.hero.cta}
               </CustomButton>
-              <CustomButton variant="outline" size="lg" href="/courses">
+              <CustomButton variant="secondary" size="lg" href="/courses">
                 {t.hero.learnMore}
               </CustomButton>
             </div>
@@ -73,10 +73,10 @@ export default async function Home({
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-brand-neutral-dark mb-4">
               Choose Your Learning Format
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-brand-neutral max-w-3xl mx-auto">
               Flexible options designed for busy professionals and curious learners
             </p>
           </div>

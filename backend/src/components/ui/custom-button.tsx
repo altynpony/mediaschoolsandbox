@@ -29,7 +29,7 @@ export function CustomButton({
     primary: 'btn-purple text-white focus:ring-brand-purple',
     secondary: 'btn-green text-white focus:ring-brand-green',
     outline: 'border-2 border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white hover:transform hover:translateY(-2px) hover:shadow-lg focus:ring-brand-purple transition-all duration-300',
-    ghost: 'text-gray-700 hover:text-black hover:bg-gray-100 focus:ring-gray-500',
+    ghost: 'text-gray-700 hover:text-black hover:bg-brand-light-purple focus:ring-brand-purple transition-all duration-300',
   };
   
   const sizes = {
