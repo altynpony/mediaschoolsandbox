@@ -1,5 +1,6 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import * as schema from './db/schema'
+import * as schemaExtended from './db/schema-extended'
 import * as relations from './db/relations'
 import postgres from 'postgres';
 
@@ -7,4 +8,4 @@ import postgres from 'postgres';
 const connectionString = process.env.DATABASE_URL || 'postgresql://yury@localhost:5432/mediaschoolsandbox';
 
 const sql = postgres(connectionString);
-export const db = drizzle(sql, { schema: { ...schema, ...relations } });
+export const db = drizzle(sql, { schema: { ...schema, ...schemaExtended, ...relations } });
