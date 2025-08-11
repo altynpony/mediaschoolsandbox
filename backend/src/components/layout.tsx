@@ -21,7 +21,7 @@ export function Layout({ children, className = "" }: LayoutProps) {
           <div className="flex items-center">
             <Link href="/">
               <Image 
-                src="/assets/images/PSM-Logo.png" 
+                src="/images/PSM-Logo.png" 
                 alt="MediaSchool.ai" 
                 width={48} 
                 height={48}
@@ -115,7 +115,7 @@ export function Layout({ children, className = "" }: LayoutProps) {
             <div className="md:col-span-2">
               <div className="flex items-center mb-4">
                 <Image 
-                  src="/assets/images/PSM-Logo.png" 
+                  src="/images/PSM-Logo.png" 
                   alt="MediaSchool.ai" 
                   width={40} 
                   height={40}
