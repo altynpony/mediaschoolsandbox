@@ -19,13 +19,12 @@ MediaSchool.ai is a modern learning platform focused on AI education for creativ
 - **ORM**: Drizzle ORM
 - **Authentication**: Better Auth
 - **Deployment**: Vercel (production)
-- **Development Tunnel**: ngrok (vast.mediaschool.ai)
 
 ### Infrastructure
 - **Database Host**: Supabase (PostgreSQL)
 - **File Storage**: Planned - Supabase Storage / S3
 - **CDN**: Vercel Edge Network
-- **Domain**: vast.mediaschool.ai/sandbox (shared via ngrok)
+- **Production URL**: https://mediaschoolsandbox.vercel.app/
 
 ## Database Schema
 
