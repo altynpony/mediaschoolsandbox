@@ -157,7 +157,7 @@ export function CoursesClient({ courses, locale }: CoursesClientProps) {
       {/* Courses Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredCourses.map((course) => (
-          <div key={course.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+          <div key={course.id} className="card-hover bg-white border border-gray-200 rounded-2xl overflow-hidden group">
             {/* Course Image/Icon */}
             <div className="relative h-48 bg-gradient-to-br from-brand-light-purple to-brand-light-green p-8 flex items-center justify-center">
               {course.isLive && (

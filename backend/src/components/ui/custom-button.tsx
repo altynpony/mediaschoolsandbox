@@ -23,12 +23,12 @@ export function CustomButton({
   className = '',
   type = 'button',
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
-    primary: 'bg-brand-purple text-white hover:bg-purple-700 focus:ring-brand-purple',
-    secondary: 'bg-brand-green text-white hover:bg-lime-600 focus:ring-brand-green',
-    outline: 'border-2 border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white focus:ring-brand-purple',
+    primary: 'btn-purple text-white focus:ring-brand-purple',
+    secondary: 'btn-green text-white focus:ring-brand-green',
+    outline: 'border-2 border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white hover:transform hover:translateY(-2px) hover:shadow-lg focus:ring-brand-purple transition-all duration-300',
     ghost: 'text-gray-700 hover:text-black hover:bg-gray-100 focus:ring-gray-500',
   };
   

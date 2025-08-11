@@ -41,13 +41,24 @@ export function Layout({ children, className = "" }: LayoutProps) {
             <Link href="/library" className="text-gray-700 hover:text-black transition-colors">
               Library
             </Link>
-            <Link href="/chat" className="text-gray-700 hover:text-black transition-colors">
-              Chat
+            {/* Chat with AI-Tutor Button */}
+            <Link 
+              href="/chat" 
+              className="bg-gradient-to-r from-brand-purple to-brand-green text-white px-4 py-2 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 font-medium"
+            >
+              Chat with AI-Tutor
             </Link>
           </div>
 
           {/* User Menu / Auth */}
           <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <div className="flex items-center space-x-2 text-sm">
+              <Link href="/en" className="text-gray-600 hover:text-black transition-colors">EN</Link>
+              <span className="text-gray-300">|</span>
+              <Link href="/ru" className="text-gray-600 hover:text-black transition-colors">RU</Link>
+            </div>
+            
             <User />
             
             {/* Mobile menu button */}
@@ -76,9 +87,17 @@ export function Layout({ children, className = "" }: LayoutProps) {
               <Link href="/library" className="block text-gray-700 hover:text-black transition-colors">
                 Library
               </Link>
-              <Link href="/chat" className="block text-gray-700 hover:text-black transition-colors">
-                Chat
+              <Link 
+                href="/chat" 
+                className="block bg-gradient-to-r from-brand-purple to-brand-green text-white px-4 py-2 rounded-full text-center font-medium"
+              >
+                Chat with AI-Tutor
               </Link>
+              {/* Mobile Language Switcher */}
+              <div className="flex justify-center items-center space-x-4 pt-2">
+                <Link href="/en" className="text-gray-600 hover:text-black transition-colors">English</Link>
+                <Link href="/ru" className="text-gray-600 hover:text-black transition-colors">Русский</Link>
+              </div>
             </div>
           </div>
         )}

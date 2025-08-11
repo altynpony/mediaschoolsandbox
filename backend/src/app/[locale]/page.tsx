@@ -39,18 +39,26 @@ export default async function Home({
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-light-purple via-white to-brand-light-green">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+      {/* Hero Section with Decorative Elements */}
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-light-purple via-white to-brand-light-green relative overflow-hidden">
+        {/* Decorative Circles */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="decorative-circle absolute top-20 left-10 w-20 h-20 bg-brand-purple/20 rounded-full blur-xl"></div>
+          <div className="decorative-circle absolute top-40 right-20 w-32 h-32 bg-brand-green/20 rounded-full blur-xl" style={{animationDelay: '2s'}}></div>
+          <div className="decorative-circle absolute bottom-40 left-20 w-24 h-24 bg-brand-light-purple/30 rounded-full blur-xl" style={{animationDelay: '4s'}}></div>
+          <div className="decorative-circle absolute bottom-20 right-10 w-16 h-16 bg-brand-light-green/40 rounded-full blur-xl" style={{animationDelay: '1s'}}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-              {t.hero.title}
+              {locale === 'en' ? 'AI Mastery in good company' : 'Мастерство ИИ в хорошей компании'}
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed">
               {t.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <CustomButton variant="primary" size="lg" href="/subscription">
+              <CustomButton variant="primary" size="lg" href="/subscription" className="btn-purple">
                 {t.hero.cta}
               </CustomButton>
               <CustomButton variant="outline" size="lg" href="/courses">
