@@ -133,3 +133,42 @@ export const lessonDescription = pgTable("lesson_description", {
 			name: "lesson_foreign"
 		}),
 ]);
+
+export const subscription = pgTable("subscription", {
+	id: text().primaryKey().notNull(),
+	userId: text("user_id").notNull(),
+	planType: varchar("plan_type", { length: 32 }).notNull(), // 'basic', 'pro', 'enterprise'
+	status: varchar({ length: 32 }).default('active').notNull(), // 'active', 'cancelled', 'expired'
+	startDate: timestamp("start_date", { withTimezone: true, mode: 'string' }).notNull(),
+	endDate: timestamp("end_date", { withTimezone: true, mode: 'string' }),
+	stripeSubscriptionId: text("stripe_subscription_id"),
+	createdAt: timestamp("created_at", { mode: 'string' }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).notNull(),
+}, (table) => [
+	foreignKey({
+		columns: [table.userId],
+		foreignColumns: [user.id],
+		name: "subscription_user_id_fk"
+	}).onDelete("cascade"),
+]);
+
+export const enrollment = pgTable("enrollment", {
+	id: text().primaryKey().notNull(),
+	userId: text("user_id").notNull(),
+	courseId: integer("course_id").notNull(),
+	enrolledAt: timestamp("enrolled_at", { withTimezone: true, mode: 'string' }).notNull(),
+	completedAt: timestamp("completed_at", { withTimezone: true, mode: 'string' }),
+	progress: integer().default(0).notNull(), // Percentage 0-100
+}, (table) => [
+	foreignKey({
+		columns: [table.userId],
+		foreignColumns: [user.id],
+		name: "enrollment_user_id_fk"
+	}).onDelete("cascade"),
+	foreignKey({
+		columns: [table.courseId],
+		foreignColumns: [course.id],
+		name: "enrollment_course_id_fk"
+	}).onDelete("cascade"),
+	unique("enrollment_user_course_unique").on(table.userId, table.courseId),
+]);
