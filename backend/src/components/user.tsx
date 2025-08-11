@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./ui/button";
+// import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { authClient } from "@/auth-client";
 import { useTranslations } from "next-intl";

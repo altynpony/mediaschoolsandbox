@@ -24,7 +24,7 @@ interface SubscriptionClientProps {
 
 export function SubscriptionClient({ plans, locale }: SubscriptionClientProps) {
   const { data: session } = authClient.useSession();
-  const [currentSubscription, setCurrentSubscription] = useState<any>(null);
+  const [currentSubscription, setCurrentSubscription] = useState<{planType: string, status: string, endDate?: string} | null>(null);
   const [loading, setLoading] = useState(true);
   const [subscribing, setSubscribing] = useState<string | null>(null);
 
@@ -232,7 +232,7 @@ export function SubscriptionClient({ plans, locale }: SubscriptionClientProps) {
               Can I change plans anytime?
             </h3>
             <p className="text-gray-600">
-              Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any differences.
+              Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we&apos;ll prorate any differences.
             </p>
           </div>
           <div>
@@ -248,7 +248,7 @@ export function SubscriptionClient({ plans, locale }: SubscriptionClientProps) {
               Do you offer refunds?
             </h3>
             <p className="text-gray-600">
-              We offer a 30-day money-back guarantee for all plans. If you're not satisfied, we'll refund your subscription.
+              We offer a 30-day money-back guarantee for all plans. If you&apos;re not satisfied, we&apos;ll refund your subscription.
             </p>
           </div>
         </div>

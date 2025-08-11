@@ -24,7 +24,7 @@ export function CoursesClient({ courses, locale }: CoursesClientProps) {
   const [filteredCourses, setFilteredCourses] = useState<Course[]>(courses);
   const [activeFilter, setActiveFilter] = useState<'all' | 'live' | 'recorded'>('all');
   const { data: session } = authClient.useSession();
-  const [userEnrollments, setUserEnrollments] = useState<any[]>([]);
+  const [userEnrollments, setUserEnrollments] = useState<{courseId: number, id: string}[]>([]);
 
   // Fetch user enrollments if authenticated
   useEffect(() => {
@@ -107,7 +107,7 @@ export function CoursesClient({ courses, locale }: CoursesClientProps) {
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">No Courses Available</h3>
           <p className="text-gray-600 mb-6">
-            We're working on adding new courses. Check back soon!
+            We&apos;re working on adding new courses. Check back soon!
           </p>
           <CustomButton variant="primary" href={`/${locale}/subscription`}>
             Get Early Access

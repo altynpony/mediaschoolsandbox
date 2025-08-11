@@ -1,8 +1,6 @@
 import { routing } from "@/i18n/routing";
 import { Layout } from "@/components/layout";
 import { CustomButton } from "@/components/ui/custom-button";
-import Image from "next/image";
-import Link from "next/link";
 
 export const revalidate = 86400; // 1 day
 export const dynamicParams = false;
