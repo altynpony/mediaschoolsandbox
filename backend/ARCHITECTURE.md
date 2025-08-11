@@ -24,7 +24,7 @@ MediaSchool.ai is a modern learning platform focused on AI education for creativ
 - **Database Host**: Supabase (PostgreSQL)
 - **File Storage**: Planned - Supabase Storage / S3
 - **CDN**: Vercel Edge Network
-- **Production URL**: https://mediaschoolsandbox.vercel.app/
+- **Production URL**: https://mediaschoolsandbox.vercel.app
 
 ## Database Schema
 
@@ -385,7 +385,7 @@ DATABASE_URL="postgresql://postgres.qpzafottflnjonlibuwt:Abbingdon25@aws-0-eu-ce
 
 # Authentication ✅
 BETTER_AUTH_SECRET="[configured]"
-BETTER_AUTH_URL="https://vast.mediaschool.ai/sandbox"
+BETTER_AUTH_URL="https://mediaschoolsandbox.vercel.app"
 GOOGLE_CLIENT_ID="[configured]"
 GOOGLE_CLIENT_SECRET="[configured]"
 
@@ -555,7 +555,7 @@ Note: Stripe integration planned
 ---
 
 **Repository**: github.com/altynpony/mediaschoolsandbox  
-**Production URL**: vast.mediaschool.ai/sandbox  
+**Production URL**: https://mediaschoolsandbox.vercel.app  
 **Database**: Supabase PostgreSQL  
 **Deployment**: Vercel  
 
