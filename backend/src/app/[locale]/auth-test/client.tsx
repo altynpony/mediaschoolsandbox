@@ -47,7 +47,7 @@ export function AuthTestClient({ }: AuthTestClientProps) {
 
       // Test 3: Check auth client configuration
       addResult("Checking auth client configuration...");
-      addResult(`Base URL configured: ${process.env.NEXT_PUBLIC_API_URL || 'localhost:3001'}`);
+      addResult(`Base URL configured: ${process.env.NEXT_PUBLIC_API_URL || 'localhost:5001'}`);
       
     } catch (error) {
       addResult(`❌ Error during tests: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -107,7 +107,7 @@ export function AuthTestClient({ }: AuthTestClientProps) {
             <div className="flex justify-between">
               <span>Base URL:</span>
               <span className="text-gray-700 text-xs">
-                {process.env.NEXT_PUBLIC_API_URL || 'localhost:3001'}
+                {process.env.NEXT_PUBLIC_API_URL || 'localhost:5001'}
               </span>
             </div>
           </div>

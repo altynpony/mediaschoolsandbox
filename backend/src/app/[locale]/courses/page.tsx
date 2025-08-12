@@ -13,7 +13,7 @@ export function generateStaticParams() {
 async function fetchCourses(locale: string) {
   try {
     // Use our new API endpoint
-    const response = await fetch(`${process.env.BETTER_AUTH_URL || 'http://localhost:3001'}/api/courses?lang=${locale}`, {
+    const response = await fetch(`${process.env.BETTER_AUTH_URL || 'http://localhost:5001'}/api/courses?lang=${locale}`, {
       cache: 'force-cache',
       next: { revalidate: 86400 } // 1 day
     });

@@ -25,6 +25,7 @@ MediaSchool.ai is a modern learning platform focused on AI education for creativ
 - **File Storage**: Planned - Supabase Storage / S3
 - **CDN**: Vercel Edge Network
 - **Production URL**: https://mediaschoolsandbox.vercel.app
+- **Local Development**: http://localhost:5001
 
 ## Database Schema
 
@@ -381,8 +382,8 @@ MediaSchool.ai is a modern learning platform focused on AI education for creativ
 2. Install dependencies: `npm install`
 3. Set up environment variables
 4. Database is already seeded and ready
-5. Start dev server: `npm run dev` (port 3001)
-6. Access via ngrok: vast.mediaschool.ai/sandbox
+5. Start dev server: `npm run dev` (port 5001)
+6. Access locally: http://localhost:5001
 
 ### Database Management ✅
 - Core tables: Managed by Drizzle schema
@@ -403,7 +404,7 @@ GOOGLE_CLIENT_ID="[configured]"
 GOOGLE_CLIENT_SECRET="[configured]"
 
 # Development ✅
-PORT=3001
+PORT=5001
 
 # Future CMS Integration
 # SANITY_PROJECT_ID="[to be configured]"
@@ -420,8 +421,8 @@ PORT=3001
 - Automatic SSL and CDN
 
 ### Development ✅
-- Local development on port 3001
-- ngrok tunnel: vast.mediaschool.ai/sandbox
+- Local development on port 5001
+- Direct access: http://localhost:5001
 - Hot module replacement working
 - TypeScript type checking enabled
 
