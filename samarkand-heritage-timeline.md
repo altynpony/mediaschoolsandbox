@@ -12,7 +12,7 @@
 
 ## From Demolished Homes to Silenced Activists
 
-**A heritage timeline ahead of UNESCO's General Conference in Uzbekistan**
+**A heritage timeline to mark UNESCO's General Conference in Uzbekistan**
 
 ---
 
@@ -35,7 +35,7 @@
 - Decision taken without consultation with affected residents
 - Project aims to "modernise" Samarkand city center
 - Houses located in UNESCO buffer zone, near protected monuments
-- Plan to replace homes with multi-story hostels and residential buildings
+- Plan to replace homes with multi-story hotels and residential buildings
 - Khodja Akhrar neighborhood residents given only 3 days notice
 
 **Impact:** 6,000 residents at risk
@@ -63,9 +63,9 @@
 - At least 10,000 already evicted from city center homes
 - Further 30,000 under threat as project continues
 - Historic mahallas destroyed, replaced by "Tashkent City" business center
-- Compensation inadequate, much lower than property values
+- Compensation much lower than property values
 - Temporary housing far from work, schools, community ties
-- 300 billion Uzbek Sum in compensation still unpaid by July 2019
+- 300 billion UZS in compensation still unpaid by July 2019
 
 **Pattern:** Systemic violations across regions
 
@@ -92,15 +92,14 @@
 
 **UN experts condemn forced evictions. Government responds by blocking phones and intimidating activists ahead of UNESCO conference.**
 
-- UN experts express grave concern about Samarkand evictions
-- Criticize UNESCO and World Heritage Committee for inaction
+- UN experts express grave concern about Samarkand evictions and criticize UNESCO for inaction
 - Government launches crackdown on activists and bloggers
 - Abdurahmon Tashanov (Ezgulik director): Phone blocked 4 days
 - Xudoyberdi Zominiy: Questioned by counter-terrorism unit
 - Zafar Xandamov: Internet and mobile completely blocked
 - Multiple activists report similar intimidation tactics
 
-**Repression:** Pre-empting criticism during UNESCO visit
+**Repression:** Restrictions on freedom of expression during UNESCO visit
 
 ---
 
@@ -110,7 +109,7 @@
 
 - First UNESCO General Conference outside Paris in 40 years
 - President Mirziyoyev proposes UNESCO Academy for Women's Leadership
-- Calls for resolution on preserving cultural heritage and climate change
+- Calls for resolution on preserving cultural heritage
 - Government celebrates hosting "prestigious" event
 - No acknowledgment of 1,200 people evicted months earlier
 - Activists remain silenced, phones still blocked
