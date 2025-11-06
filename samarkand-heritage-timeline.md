@@ -18,10 +18,10 @@
 
 ## Key Statistics
 
-**Ahead of UNESCO's General Conference in Uzbekistan:**
+**To mark UNESCO's General Conference in Uzbekistan:**
 
 - **1,200** People Evicted (May 2025)
-- **40,000** Threatened in Tashkent
+- **40,000** Threatened with eviction in Tashkent
 - **0** UNESCO Action Taken
 
 ---
