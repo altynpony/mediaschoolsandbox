@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samarkand Timeline - Instagram Export</title>
+
+  <!-- Use html2canvas - more reliable than html-to-image -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <style>
+    :root {
+      --brand: #e74c3c;
+      --ink: #1a1a1a;
+      --ink-2: #2c3e50;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #000;
+      overflow-x: hidden;
+    }
+
+    /* Container for preview */
+    .preview {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Export canvas - exactly 1080x1920 */
+    .export-canvas {
+      width: 1080px;
+      height: 1920px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 280px 80px 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed;
+      left: -9999px;
+      top: 0;
+    }
+
+    .export-canvas.quote-style {
+      background: white;
+      padding: 0;
+    }
+
+    .export-canvas.stats-style {
+      padding: 320px 80px 360px;
+    }
+
+    /* Story card styles */
+    .story-card {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .story-date {
+      display: inline-block;
+      background: var(--brand);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+
+    .story-title {
+      font-size: 72px;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .story-description {
+      font-size: 40px;
+      color: var(--ink-2);
+      line-height: 1.5;
+      font-weight: 500;
+      margin-bottom: 36px;
+    }
+
+    .story-details {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+    }
+
+    .story-details li {
+      position: relative;
+      padding-left: 48px;
+      margin-bottom: 20px;
+      font-size: 36px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      font-weight: 500;
+    }
+
+    .story-details li::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 24px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .story-impact {
+      display: inline-block;
+      padding: 16px 32px;
+      background: var(--brand);
+      color: white;
+      border-radius: 30px;
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 24px;
+    }
+
+    /* Quote style */
+    .quote-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .quote-top {
+      background: linear-gradient(135deg, #0099cc 0%, #007ba3 100%);
+      padding: 180px 80px 100px;
+      flex: none;
+    }
+
+    .quote-icon {
+      font-size: 120px;
+      color: white;
+      opacity: 0.5;
+      font-family: Georgia, serif;
+      margin-bottom: 40px;
+      line-height: 1;
+    }
+
+    .quote-text {
+      font-size: 48px;
+      font-style: italic;
+      color: white;
+      line-height: 1.5;
+      margin-bottom: 60px;
+      font-weight: 500;
+    }
+
+    .quote-author {
+      font-size: 44px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .quote-context {
+      font-size: 36px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .quote-bottom {
+      flex: 1;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 80px;
+    }
+
+    .timeline-intro {
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--ink-2);
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .heritage-italic {
+      font-style: italic;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    /* Stats style */
+    .stats-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .stats-title {
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--ink-2);
+      line-height: 1.4;
+    }
+
+    .stats-grid {
+      display: grid;
+      gap: 48px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 60px;
+      border-radius: 30px;
+      text-align: center;
+      border: 5px solid #e9ecef;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card.unesco {
+      background: linear-gradient(135deg, rgba(0, 153, 204, 0.12) 0%, rgba(0, 123, 255, 0.08) 100%);
+      border-color: #0099cc;
+      border-width: 6px;
+      transform: scale(1.08);
+      box-shadow: 0 16px 50px rgba(0, 153, 204, 0.3);
+    }
+
+    .stat-number {
+      font-size: 180px;
+      font-weight: 900;
+      color: var(--brand);
+      line-height: 1;
+      margin-bottom: 28px;
+    }
+
+    .stat-card.unesco .stat-number {
+      color: #0099cc;
+      font-size: 200px;
+    }
+
+    .stat-label {
+      font-size: 44px;
+      color: var(--ink-2);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* CTA style */
+    .cta-wrapper {
+      text-align: center;
+      max-width: 900px;
+    }
+
+    .cta-title {
+      font-size: 76px;
+      font-weight: 800;
+      color: var(--ink-2);
+      line-height: 1.4;
+      margin-bottom: 100px;
+    }
+
+    .heritage-emphasis {
+      font-weight: 900;
+      color: #0099cc;
+      font-style: italic;
+    }
+
+    .cta-text {
+      font-size: 96px;
+      color: var(--brand);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+    }
+
+    /* Controls */
+    .controls {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 2px solid var(--brand);
+    }
+
+    .controls button {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      color: #333;
+    }
+
+    .controls button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    }
+
+    .controls button.primary {
+      background: var(--brand);
+      color: white;
+    }
+
+    .controls button.primary:hover {
+      background: #c0392b;
+    }
+
+    .status {
+      color: white;
+      font-size: 14px;
+      min-width: 250px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .story-list {
+      list-style: none;
+      padding: 80px 20px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .story-list li {
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+      padding: 16px 20px;
+      border-radius: 8px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .story-list button {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: var(--brand);
+      color: white;
+    }
+
+    .story-list button:hover {
+      background: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button class="primary" onclick="exportAll()">📦 Export All Stories (ZIP)</button>
+    <button onclick="testExport()">🧪 Test Export Story #0</button>
+    <div class="status" id="status">Ready to export</div>
+  </div>
+
+  <ul class="story-list">
+    <li><span>Story 0: Opening Quote</span> <button onclick="exportStory(0)">Export PNG</button></li>
+    <li><span>Story 1: Key Statistics</span> <button onclick="exportStory(1)">Export PNG</button></li>
+    <li><span>Story 2: NOV 2018 - First Demolitions</span> <button onclick="exportStory(2)">Export PNG</button></li>
+    <li><span>Story 3: 2019 - UN Raises Alarm</span> <button onclick="exportStory(3)">Export PNG</button></li>
+    <li><span>Story 4: 2018-2024 - Tashkent Renewal</span> <button onclick="exportStory(4)">Export PNG</button></li>
+    <li><span>Story 5: MAY 2025 - Al-Maturidi Evictions</span> <button onclick="exportStory(5)">Export PNG</button></li>
+    <li><span>Story 6: OCT 2025 - Activists Silenced</span> <button onclick="exportStory(6)">Export PNG</button></li>
+    <li><span>Story 7: NOV 2025 - UNESCO Conference</span> <button onclick="exportStory(7)">Export PNG</button></li>
+    <li><span>Story 8: Call to Action</span> <button onclick="exportStory(8)">Export PNG</button></li>
+  </ul>
+
+  <script>
+    const stories = [
+      // Story 0: Quote
+      {
+        type: 'quote',
+        html: `
+          <div class="quote-wrapper">
+            <div class="quote-top">
+              <div class="quote-icon">"</div>
+              <div class="quote-text">Eight years ago, I took on the position of Director-General of UNESCO with the conviction that its mission had lost none of its relevance or timeliness...</div>
+              <div class="quote-author">— Audrey Azoulay</div>
+              <div class="quote-context">UNESCO Director-General<br>Samarkand, November 2025</div>
+            </div>
+            <div class="quote-bottom">
+              <div class="timeline-intro">From demolished homes to silenced activists — a <span class="heritage-italic">heritage timeline</span> to mark UNESCO's General Conference in Uzbekistan</div>
+            </div>
+          </div>
+        `
+      },
+      // Story 1: Stats
+      {
+        type: 'stats',
+        html: `
+          <div class="stats-header">
+            <div class="stats-title">To mark UNESCO's General Conference in Uzbekistan</div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">1,200</div>
+              <div class="stat-label">People Evicted<br>(May 2025)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">40,000</div>
+              <div class="stat-label">Threatened with eviction<br>in Tashkent</div>
+            </div>
+            <div class="stat-card unesco">
+              <div class="stat-number">0</div>
+              <div class="stat-label">UNESCO<br>Action Taken</div>
+            </div>
+          </div>
+        `
+      },
+      // Story 2: NOV 2018
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">NOV 2018</div>
+            <div class="story-title">First Demolition Orders in Samarkand</div>
+            <div class="story-description">City mayor orders demolition of 500 private houses affecting 6,000 residents without consultation.</div>
+            <ul class="story-details">
+              <li>Decision taken without consultation with affected residents</li>
+              <li>Project aims to "modernise" Samarkand city center</li>
+              <li>Houses located in UNESCO buffer zone, near protected monuments</li>
+              <li>Plan to replace homes with multi-story hotels and residential buildings</li>
+              <li>Khodja Akhrar neighborhood residents given only 3 days notice</li>
+            </ul>
+            <div class="story-impact">Impact: 6,000 residents at risk</div>
+          </div>
+        `
+      },
+      // Story 3: 2019
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">2019</div>
+            <div class="story-title">UN Special Rapporteurs Raise Alarm</div>
+            <div class="story-description">UN experts express serious concern about forced evictions and housing demolitions in Samarkand UNESCO World Heritage Site.</div>
+            <ul class="story-details">
+              <li>Special Rapporteurs on housing and cultural rights issue formal communication</li>
+              <li>Highlight violations of international human rights law</li>
+              <li>Note lack of consultation, inadequate compensation, no housing alternatives</li>
+              <li>Warn about threats to cultural heritage and community ties</li>
+              <li>Call for moratorium on demolitions</li>
+            </ul>
+            <div class="story-impact">Status: Warning Ignored</div>
+          </div>
+        `
+      },
+      // Story 4: 2018-2024
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">2018-2024</div>
+            <div class="story-title">40,000 Threatened in Tashkent Urban Renewal</div>
+            <div class="story-description">Massive urban regeneration project evicts at least 10,000 people, threatens 30,000 more across the capital.</div>
+            <ul class="story-details">
+              <li>At least 10,000 already evicted from city center homes</li>
+              <li>Further 30,000 under threat as project continues</li>
+              <li>Historic mahallas destroyed, replaced by "Tashkent City" business center</li>
+              <li>Compensation much lower than property values</li>
+              <li>Temporary housing far from work, schools, community ties</li>
+              <li>300 billion UZS in compensation still unpaid by July 2019</li>
+            </ul>
+            <div class="story-impact">Pattern: Systemic violations across regions</div>
+          </div>
+        `
+      },
+      // Story 5: MAY 2025
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">MAY 2025</div>
+            <div class="story-title">🚨 Al-Maturidi Evictions: 1,200 People Displaced</div>
+            <div class="story-description">Entire neighborhood near al-Maturidi mausoleum demolished in weeks. Multoni Roma community loses homes of generations.</div>
+            <ul class="story-details">
+              <li>Over 1,200 people forcibly evicted from UNESCO protected zone</li>
+              <li>Primarily affects Multoni minority, a local Roma community</li>
+              <li>Community lived in area for generations with deep cultural connections</li>
+              <li>No alternatives explored, no resettlement plan agreed upon</li>
+              <li>Expropriation under severe police and judicial pressure</li>
+              <li>Lawyer defending homeowner threatened and detained</li>
+              <li>Utilities disconnected to force residents out</li>
+              <li>Compensation insufficient to buy similar housing in city center</li>
+            </ul>
+            <div class="story-impact">Human Rights Crisis: Targeting of ethnic minority</div>
+          </div>
+        `
+      },
+      // Story 6: OCT 2025
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">OCT 2025</div>
+            <div class="story-title">UN Condemns, Activists Silenced</div>
+            <div class="story-description">UN experts condemn forced evictions. Government responds by blocking phones and intimidating activists ahead of UNESCO conference.</div>
+            <ul class="story-details">
+              <li>UN experts express grave concern about Samarkand evictions and criticize UNESCO for inaction</li>
+              <li>Government launches crackdown on activists and bloggers</li>
+              <li>Abdurahmon Tashanov (Ezgulik director): Phone blocked 4 days</li>
+              <li>Xudoyberdi Zominiy: Questioned by counter-terrorism unit</li>
+              <li>Zafar Xandamov: Internet and mobile completely blocked</li>
+              <li>Multiple activists report similar intimidation tactics</li>
+            </ul>
+            <div class="story-impact">Repression: Restrictions on freedom of expression during UNESCO visit</div>
+          </div>
+        `
+      },
+      // Story 7: NOV 2025
+      {
+        type: 'standard',
+        html: `
+          <div class="story-card">
+            <div class="story-date">NOV 2025</div>
+            <div class="story-title">UNESCO Conference Begins in Samarkand</div>
+            <div class="story-description">43rd General Conference held in Samarkand—first time in 40 years outside Paris. President speaks on heritage protection.</div>
+            <ul class="story-details">
+              <li>First UNESCO General Conference outside Paris in 40 years</li>
+              <li>President Mirziyoyev proposes UNESCO Academy for Women's Leadership</li>
+              <li>Calls for resolution on preserving cultural heritage</li>
+              <li>Government celebrates hosting "prestigious" event</li>
+              <li>No acknowledgment of 1,200 people evicted months earlier</li>
+              <li>Activists remain silenced, phones still blocked</li>
+              <li>UNESCO fails to address human rights violations in host city</li>
+            </ul>
+            <div class="story-impact">The Irony: Celebrating "heritage" built on forced evictions</div>
+          </div>
+        `
+      },
+      // Story 8: CTA
+      {
+        type: 'cta',
+        html: `
+          <div class="cta-wrapper">
+            <div class="cta-title">
+              Share this timeline with thoughts on what <span class="heritage-emphasis">"protecting heritage"</span> means.
+            </div>
+            <div class="cta-text">DEMAND ACCOUNTABILITY.</div>
+          </div>
+        `
+      }
+    ];
+
+    function setStatus(msg, isError = false) {
+      const status = document.getElementById('status');
+      status.textContent = msg;
+      status.style.color = isError ? '#ff6b6b' : 'white';
+      console.log(msg);
+    }
+
+    async function exportStory(index) {
+      if (!window.html2canvas) {
+        setStatus('❌ html2canvas not loaded', true);
+        alert('Export library not loaded. Please refresh the page and wait a moment.');
+        return;
+      }
+
+      const story = stories[index];
+      if (!story) {
+        setStatus('❌ Story not found', true);
+        return;
+      }
+
+      try {
+        setStatus(`📸 Exporting story ${index}...`);
+
+        // Create canvas element
+        const canvas = document.createElement('div');
+        canvas.className = 'export-canvas';
+        if (story.type === 'quote') canvas.classList.add('quote-style');
+        if (story.type === 'stats') canvas.classList.add('stats-style');
+        if (story.type === 'cta') {
+          canvas.style.background = 'white';
+          canvas.style.padding = '0';
+          canvas.style.justifyContent = 'center';
+        }
+
+        canvas.innerHTML = story.html;
+        document.body.appendChild(canvas);
+
+        // Wait for render
+        await new Promise(r => setTimeout(r, 500));
+
+        // Capture with html2canvas
+        const capturedCanvas = await html2canvas(canvas, {
+          width: 1080,
+          height: 1920,
+          scale: 2,
+          backgroundColor: story.type === 'quote' || story.type === 'cta' ? '#ffffff' : '#f8f9fa',
+          logging: false,
+          useCORS: true
+        });
+
+        // Download
+        capturedCanvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = `story-${String(index).padStart(2, '0')}-samarkand.png`;
+          link.href = url;
+          link.click();
+          URL.revokeObjectURL(url);
+
+          setStatus(`✓ Story ${index} exported!`);
+          setTimeout(() => setStatus('Ready to export'), 2000);
+        }, 'image/png', 0.95);
+
+        // Cleanup
+        canvas.remove();
+
+      } catch (err) {
+        console.error('Export error:', err);
+        setStatus(`❌ Export failed: ${err.message}`, true);
+      }
+    }
+
+    async function exportAll() {
+      if (!window.JSZip || !window.saveAs) {
+        setStatus('❌ ZIP libraries not loaded', true);
+        alert('Export libraries not loaded. Please refresh and try again.');
+        return;
+      }
+
+      try {
+        const zip = new JSZip();
+
+        for (let i = 0; i < stories.length; i++) {
+          setStatus(`📦 Exporting ${i + 1}/${stories.length}...`);
+
+          const story = stories[i];
+          const canvas = document.createElement('div');
+          canvas.className = 'export-canvas';
+          if (story.type === 'quote') canvas.classList.add('quote-style');
+          if (story.type === 'stats') canvas.classList.add('stats-style');
+          if (story.type === 'cta') {
+            canvas.style.background = 'white';
+            canvas.style.padding = '0';
+            canvas.style.justifyContent = 'center';
+          }
+
+          canvas.innerHTML = story.html;
+          document.body.appendChild(canvas);
+
+          await new Promise(r => setTimeout(r, 500));
+
+          const capturedCanvas = await html2canvas(canvas, {
+            width: 1080,
+            height: 1920,
+            scale: 2,
+            backgroundColor: story.type === 'quote' || story.type === 'cta' ? '#ffffff' : '#f8f9fa',
+            logging: false,
+            useCORS: true
+          });
+
+          const blob = await new Promise(resolve => {
+            capturedCanvas.toBlob(resolve, 'image/png', 0.95);
+          });
+
+          zip.file(`story-${String(i).padStart(2, '0')}-samarkand.png`, blob);
+          canvas.remove();
+        }
+
+        setStatus('🗜️ Creating ZIP file...');
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        saveAs(zipBlob, 'samarkand-timeline-instagram-stories.zip');
+
+        setStatus('✓ All stories exported!');
+        setTimeout(() => setStatus('Ready to export'), 3000);
+
+      } catch (err) {
+        console.error('Batch export error:', err);
+        setStatus(`❌ Batch export failed: ${err.message}`, true);
+      }
+    }
+
+    async function testExport() {
+      setStatus('🧪 Testing export...');
+      await exportStory(0);
+    }
+
+    // Check libraries on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (window.html2canvas && window.JSZip && window.saveAs) {
+          setStatus('✅ Ready to export');
+          console.log('%c✓ Export system ready', 'background:#e74c3c;color:white;padding:8px 16px;border-radius:4px;font-weight:bold');
+        } else {
+          setStatus('⚠️ Libraries loading...', true);
+          console.warn('Export libraries not ready yet');
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
