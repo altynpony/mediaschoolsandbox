@@ -108,7 +108,7 @@
   function pageMarker(current, extraClass) {
     return `
       <div class="aj-current-card ${extraClass || ''}">
-        <div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>
+        <div class="aj-nav-meta"><strong>${current.section}</strong></div>
       </div>
     `;
   }
