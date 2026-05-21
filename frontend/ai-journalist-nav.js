@@ -1,0 +1,170 @@
+(function () {
+  const pages = [
+    {
+      path: 'ai-journalist.html',
+      title: 'AI journalist hub',
+      section: 'Главная',
+      note: 'Все материалы занятия'
+    },
+    {
+      path: 'reflective-questions.html',
+      title: 'Reflective Questions',
+      section: 'Reflection',
+      note: 'Вопросы для диалога',
+      anchors: [
+        { label: 'Карточки', href: '#cardsGrid' },
+        { label: 'Случайная карта', href: '#shuffleBtn' }
+      ]
+    },
+    {
+      path: 'neurologic-prompts.html',
+      title: 'Neurologic prompts',
+      section: 'Prompts',
+      note: 'Библиотека промптов',
+      anchors: [
+        { label: 'Фильтры', href: '#stack-filters' },
+        { label: 'Карточки', href: '#cards-grid' },
+        { label: 'Случайная карта', href: '#random-btn' }
+      ]
+    },
+    {
+      path: 'vibecoder.html',
+      title: 'Vibecoder',
+      section: 'Roadmap',
+      note: 'Карта занятия',
+      anchors: [
+        { label: 'Этапы', href: '#top' },
+        { label: 'Сценарии и агенты', href: 'codex-case.html' }
+      ]
+    },
+    {
+      path: 'codex-case.html',
+      title: 'Сценарии и агенты',
+      section: 'Codex case',
+      note: 'От любопытства к плану',
+      anchors: [
+        { label: 'Материалы', href: '#materials' },
+        { label: 'Диалог Codex', href: 'codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71' }
+      ]
+    },
+    {
+      path: 'hypothesis.html',
+      title: 'Hypotesis',
+      section: 'Hypothesis',
+      note: 'Рабочий лист',
+      anchors: [
+        { label: 'Контекст', href: '#context' },
+        { label: 'Тема vs гипотеза', href: '#comparison' },
+        { label: 'Шаблон', href: '#template' },
+        { label: 'AI prompt', href: '#ai-prompt' },
+        { label: 'Worksheet', href: '#worksheet' }
+      ]
+    }
+  ];
+
+  const groups = [
+    {
+      title: 'Старт',
+      links: [
+        { label: 'AI journalist hub', href: 'ai-journalist.html', note: 'Главная развилка занятия' },
+        { label: 'Reflective Questions', href: 'reflective-questions.html', note: 'Карточки для диалога' }
+      ]
+    },
+    {
+      title: 'Промпты',
+      links: [
+        { label: 'Neurologic prompts', href: 'neurologic-prompts.html', note: 'Библиотека промптов' },
+        { label: 'Hypotesis', href: 'hypothesis.html#ai-prompt', note: 'Процедурный AI prompt' }
+      ]
+    },
+    {
+      title: 'Vibecoder',
+      links: [
+        { label: 'Roadmap', href: 'vibecoder.html', note: 'Путь занятия' },
+        { label: 'Сценарии и агенты', href: 'codex-case.html', note: 'Кейс Codex' }
+      ]
+    },
+    {
+      title: 'Практика',
+      links: [
+        { label: 'Hypothesis worksheet', href: 'hypothesis.html#worksheet', note: 'Рабочий лист студента' },
+        { label: 'Диалог Codex', href: 'codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71', note: 'Исходный thread' }
+      ]
+    }
+  ];
+
+  function currentPage() {
+    const name = window.location.pathname.split('/').pop() || 'ai-journalist.html';
+    return pages.findIndex((page) => page.path === name);
+  }
+
+  function makeLink(className, page, direction) {
+    const arrow = direction === 'prev' ? '←' : '→';
+    const text = direction === 'prev' ? `${arrow} ${page.title}` : `${page.title} ${arrow}`;
+    return `<a class="aj-nav-link aj-nav-${direction}" href="${page.path}">${text}</a>`;
+  }
+
+  function renderQuickNav(index) {
+    const current = pages[index];
+    const prev = pages[(index - 1 + pages.length) % pages.length];
+    const next = pages[(index + 1) % pages.length];
+    const nav = document.createElement('nav');
+    nav.className = 'aj-quick-nav';
+    nav.setAttribute('aria-label', 'AI journalist page navigation');
+    nav.innerHTML = [
+      makeLink('', prev, 'prev'),
+      `<div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>`,
+      makeLink('', next, 'next')
+    ].join('');
+    document.body.appendChild(nav);
+  }
+
+  function renderFooter() {
+    const footer = document.createElement('footer');
+    footer.className = 'aj-materials-footer';
+    footer.setAttribute('aria-label', 'AI journalist materials index');
+    footer.innerHTML = `
+      <div class="aj-footer-head">
+        <div>
+          <h2 class="aj-footer-title">AI journalist materials</h2>
+          <p class="aj-footer-copy">Быстрые переходы между разделами и подразделами занятия.</p>
+        </div>
+        <a class="aj-footer-home" href="ai-journalist.html">Все материалы</a>
+      </div>
+      <div class="aj-footer-grid">
+        ${groups.map((group) => `
+          <div class="aj-footer-col">
+            <h3>${group.title}</h3>
+            ${group.links.map((link) => `
+              <a href="${link.href}">${link.label}<small>${link.note}</small></a>
+            `).join('')}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    document.body.appendChild(footer);
+  }
+
+  function renderLocalSubnav(index) {
+    const page = pages[index];
+    if (!page.anchors || !page.anchors.length) return;
+    const existingFooter = document.querySelector('.aj-materials-footer');
+    if (!existingFooter) return;
+    const col = document.createElement('div');
+    col.className = 'aj-footer-col';
+    col.innerHTML = `
+      <h3>${page.section}: подразделы</h3>
+      ${page.anchors.map((link) => `<a href="${link.href}">${link.label}<small>${page.title}</small></a>`).join('')}
+    `;
+    const grid = existingFooter.querySelector('.aj-footer-grid');
+    if (grid) grid.appendChild(col);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const index = currentPage();
+    if (index < 0) return;
+    renderQuickNav(index);
+    renderFooter();
+    renderLocalSubnav(index);
+  });
+})();
