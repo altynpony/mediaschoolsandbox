@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection — Вопросы для диалога</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --border: #e0e0e0;
+            --accent: #1a1a1a;
+            --tag-bg: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--text);
+        }
+
+        .header-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Navigation / Tags */
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--text);
+            border-radius: 0;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tag-btn:hover {
+            background: var(--tag-bg);
+        }
+
+        .tag-btn.active {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .tag-btn.diploma {
+            border-style: dashed;
+        }
+
+        .tag-btn.diploma.active {
+            border-style: solid;
+        }
+
+        /* Task types */
+        .task-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .task-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.35rem 0.7rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .task-btn:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+        }
+
+        .task-btn.active {
+            border-color: var(--text);
+            background: var(--tag-bg);
+            color: var(--text);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .btn-shuffle {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--text);
+            background: var(--text);
+            color: var(--bg);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-shuffle:hover {
+            background: transparent;
+            color: var(--text);
+        }
+
+        .count-display {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-clear {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .btn-clear:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        /* Cards grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            position: relative;
+            transition: all 0.2s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            border-color: var(--text);
+            box-shadow: 4px 4px 0 var(--text);
+            transform: translate(-2px, -2px);
+        }
+
+        .card.flipped {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: none;
+            transform: none;
+        }
+
+        .card.flipped:hover {
+            box-shadow: 2px 2px 0 var(--border);
+            transform: translate(-1px, -1px);
+        }
+
+        .card.flipped .card-front {
+            display: none;
+        }
+
+        .card.flipped .card-back {
+            display: flex;
+        }
+
+        .card-front {
+            display: block;
+        }
+
+        .card-back {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            color: var(--border);
+            font-size: 2rem;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .card-back-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .card.flipped:hover .card-back-label {
+            opacity: 1;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.15s ease;
+        }
+
+        .btn-close:hover {
+            color: var(--text);
+        }
+
+        .card.flipped .btn-close {
+            display: none;
+        }
+
+        .card-stack {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-stack-icon {
+            width: 8px;
+            height: 8px;
+            background: var(--text);
+        }
+
+        .card-stack-icon.choices { background: #333; }
+        .card-stack-icon.model { background: #666; }
+        .card-stack-icon.group { background: #999; }
+        .card-stack-icon.professional { background: #bbb; }
+        .card-stack-icon.diploma { background: transparent; border: 1px dashed #333; }
+
+        .card-question {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+
+        .card-task {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.55rem;
+            padding: 0.2rem 0.4rem;
+            background: var(--tag-bg);
+            color: var(--text-muted);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Single card view */
+        .single-card-view {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .single-card-view.active {
+            display: block;
+        }
+
+        .single-card {
+            background: var(--surface);
+            border: 2px solid var(--text);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .single-card .card-stack {
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .single-card .card-question {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .single-card .card-meta {
+            justify-content: center;
+        }
+
+        .btn-next {
+            display: block;
+            width: 100%;
+            margin-top: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            padding: 1rem;
+            border: 2px solid var(--text);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-next:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* View toggle */
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.4rem 0.7rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .view-btn.active {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        .grid-view {
+            display: block;
+        }
+
+        .grid-view.hidden {
+            display: none;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 2px solid var(--text);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-card .card-stack {
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-card .card-question {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-card .card-meta {
+            justify-content: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+
+            .btn-clear {
+                margin-left: 0;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.02s; }
+        .card:nth-child(2) { animation-delay: 0.04s; }
+        .card:nth-child(3) { animation-delay: 0.06s; }
+        .card:nth-child(4) { animation-delay: 0.08s; }
+        .card:nth-child(5) { animation-delay: 0.1s; }
+        .card:nth-child(6) { animation-delay: 0.12s; }
+        .card:nth-child(7) { animation-delay: 0.14s; }
+        .card:nth-child(8) { animation-delay: 0.16s; }
+        .card:nth-child(9) { animation-delay: 0.18s; }
+        .card:nth-child(10) { animation-delay: 0.2s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-meta">Facilitation Toolkit</div>
+            <h1>Reflection</h1>
+            <p class="subtitle">
+                Все ответы — правильные. Выберите теги и типы заданий — или вытяните случайную карточку.
+            </p>
+        </header>
+
+        <nav class="nav-section">
+            <div class="nav-label">Стэки вопросов</div>
+            <div class="tags-row" id="stackTags">
+                <!-- Generated by JS -->
+            </div>
+
+            <div class="nav-label">Тип задания</div>
+            <div class="task-types" id="taskTypes">
+                <!-- Generated by JS -->
+            </div>
+        </nav>
+
+        <div class="controls">
+            <button class="btn-shuffle" id="shuffleBtn">↻ Случайная карта</button>
+            <span class="count-display" id="countDisplay">0 карточек</span>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid">Сетка</button>
+                <button class="view-btn" data-view="single">По одной</button>
+            </div>
+            <button class="btn-clear" id="toggleTagsBtn">Скрыть теги</button>
+            <button class="btn-clear" id="clearBtn">Сбросить</button>
+        </div>
+
+        <div class="grid-view" id="gridView">
+            <div class="cards-grid" id="cardsGrid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <div class="single-card-view" id="singleView">
+            <div class="single-card" id="singleCard">
+                <!-- Generated by JS -->
+            </div>
+            <button class="btn-next" id="nextBtn">Следующая →</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal-card" id="modalCard">
+                <button class="modal-close">ESC закрыть</button>
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <footer>
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="card-stack-icon choices"></span>
+                    Выборы и ограничения
+                </div>
+                <div class="legend-item">
+                    <span class="card-stack-icon model"></span>
+                    Модель–Человек–Контроль
+                </div>
+                <div class="legend-item">
+                    <span class="card-stack-icon group"></span>
+                    Группа и распределённое мышление
+                </div>
+                <div class="legend-item">
+                    <span class="card-stack-icon professional"></span>
+                    Профессиональный обмен
+                </div>
+                <div class="legend-item">
+                    <span class="card-stack-icon diploma"></span>
+                    Диплом / Исследование
+                </div>
+            </div>
+            <p>Карточки работают, если на них нельзя ответить за 10 секунд.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Stacks data
+        const stacks = [
+            { id: 'choices', name: 'Выборы и ограничения', icon: 'choices' },
+            { id: 'model', name: 'Модель–Человек–Контроль', icon: 'model' },
+            { id: 'group', name: 'Группа и распределённое мышление', icon: 'group' },
+            { id: 'professional', name: 'Профессиональный обмен', icon: 'professional' },
+            { id: 'diploma', name: 'Диплом / Исследование', icon: 'diploma', isDiploma: true }
+        ];
+
+        // Task types
+        const taskTypes = [
+            { id: 'tool', name: 'Изучали инструмент' },
+            { id: 'workflow', name: 'Изучали воркфлоу' },
+            { id: 'experiment', name: 'Экспериментировали' },
+            { id: 'analyze', name: 'Анализировали' },
+            { id: 'discuss', name: 'Обсуждали в группе' },
+            { id: 'distributed', name: 'Работали распределённо' }
+        ];
+
+        // Wildcards data
+        const wildcards = [
+            // DIPLOMA DISCUSSION
+            { stack: 'diploma', question: 'Назовите одну вещь из курса или из вашей практики, которая удивила, раздражает или просто не отпускает.', tasks: ['discuss', 'analyze'] },
+            { stack: 'diploma', question: 'Где в вашей рабочей практике можно поисследовать границы возможностей тандема «человек и модель»?', tasks: ['experiment', 'workflow'] },
+            { stack: 'diploma', question: 'Что из работы с моделями вас разочаровало — где ожидали одного, а получили другое?', tasks: ['experiment', 'tool'] },
+            { stack: 'diploma', question: 'Есть ли что-то, что вы теперь делаете иначе, чем до курса — и не уверены, правильно ли?', tasks: ['workflow', 'experiment'] },
+            { stack: 'diploma', question: 'Какие вопросы к работе языковых моделей у вас есть, но кажутся периферийными, слишком расплывчатыми или такими, что «достаточно просто погуглить»? Запишите их — расширяем поле!', tasks: ['discuss', 'analyze'] },
+            { stack: 'diploma', question: 'Это проблема инструмента — или проблема того, как мы с ним работаем?', tasks: ['analyze', 'discuss'] },
+            { stack: 'diploma', question: 'Это что-то, что можно проверить — или это скорее интуиция?', tasks: ['analyze', 'experiment'] },
+            { stack: 'diploma', question: 'Кому ещё это было бы интересно, кроме вас?', tasks: ['discuss', 'analyze'] },
+
+            // CHOICES & CONSTRAINTS
+            { stack: 'choices', question: 'От чего вы сознательно отказались — и какую цену за это заплатили?', tasks: ['tool', 'workflow', 'experiment'] },
+            { stack: 'choices', question: 'Какое ограничение оказалось продуктивным, а не мешающим?', tasks: ['tool', 'workflow'] },
+            { stack: 'choices', question: 'Где вы выбрали простоту вместо точности — или наоборот?', tasks: ['workflow', 'analyze'] },
+            { stack: 'choices', question: 'Какой выбор был сделан «по умолчанию», а не осознанно?', tasks: ['tool', 'workflow', 'experiment'] },
+            { stack: 'choices', question: 'Что здесь выглядит как оптимизация, но на самом деле ею не является?', tasks: ['workflow', 'analyze'] },
+            { stack: 'choices', question: 'Если бы один критерий успеха нужно было выбросить — какой?', tasks: ['analyze', 'discuss'] },
+            { stack: 'choices', question: 'Где в вашем воркфлоу находится точка принятия решения?', tasks: ['workflow'] },
+            { stack: 'choices', question: 'Какой шаг можно убрать — и результат всё ещё будет работать?', tasks: ['workflow', 'tool'] },
+
+            // MODEL–HUMAN–CONTROL
+            { stack: 'model', question: 'В какой момент модель начала определять ход мышления?', tasks: ['tool', 'experiment'] },
+            { stack: 'model', question: 'Что вы делали как человек, а что — как оператор модели?', tasks: ['tool', 'workflow', 'experiment'] },
+            { stack: 'model', question: 'Где автоматизация упростила задачу, но обеднила результат?', tasks: ['tool', 'workflow'] },
+            { stack: 'model', question: 'Какой шаг вы бы не доверили модели ни при каких условиях?', tasks: ['tool', 'experiment'] },
+            { stack: 'model', question: 'Где модель была «умной», но не полезной?', tasks: ['experiment', 'analyze'] },
+            { stack: 'model', question: 'Что в этом процессе вы теперь делаете вручную — намеренно?', tasks: ['tool', 'workflow'] },
+            { stack: 'model', question: 'Где вы доверились модели, а где удержали контроль?', tasks: ['tool', 'workflow', 'experiment'] },
+            { stack: 'model', question: 'Какое изменение промпта дало непропорционально большой эффект?', tasks: ['experiment'] },
+
+            // GROUP & DISTRIBUTED THINKING
+            { stack: 'group', question: 'В чём группа реально не сошлась — и почему это важно?', tasks: ['discuss', 'distributed'] },
+            { stack: 'group', question: 'Какое решение было принято из-за динамики группы, а не аргументов?', tasks: ['discuss', 'distributed'] },
+            { stack: 'group', question: 'Чей вклад оказался незаметным, но критичным?', tasks: ['distributed', 'discuss'] },
+            { stack: 'group', question: 'Где мы преждевременно пришли к согласию?', tasks: ['discuss'] },
+            { stack: 'group', question: 'Если бы роли в группе поменялись — что бы сломалось?', tasks: ['distributed'] },
+            { stack: 'group', question: 'Какое напряжение мы сгладили, вместо того чтобы исследовать?', tasks: ['discuss', 'distributed'] },
+            { stack: 'group', question: 'Как вы синхронизировали разные интерпретации задачи?', tasks: ['distributed'] },
+            { stack: 'group', question: 'Что было невозможно сделать в одиночку?', tasks: ['distributed'] },
+
+            // PROFESSIONAL TRANSFER
+            { stack: 'professional', question: 'Где мой профессиональный опыт противоречит результату модели?', tasks: ['experiment', 'analyze'] },
+            { stack: 'professional', question: 'Какой приём из моей практики здесь неочевиден, но критичен?', tasks: ['tool', 'workflow'] },
+            { stack: 'professional', question: 'Какой реальный кейс ломает это решение?', tasks: ['analyze', 'discuss'] },
+            { stack: 'professional', question: 'Что в этом результате выглядит убедительно, но не сработает на практике?', tasks: ['analyze', 'experiment'] },
+            { stack: 'professional', question: 'Какой язык или рамка из моей области могли бы усилить это решение?', tasks: ['discuss', 'analyze'] },
+            { stack: 'professional', question: 'Какую типичную ошибку новичков я здесь узнаю — и почему она закономерна?', tasks: ['tool', 'experiment'] },
+
+            // DIPLOMA / RESEARCH
+            { stack: 'diploma', question: 'Какое напряжение здесь стоит исследовать, а не «решать»?', tasks: ['experiment', 'analyze', 'discuss'] },
+            { stack: 'diploma', question: 'Где практика опережает теорию — или наоборот?', tasks: ['experiment', 'analyze'] },
+            { stack: 'diploma', question: 'Что здесь кажется очевидным, но плохо объяснено?', tasks: ['analyze', 'discuss'] },
+            { stack: 'diploma', question: 'Какую гипотезу я уже формулирую, даже если не готов её защищать?', tasks: ['experiment'] },
+            { stack: 'diploma', question: 'Что в этом процессе принципиально трудно измерить — и почему?', tasks: ['experiment', 'analyze'] },
+            { stack: 'diploma', question: 'Если бы диплом был экспериментом, что именно я бы тестировал(а)?', tasks: ['experiment'] },
+            { stack: 'diploma', question: 'Какой доминирующий нарратив я бы хотел(а) поставить под сомнение?', tasks: ['analyze', 'discuss'] }
+        ];
+
+        // State
+        let activeStacks = [];
+        let activeTasks = [];
+        let currentView = 'grid';
+        let currentCardIndex = 0;
+        let filteredCards = [];
+        let hiddenCards = new Set();
+        let showTaskTags = true;
+        let modalCardIndex = null;
+
+        // Render stack tags
+        function renderStackTags() {
+            const container = document.getElementById('stackTags');
+            container.innerHTML = stacks.map(stack => `
+                <button class="tag-btn ${stack.isDiploma ? 'diploma' : ''}" data-stack="${stack.id}">
+                    ${stack.name}
+                </button>
+            `).join('');
+        }
+
+        // Render task types
+        function renderTaskTypes() {
+            const container = document.getElementById('taskTypes');
+            container.innerHTML = taskTypes.map(task => `
+                <button class="task-btn" data-task="${task.id}">${task.name}</button>
+            `).join('');
+        }
+
+        // Filter cards
+        function filterCards() {
+            filteredCards = wildcards.filter(card => {
+                const stackMatch = activeStacks.length === 0 || activeStacks.includes(card.stack);
+                const taskMatch = activeTasks.length === 0 || card.tasks.some(t => activeTasks.includes(t));
+                return stackMatch && taskMatch;
+            });
+            return filteredCards;
+        }
+
+        // Render cards grid
+        function renderCards() {
+            const cards = filterCards();
+            const grid = document.getElementById('cardsGrid');
+            const countDisplay = document.getElementById('countDisplay');
+
+            countDisplay.textContent = `${cards.length} карточек`;
+
+            if (cards.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">◇</div>
+                        <p>Нет карточек по выбранным фильтрам</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = cards.map((card, index) => {
+                const stack = stacks.find(s => s.id === card.stack);
+                const globalIndex = wildcards.indexOf(card);
+                const isFlipped = hiddenCards.has(globalIndex);
+                return `
+                    <div class="card ${isFlipped ? 'flipped' : ''}" data-index="${globalIndex}">
+                        <button class="btn-close" data-action="flip">×</button>
+                        <div class="card-front">
+                            <div class="card-stack">
+                                <span class="card-stack-icon ${stack.icon}"></span>
+                                ${stack.name}
+                            </div>
+                            <div class="card-question">${card.question}</div>
+                            <div class="card-meta" ${!showTaskTags ? 'style="display:none"' : ''}>
+                                ${card.tasks.map(t => {
+                                    const task = taskTypes.find(tt => tt.id === t);
+                                    return `<span class="card-task">${task ? task.name : t}</span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <span>↩</span>
+                            <span class="card-back-label">открыть</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render single card
+        function renderSingleCard() {
+            const cards = filteredCards.length > 0 ? filteredCards : wildcards;
+            if (cards.length === 0) return;
+
+            const card = cards[currentCardIndex % cards.length];
+            const stack = stacks.find(s => s.id === card.stack);
+            const singleCard = document.getElementById('singleCard');
+
+            singleCard.innerHTML = `
+                <div class="card-stack">
+                    <span class="card-stack-icon ${stack.icon}"></span>
+                    ${stack.name}
+                </div>
+                <div class="card-question">${card.question}</div>
+                <div class="card-meta" ${!showTaskTags ? 'style="display:none"' : ''}>
+                    ${card.tasks.map(t => {
+                        const task = taskTypes.find(tt => tt.id === t);
+                        return `<span class="card-task">${task ? task.name : t}</span>`;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Shuffle and show random card
+        function showRandomCard() {
+            const cards = filteredCards.length > 0 ? filteredCards : wildcards;
+            if (cards.length === 0) return;
+            
+            currentCardIndex = Math.floor(Math.random() * cards.length);
+            
+            if (currentView === 'grid') {
+                setView('single');
+            }
+            renderSingleCard();
+        }
+
+        // Next card
+        function nextCard() {
+            const cards = filteredCards.length > 0 ? filteredCards : wildcards;
+            currentCardIndex = (currentCardIndex + 1) % cards.length;
+            renderSingleCard();
+        }
+
+        // Set view
+        function setView(view) {
+            currentView = view;
+            const gridView = document.getElementById('gridView');
+            const singleView = document.getElementById('singleView');
+
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+
+            if (view === 'grid') {
+                gridView.classList.remove('hidden');
+                singleView.classList.remove('active');
+            } else {
+                gridView.classList.add('hidden');
+                singleView.classList.add('active');
+                renderSingleCard();
+            }
+        }
+
+        // Clear filters
+        function clearFilters() {
+            activeStacks = [];
+            activeTasks = [];
+            hiddenCards.clear();
+            document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.task-btn').forEach(btn => btn.classList.remove('active'));
+            renderCards();
+        }
+
+        // Open modal with card
+        function openModal(cardIndex) {
+            const card = wildcards[cardIndex];
+            if (!card) return;
+            
+            modalCardIndex = cardIndex;
+            const stack = stacks.find(s => s.id === card.stack);
+            const modalCard = document.getElementById('modalCard');
+            
+            modalCard.innerHTML = `
+                <button class="modal-close">ESC закрыть</button>
+                <div class="card-stack">
+                    <span class="card-stack-icon ${stack.icon}"></span>
+                    ${stack.name}
+                </div>
+                <div class="card-question">${card.question}</div>
+                <div class="card-meta" ${!showTaskTags ? 'style="display:none"' : ''}>
+                    ${card.tasks.map(t => {
+                        const task = taskTypes.find(tt => tt.id === t);
+                        return `<span class="card-task">${task ? task.name : t}</span>`;
+                    }).join('')}
+                </div>
+            `;
+            
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            modalCardIndex = null;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            renderStackTags();
+            renderTaskTypes();
+            renderCards();
+
+            // Stack tag clicks
+            document.getElementById('stackTags').addEventListener('click', e => {
+                if (e.target.classList.contains('tag-btn')) {
+                    const stackId = e.target.dataset.stack;
+                    e.target.classList.toggle('active');
+                    
+                    if (activeStacks.includes(stackId)) {
+                        activeStacks = activeStacks.filter(s => s !== stackId);
+                    } else {
+                        activeStacks.push(stackId);
+                    }
+                    renderCards();
+                }
+            });
+
+            // Task type clicks
+            document.getElementById('taskTypes').addEventListener('click', e => {
+                if (e.target.classList.contains('task-btn')) {
+                    const taskId = e.target.dataset.task;
+                    e.target.classList.toggle('active');
+                    
+                    if (activeTasks.includes(taskId)) {
+                        activeTasks = activeTasks.filter(t => t !== taskId);
+                    } else {
+                        activeTasks.push(taskId);
+                    }
+                    renderCards();
+                }
+            });
+
+            // Shuffle button
+            document.getElementById('shuffleBtn').addEventListener('click', showRandomCard);
+
+            // Next button
+            document.getElementById('nextBtn').addEventListener('click', nextCard);
+
+            // Clear button
+            document.getElementById('clearBtn').addEventListener('click', clearFilters);
+
+            // Toggle task tags visibility
+            document.getElementById('toggleTagsBtn').addEventListener('click', () => {
+                showTaskTags = !showTaskTags;
+                document.getElementById('toggleTagsBtn').textContent = showTaskTags ? 'Скрыть теги' : 'Показать теги';
+                renderCards();
+                renderSingleCard();
+            });
+
+            // Toggle card flip on click
+            document.getElementById('cardsGrid').addEventListener('click', e => {
+                const closeBtn = e.target.closest('.btn-close');
+                const card = e.target.closest('.card');
+                
+                if (closeBtn && card) {
+                    e.stopPropagation();
+                    const index = parseInt(card.dataset.index);
+                    hiddenCards.add(index);
+                    renderCards();
+                    return;
+                }
+                
+                if (card && card.classList.contains('flipped')) {
+                    const index = parseInt(card.dataset.index);
+                    hiddenCards.delete(index);
+                    renderCards();
+                    return;
+                }
+                
+                if (card && !card.classList.contains('flipped')) {
+                    const index = parseInt(card.dataset.index);
+                    openModal(index);
+                }
+            });
+
+            // Modal close button
+            document.getElementById('modalOverlay').addEventListener('click', e => {
+                if (e.target.classList.contains('modal-close') || e.target.classList.contains('modal-overlay')) {
+                    closeModal();
+                }
+            });
+
+            // ESC key to close modal
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && modalCardIndex !== null) {
+                    closeModal();
+                }
+            });
+
+            // View toggle
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => setView(btn.dataset.view));
+            });
+        });
+    </script>
+</body>
+</html>

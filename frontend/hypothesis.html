@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Блок 4. Гіпотэза, з якой вы пройдзеце ўвесь курс</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+
+    :root {
+      --violet: #ae6df0;
+      --lime: #aff06d;
+      --text: #333333;
+      --muted: #666666;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --violet-dark: #534274;
+      --violet-soft: #f1e8ff;
+      --lime-soft: #efffdf;
+      --border: #e3e6ee;
+      --shadow: 0 18px 40px rgba(52, 40, 64, 0.10);
+      --radius: 24px;
+      --space: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.8;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(174, 109, 240, 0.16), transparent 32rem),
+        radial-gradient(circle at top right, rgba(175, 240, 109, 0.18), transparent 28rem),
+        var(--bg);
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 32px;
+      align-items: stretch;
+      margin-bottom: 32px;
+    }
+
+    .hero-card,
+    .side-card,
+    .section,
+    .worksheet-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(227, 230, 238, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      right: -72px;
+      bottom: -72px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--lime));
+      opacity: 0.16;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--violet-soft);
+      color: var(--violet-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.2;
+      font-weight: 300;
+      color: var(--violet-dark);
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
+      letter-spacing: -0.06em;
+    }
+
+    h2 {
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--violet);
+      font-size: clamp(1.55rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: 1.18rem;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 16px 0 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin-top: 24px;
+      font-size: 1.12rem;
+      color: var(--muted);
+    }
+
+    .side-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .side-card strong {
+      color: var(--violet-dark);
+    }
+
+    .mini-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-nav a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--violet-dark);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .mini-nav a:hover {
+      transform: translateY(-1px);
+      border-color: var(--violet);
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 32px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .comparison-card {
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .comparison-card.topic {
+      border-left: 6px solid #cfd3dd;
+    }
+
+    .comparison-card.hypothesis {
+      border-left: 6px solid var(--lime);
+      background: linear-gradient(180deg, var(--lime-soft), #fff 42%);
+    }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f0f2f7;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hypothesis .label {
+      background: var(--lime);
+      color: #243014;
+    }
+
+    blockquote {
+      margin: 24px 0 0;
+      padding: 20px 24px;
+      border-left: 5px solid var(--violet);
+      border-radius: 0 18px 18px 0;
+      background: var(--violet-soft);
+      color: var(--violet-dark);
+      font-weight: 500;
+    }
+
+    .callout {
+      margin-top: 24px;
+      padding: 22px 24px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--violet-soft), #fff);
+      border: 1px solid rgba(174, 109, 240, 0.32);
+    }
+
+    .callout strong {
+      color: var(--violet-dark);
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .evidence-card {
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+    }
+
+    .evidence-card .number {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 14px;
+      border-radius: 50%;
+      background: var(--violet);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .prompt-box {
+      margin-top: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #1a1420;
+      color: #f8f4ff;
+    }
+
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      color: #d9c8f2;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .copy-button,
+    .print-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: var(--lime);
+      color: #243014;
+      font: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    pre {
+      margin: 0;
+      padding: 24px;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .worksheet {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .worksheet-card {
+      padding: 24px;
+      box-shadow: none;
+    }
+
+    .worksheet-card label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--violet-dark);
+      font-weight: 700;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      line-height: 1.55;
+    }
+
+    textarea:focus {
+      outline: 3px solid rgba(174, 109, 240, 0.18);
+      border-color: var(--violet);
+    }
+
+    .hard-question {
+      border: 2px solid rgba(174, 109, 240, 0.45);
+      background: linear-gradient(135deg, #fff, var(--violet-soft));
+    }
+
+    .prep-list {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: prep;
+    }
+
+    .prep-list li {
+      counter-increment: prep;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .prep-list li::before {
+      content: counter(prep);
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--violet-soft);
+      color: var(--violet-dark);
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 32px;
+      padding: 20px 24px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px dashed var(--violet);
+      color: var(--violet-dark);
+    }
+
+    .toolbar {
+      position: sticky;
+      bottom: 16px;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+      pointer-events: none;
+    }
+
+    .print-button {
+      pointer-events: auto;
+      box-shadow: 0 12px 28px rgba(52, 40, 64, 0.18);
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .two-col,
+      .evidence-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .section,
+      .side-card {
+        padding: 24px;
+      }
+
+      .page {
+        width: min(100% - 20px, 1120px);
+        padding-top: 24px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .two-col,
+      .evidence-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-nav,
+      .copy-button,
+      .toolbar {
+        display: none;
+      }
+
+      .hero-card,
+      .side-card,
+      .section,
+      .worksheet-card,
+      .comparison-card,
+      .evidence-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      textarea {
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <section class="hero-card">
+        <span class="eyebrow">Блок 4 · даследчая рамка</span>
+        <h1>Гіпотэза, з якой вы пройдзеце ўвесь курс</h1>
+        <p class="lead">Мэта гэтага блока — ператварыць шырокую тэму ў сцверджанне пра рэчаіснасць, якое можна праверыць, удакладніць або абвергнуць.</p>
+      </section>
+
+      <aside class="side-card" aria-label="Навігацыя па блоку">
+        <div>
+          <h3>Логіка занятку</h3>
+          <p><strong>Тэма</strong> дае поле. <strong>Гіпотэза</strong> дае напрамак праверкі. <strong>Умова абвяржэння</strong> робіць працу даследаваннем, а не пацвярджэннем загадзя гатовай думкі.</p>
+        </div>
+        <nav class="mini-nav">
+          <a href="#context">1. Кантэкст</a>
+          <a href="#comparison">2. Тэма vs гіпотэза</a>
+          <a href="#template">3. Шаблон гіпотэзы</a>
+          <a href="#ai-prompt">4. Працэдурны промпт для AI</a>
+          <a href="#worksheet">5. Працоўны ліст</a>
+        </nav>
+      </aside>
+    </header>
+
+    <section class="section" id="context">
+      <h2>Кантэкст</h2>
+      <p>Большасць людзей, калі чуюць слова «даследаванне», думаюць пра тэму: «Я буду даследаваць незалежныя медыя», «Я буду пісаць пра беларуска-польскія адносіны». Гэта не гіпотэза — гэта кірунак руху без пункту прызначэння. З тэмы можна напісаць тысячу матэрыялаў, і кожны будзе мець права на існаванне.</p>
+      <p>Гіпотэза — гэта сцверджанне пра тое, як уладкавана рэчаіснасць. Яе можна праверыць. Яе можна абвергнуць. Менавіта гэта адрознівае даследаванне ад журналістыкі з загадзя гатовым вынікам.</p>
+    </section>
+
+    <section class="section" id="comparison">
+      <h2>Параўнайце</h2>
+      <div class="two-col">
+        <article class="comparison-card topic">
+          <span class="label">Тэма · шлях у нікуды</span>
+          <h3>«Я хачу даследаваць фінансаванне дзяржаўных СМІ»</h3>
+          <p>Гэта поле для роздуму. Яно паказвае інтарэс, але не паказвае, што менавіта трэба правяраць.</p>
+        </article>
+
+        <article class="comparison-card hypothesis">
+          <span class="label">Гіпотэза · сцверджанне пра рэчаіснасць</span>
+          <h3>«Я думаю, што рэальныя выдаткі дзяржаўных СМІ на вытворчасць кантэнту зніжаюцца ў рэальным выражэнні, нягледзячы на намінальны рост бюджэтаў у нацыянальнай валюце»</h3>
+          <p>Гэта прэтэнзія на разуменне рэчаіснасці. Яе ўжо можна даказваць або абвяргаць праз дадзеныя.</p>
+        </article>
+      </div>
+      <blockquote>Толькі другое можна правяраць.</blockquote>
+    </section>
+
+    <section class="section">
+      <h2>Як слабая гіпотэза маскіруе гатовы адказ</h2>
+      <p>Адзін важны нюанс з практыкі Media IQ: дрэнная фармулёўка часта хавае ў сабе спрошчаную мадэль, якую даследчык потым проста пацвярджае.</p>
+
+      <div class="two-col">
+        <article class="comparison-card topic">
+          <span class="label">Слабая фармулёўка</span>
+          <h3>«Я хачу даследаваць, ці выконваюць беларускія дзяржаўныя СМІ метадычныя ўказанні прапаганды»</h3>
+          <p>Тут ужо схаваная простая мадэль: ёсць цэнтр, ёсць інструкцыя, ёсць выкананне.</p>
+        </article>
+
+        <article class="comparison-card hypothesis">
+          <span class="label">Мацнейшая фармулёўка</span>
+          <h3>«Я думаю, што метадычныя матэрыялы для ідэалагічных работнікаў і кантэнт беларускіх дзяржаўных СМІ належаць да адной прапагандысцкай сістэмы, але сувязь паміж імі не з'яўляецца прамой: дзяржаўныя медыя не механічна ўзнаўляюць гэтыя наратывы, а выбарачна іх адаптуюць, узмацняюць, аслабляюць або мяняюць акцэнты»</h3>
+          <p>Гэтая версія пакідае месца для некалькіх тыпаў сувязі і дазваляе даследаванню паказаць небанальны вынік.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <strong>Практычная выснова:</strong> моцная гіпотэза не павінна ўжо ўнутры сябе мець адказ. Яна павінна мець рызыку быць няправільнай.
+      </div>
+    </section>
+
+    <section class="section" id="template">
+      <h2>Шаблон гіпотэзы</h2>
+      <p>Запішыце чарнавік па трох пунктах. Не трэба ідэальнай фармулёўкі з першага разу: важна, каб у гіпотэзы з’явіўся механізм праверкі.</p>
+
+      <div class="evidence-grid">
+        <article class="evidence-card">
+          <div class="number">1</div>
+          <h3>«Я думаю, што…»</h3>
+          <p>Сцверджанне пра рэчаіснасць. Адзін сказ, які можна праверыць.</p>
+        </article>
+
+        <article class="evidence-card">
+          <div class="number">2</div>
+          <h3>«Гэта будзе верна, калі я знайду…»</h3>
+          <p>Канкрэтныя факты, дакументы, лічбы, сведчанні або сувязі, якія пацвердзяць гіпотэзу.</p>
+        </article>
+
+        <article class="evidence-card">
+          <div class="number">3</div>
+          <h3>«Гіпотэза зломіцца, калі…»</h3>
+          <p>Назіранне, факт або дакумент, які прымусіць вас прызнаць, што гіпотэза была няправільнай.</p>
+        </article>
+      </div>
+
+      <blockquote>Трэцяе поле — самае цяжкае. Менавіта яно адрознівае даследаванне ад прапаганды.</blockquote>
+    </section>
+
+    <section class="section" id="ai-prompt">
+      <h2>Працэдурны промпт для працы з AI</h2>
+      <p>На занятку мы будзем выкарыстоўваць не промпт-пытанне, а промпт-працэдуру. Ён не просіць мадэль «расказаць пра тэму», а прымушае яе працаваць з трыма кантрольнымі пунктамі.</p>
+
+      <div class="prompt-box">
+        <div class="prompt-header">
+          <span>Скапіруйце і ўстаўце ў чат з AI</span>
+          <button class="copy-button" type="button" onclick="copyPrompt()">Скапіраваць</button>
+        </div>
+        <pre id="promptText">Я даследчык. Мая гіпотэза: [устаўце ваш тэкст].
+
+Дапамажы разабраць яе на тры часткі:
+1. Што я павінен знайсці, калі гіпотэза верная;
+2. Што павінна быць верным, але контрінтуітыўным;
+3. Дзе гіпотэза можа зламацца.</pre>
+      </div>
+
+      <div class="callout">
+        <strong>Чаму гэта працуе:</strong> промпт задае ролю, кантэкст і тры вектары аналізу. Мадэль перастае генераваць сярэдні адказ і пачынае дапамагаць правяраць даследчую канструкцыю.
+      </div>
+    </section>
+
+    <section class="section" id="worksheet">
+      <h2>Працоўны ліст студэнта</h2>
+      <p>Запоўніце палі перад заняткам. Калі трэцяе поле выклікае ступар — гэта нармальна. З гэтым ступарам можна працаваць у парах.</p>
+
+      <div class="worksheet">
+        <article class="worksheet-card">
+          <label for="topic">1. Мая тэма: што мяне турбуе як журналіста або даследчыка зараз?</label>
+          <textarea id="topic" placeholder="Напрыклад: фінансаванне дзяржаўных СМІ; сувязь ідэалагічных матэрыялаў і кантэнту; беларуска-польскія адносіны..."></textarea>
+        </article>
+
+        <article class="worksheet-card">
+          <label for="hypothesis">2. Мая гіпотэза: «Я думаю, што…»</label>
+          <textarea id="hypothesis" placeholder="Адзін сказ. Не тэма, а сцверджанне пра тое, як уладкавана рэчаіснасць."></textarea>
+        </article>
+
+        <article class="worksheet-card">
+          <label for="evidence">3. Гэта будзе верна, калі я знайду…</label>
+          <textarea id="evidence" placeholder="Якія факты, дакументы, лічбы або назіранні пацвердзяць гіпотэзу?"></textarea>
+        </article>
+
+        <article class="worksheet-card hard-question">
+          <label for="falsification">4. Гіпотэза зломіцца, калі…</label>
+          <textarea id="falsification" placeholder="Што павінна адбыцца, каб я прызнаў/прызнала сваю гіпотэзу няправільнай?"></textarea>
+        </article>
+      </div>
+
+      <ul class="prep-list">
+        <li>Якая ваша тэма — тое, што вас турбуе як журналіста або даследчыка прама зараз?</li>
+        <li>Паспрабуйце сфармуляваць яе як гіпотэзу: адзін сказ, які пачынаецца з «я думаю, што…».</li>
+        <li>Адкажыце сабе на самае цяжкае пытанне: што павінна адбыцца, каб вы прызналі сваю гіпотэзу няправільнай?</li>
+      </ul>
+
+      <div class="footer-note">
+        Калі трэцяе пытанне не атрымліваецца запоўніць адразу, не хавайце гэта. Гэта не слабасць, а пачатак сапраўднага даследчага мыслення.
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <button class="print-button" type="button" onclick="window.print()">Друкаваць / захаваць PDF</button>
+    </div>
+  </main>
+
+  <script>
+    function copyPrompt() {
+      const promptText = document.getElementById('promptText').innerText;
+      navigator.clipboard.writeText(promptText).then(() => {
+        const button = document.querySelector('.copy-button');
+        const original = button.innerText;
+        button.innerText = 'Скапіравана';
+        setTimeout(() => {
+          button.innerText = original;
+        }, 1600);
+      });
+    }
+  </script>
+</body>
+</html>

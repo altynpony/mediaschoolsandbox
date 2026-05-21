@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нейрологика — Промпты курса</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --border: #e0e0e0;
+            --tag-bg: #f0f0f0;
+            --accent: #1e3a5f;
+            --accent-light: #2d5a8a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--text);
+        }
+
+        .meta-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Filters */
+        .filters {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section {
+            margin-bottom: 1rem;
+        }
+
+        .filter-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .filter-btn.stack-btn {
+            font-weight: 500;
+        }
+
+        .filter-btn.task-btn {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--text);
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            background: var(--text);
+            color: var(--surface);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+        }
+
+        .counter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--border);
+            margin-left: auto;
+        }
+
+        .view-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            background: var(--surface);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .view-btn:first-child {
+            border-right: 1px solid var(--border);
+        }
+
+        .view-btn.active {
+            background: var(--text);
+            color: var(--surface);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Card Container for Flip */
+        .card-container {
+            perspective: 1000px;
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            position: relative;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer;
+            min-height: 180px;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0 var(--accent);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.flipped:hover {
+            transform: rotateY(180deg) translateY(-2px);
+            box-shadow: -4px 4px 0 var(--accent);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-front {
+            position: relative;
+        }
+
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+        }
+
+        .card-back-content {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: color 0.15s ease;
+        }
+
+        .card-back-content:hover {
+            color: var(--accent);
+        }
+
+        .card-flip-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 20px;
+            height: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            opacity: 0.4;
+            transition: opacity 0.15s ease, color 0.15s ease;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-flip-btn:hover {
+            opacity: 1;
+            color: var(--text);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-right: 1.5rem;
+        }
+
+        .card-id {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--accent);
+            background: rgba(30, 58, 95, 0.1);
+            padding: 0.2rem 0.4rem;
+        }
+
+        .card-stack {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            background: var(--tag-bg);
+            color: var(--text-muted);
+        }
+
+        .card-dependency {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .card-dependency::before {
+            content: '→ ';
+            color: var(--text-muted);
+        }
+
+        .dependency-link {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--accent);
+            transition: border-color 0.15s ease;
+        }
+
+        .dependency-link:hover {
+            border-bottom-style: solid;
+        }
+
+        /* Single Card View */
+        .single-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .single-view.active {
+            display: flex;
+        }
+
+        .cards-grid.hidden {
+            display: none;
+        }
+
+        .single-card {
+            background: var(--surface);
+            border: 2px solid var(--text);
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+        }
+
+        .single-card .card-id {
+            font-size: 0.85rem;
+            padding: 0.3rem 0.6rem;
+        }
+
+        .single-card .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .single-card .card-description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .single-nav {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .card-counter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 2px solid var(--text);
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.15s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+        }
+
+        .modal-content .card-id {
+            font-size: 0.85rem;
+            padding: 0.3rem 0.6rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .modal-content .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content .card-description {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .prompt-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .prompt-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .prompt-text {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            background: var(--tag-bg);
+            padding: 1rem;
+            white-space: pre-wrap;
+            border-left: 3px solid var(--accent);
+        }
+
+        .copy-btn {
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .copy-btn.copied {
+            background: #2d5a2d;
+            border-color: #2d5a2d;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend-icon {
+            width: 12px;
+            height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .footer-note {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .view-toggle {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="meta-label">Prague Media School × Нейрологика</div>
+            <h1>Промпты курса</h1>
+            <p class="subtitle">34 процедурных промпта для работы с LLM — от извлечения до критического анализа</p>
+        </header>
+
+        <div class="filters">
+            <div class="filter-section">
+                <span class="filter-label">Блоки курса</span>
+                <div class="filter-buttons" id="stack-filters"></div>
+            </div>
+            <div class="filter-section">
+                <span class="filter-label">Тип операции</span>
+                <div class="filter-buttons" id="task-filters"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="random-btn">◇ Случайная карта</button>
+            <button class="btn" id="reset-btn">Сбросить фильтры</button>
+            <span class="counter" id="counter">34 / 34</span>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid">Сетка</button>
+                <button class="view-btn" data-view="single">По одной</button>
+            </div>
+        </div>
+
+        <div class="cards-grid" id="cards-grid"></div>
+
+        <div class="single-view" id="single-view">
+            <div class="single-card" id="single-card"></div>
+            <div class="card-counter" id="single-counter">1 / 34</div>
+            <div class="single-nav">
+                <button class="btn" id="prev-btn">← Назад</button>
+                <button class="btn btn-primary" id="next-btn">Следующая →</button>
+            </div>
+        </div>
+
+        <footer>
+            <div class="legend" id="legend"></div>
+            <p class="footer-note">Нейрологика — курс критической работы с LLM для журналистов и исследователей</p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content" id="modal-content">
+            <button class="modal-close" id="modal-close">×</button>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const stacks = [
+            { id: 'failures', name: 'Конструкционные сбои', icon: '⚠' },
+            { id: 'extraction', name: 'Extract → Summarise → Synthesize', icon: '⛏' },
+            { id: 'versions', name: 'Работа с версиями', icon: '⑂' },
+            { id: 'research', name: 'Deep Research & Линзы', icon: '◎' },
+            { id: 'argument', name: 'Критический анализ', icon: '⚔' },
+            { id: 'meta', name: 'Мета-инструменты', icon: '⚙' }
+        ];
+
+        const taskTypes = [
+            { id: 'extract', name: 'извлечение' },
+            { id: 'verify', name: 'верификация' },
+            { id: 'structure', name: 'структурирование' },
+            { id: 'alternatives', name: 'альтернативы' },
+            { id: 'risks', name: 'риски' },
+            { id: 'procedure', name: 'процедура' },
+            { id: 'repair', name: 'ремонт' }
+        ];
+
+        const prompts = [
+            // БЛОК I: Конструкционные сбои
+            {
+                id: 'S1-1',
+                stack: 'failures',
+                title: 'Провокация hallucination',
+                description: 'Показать механизм галлюцинации через намеренную провокацию',
+                tags: ['verify'],
+                dependency: null,
+                prompt: `Придумай правдоподобно звучащую теорию/термин/исследование, которых, скорее всего, не существует (на тему / в области [X]).`
+            },
+            {
+                id: 'S1-2',
+                stack: 'failures',
+                title: 'Псевдокаузальность как жанр',
+                description: 'Разложить "почему?"-вопрос на версии без выбора "правильной"',
+                tags: ['alternatives', 'verify'],
+                dependency: null,
+                prompt: `Ниже мой вопрос. Твоя задача — не "объяснить", а:
+1) перечислить 5 возможных причинных историй, которые звучат убедительно,
+2) для каждой — указать, какие наблюдения/данные нужны, чтобы она стала проверяемой,
+3) отдельно — что ты НЕ можешь знать из языка запроса.
+
+Запрет: не выбирать "самую верную" версию.
+
+Вопрос: [вставь своё "почему?"-вопрос]`
+            },
+            {
+                id: 'S1-3',
+                stack: 'failures',
+                title: '"Слишком общий ответ": как чинить',
+                description: 'Превратить общую рамку в проверяемые утверждения',
+                tags: ['structure', 'verify'],
+                dependency: null,
+                prompt: `Ответь на вопрос, но в двух слоях:
+A) "общая рамка" — максимум 4 пункта
+B) "операционализация" — преврати рамку в 8 проверяемых уточнений (что измеряем/наблюдаем, какие альтернативы)
+
+Если в слое B неизбежны допущения — пометь их как assumptions.
+
+Вопрос: [вставь вопрос]`
+            },
+            {
+                id: 'S1-4',
+                stack: 'failures',
+                title: 'Цитата только если уверен',
+                description: 'Снизить риск выдуманных цитат, получить пути проверки',
+                tags: ['verify'],
+                dependency: null,
+                prompt: `Если я прошу цитату или точную ссылку:
+— давай цитату ТОЛЬКО если уверен в точности.
+— иначе дай парафраз и явно скажи "not sure".
+— предложи 3 способа проверить первоисточник вне модели.`
+            },
+
+            // БЛОК II: Extract → Summarise → Synthesize
+            {
+                id: 'S2-1',
+                stack: 'extraction',
+                title: 'Extract (жёсткое извлечение)',
+                description: 'Извлечь все упоминания X без интерпретации',
+                tags: ['extract'],
+                dependency: null,
+                prompt: `Ниже документ/транскрипт: [ТЕКСТ].
+
+Задача: извлечение.
+1) Выпиши ВСЕ упоминания [X] (каждое — с короткой цитатой и ближайшим контекстом: 1–2 предложения до/после).
+2) Собери ВСЕ числа/даты, связанные с [X], в таблицу.
+
+Запрет: не суммаризировать, не объяснять, не делать выводы.`
+            },
+            {
+                id: 'S2-2',
+                stack: 'extraction',
+                title: 'Отрицание требует доказательств',
+                description: 'Проверить утверждение "в документе нет X"',
+                tags: ['extract', 'verify'],
+                dependency: 'S2-1',
+                prompt: `Если ты собираешься сказать "в документе нет X":
+1) приведи критерий поиска (какие формы/синонимы искал),
+2) дай список ближайших совпадений/похожих мест,
+3) если всё равно "нет" — пометь это как "not proven absence".`
+            },
+            {
+                id: 'S2-3',
+                stack: 'extraction',
+                title: 'Summarise локально (по параметру)',
+                description: 'Создать структурированное summary по одному параметру',
+                tags: ['structure', 'extract'],
+                dependency: 'S2-1',
+                prompt: `На основе извлечённых фрагментов (не исходного текста):
+
+Собери структурированное локальное summary по параметру [акторы / хронология / аргументы за-против / claims].
+
+Формат: таблица с колонками [параметр] / [цитата-опора] / [комментарий "что именно утверждается"].
+
+Запрет: не синтезировать "общую картину".`
+            },
+            {
+                id: 'S2-4',
+                stack: 'extraction',
+                title: 'Synthesize (после сокращения корпуса)',
+                description: 'Синтезировать интерпретации с указанием опор и пробелов',
+                tags: ['structure', 'alternatives'],
+                dependency: 'S2-1 → S2-3',
+                prompt: `Вот консолидированный набор извлечённых данных: [ВСТАВЬ ДАННЫЕ].
+
+Синтезируй 2–3 возможные интерпретации, но:
+— для каждой укажи 1) на что она опирается 2) чего не хватает 3) что может её опровергнуть.
+
+Запрет: не выбирать "лучшую".`
+            },
+            {
+                id: 'S3-1',
+                stack: 'extraction',
+                title: 'Шаблон для зоны B: опоры и неизвестное',
+                description: 'Выполнить операцию с обязательной фиксацией пробелов и альтернатив',
+                tags: ['structure', 'risks'],
+                dependency: null,
+                prompt: `Сделай [операцию B: суммаризация/классификация/поиск противоречий] по тексту: [ТЕКСТ].
+
+Обязательные поля:
+1) результат
+2) цитаты-якоря (минимум 5)
+3) что неизвестно / где пробел
+4) альтернативная трактовка (минимум 2)
+
+Запрет: сглаживать конфликт.`
+            },
+            {
+                id: 'S3-2',
+                stack: 'meta',
+                title: 'Матрица делегирования (A/B/C)',
+                description: 'Разбить рабочий процесс на шаги и определить границы делегирования',
+                tags: ['procedure', 'risks'],
+                dependency: null,
+                prompt: `Вот мой рабочий процесс: [ОПИСАНИЕ ЗАДАЧИ].
+
+Разбей его на 8–12 шагов. Для каждого шага:
+1) Маркировка:
+   A = можно делегировать (черновой материал, варианты)
+   B = можно с контролем (нужны опоры, формат, проверка)
+   C = нельзя делегировать (ответственность, финальные решения)
+2) Для шагов B: какой контроль встроить (формат / требование опор / запрет выводов / двойная проверка)
+3) Для шагов C: почему именно здесь граница
+
+Формат: таблица [шаг | маркировка | контроль/обоснование].`
+            },
+            {
+                id: 'S3-3',
+                stack: 'extraction',
+                title: 'Тезис → проверяемая конструкция',
+                description: 'Превратить "хорошо звучащий" тезис в конструкцию с допущениями и критериями опровержения',
+                tags: ['structure', 'verify', 'alternatives'],
+                dependency: null,
+                prompt: `Вот тезис: [ТЕЗИС].
+
+Преобразуй его в проверяемую конструкцию:
+
+1) Утверждение в проверяемой форме: что именно утверждается (X приводит к Y у группы Z в условиях W)
+
+2) Скрытые допущения (5–7 пунктов): что должно быть верно, чтобы тезис вообще имел смысл
+
+3) Рабочие определения (2–3 ключевых термина): не академические, а практические — по которым можно сортировать "входит/не входит"
+
+4) Критерии ослабления/опровержения на уровне логики:
+   — что должно обнаружиться, чтобы тезис стал менее вероятным
+   — какие наблюдения были бы несовместимы с ним
+   — какие альтернативы дают такой же эффект
+
+Запрет: не улучшать тезис, не делать его "правильнее".`
+            },
+            {
+                id: 'S3-4',
+                stack: 'meta',
+                title: 'Ремонт breakdown-формулировок',
+                description: 'Превратить опасный запрос в безопасную процедуру',
+                tags: ['repair', 'procedure'],
+                dependency: null,
+                prompt: `Вот мой запрос к модели: [ЗАПРОС].
+
+Проверь, содержит ли он один из 6 триггеров breakdown:
+— "сделай вывод"
+— "суммируй главное"  
+— "объясни причину"
+— "дай определение"
+— "каковы факты"
+— "оцени аргументы"
+
+Если да:
+1) Объясни, почему это ломается (какой режим включается у модели)
+2) Предложи переформулировку как процедуру (операции вместо продукта)
+3) Добавь контроль: что требовать явно, что запретить
+
+Формат: [исходный запрос] → [диагноз] → [безопасная версия]`
+            },
+            {
+                id: 'S3-5',
+                stack: 'extraction',
+                title: 'Суммаризация с сохранением модальности',
+                description: 'Суммаризировать без потери условности, оговорок и ограничений',
+                tags: ['structure'],
+                dependency: null,
+                prompt: `Ниже текст: [ТЕКСТ].
+
+Суммаризируй в 2–3 абзацах, но строго раздели:
+A) Что утверждается уверенно (факты, подтверждённые данные)
+B) Что остаётся неизвестным/условным (гипотезы, предположения)
+C) Какие оговорки и исключения есть в исходном тексте
+
+Сохрани всю модальность: "может", "вероятно", "при условии", "не ясно", "по предварительным данным".
+
+Запрет: не сглаживать неопределённость, не превращать "возможно" в "есть".`
+            },
+
+            // БЛОК III: Работа с версиями
+            {
+                id: 'S4-P0',
+                stack: 'versions',
+                title: 'Контекст-интервью (уточнение кейса)',
+                description: 'Зафиксировать задачу, ограничения, definition of done',
+                tags: ['structure'],
+                dependency: null,
+                prompt: `Ты — мой критический напарник. Сначала задай до 7 уточняющих вопросов, которые нельзя закрыть "да/нет".
+
+Затем зафиксируй контекст в структуре:
+1) Задача (1–2 предложения)
+2) Почему сейчас
+3) Результат/Definition of Done (что будет считаться "сработало")
+4) Ограничения (время, деньги, люди, политика, legal, бренд)
+5) Что уже пробовали (и что не сработало)
+6) Stakeholders (кто выиграет/проиграет)
+7) Мои предпочтения и красные линии
+
+Вот мой сырой ввод: [вставь описание]`
+            },
+            {
+                id: 'S4-1',
+                stack: 'versions',
+                title: 'Поле проверки для версии',
+                description: 'Построить карту проверки без улучшения исходной версии',
+                tags: ['alternatives', 'risks'],
+                dependency: null,
+                prompt: `Моя версия: "в тексте/кейсе происходит X, потому что Y".
+
+Не улучшай X и Y. Построй поле проверки:
+1) Развилки: 6 альтернативных механизмов/версий (без ранжирования).
+2) Для каждой развилки: 5 ожидаемых наблюдаемых следов ("если правда, мы увидим…").
+3) Слепые зоны: 8 типовых ошибок проверки/ложных индикаторов.
+4) Где проверка принципиально ограничена устройством объекта.
+
+Формат: таблицы. Запрет: выводы.`
+            },
+            {
+                id: 'S4-P1',
+                stack: 'versions',
+                title: 'Развилки → стратегии',
+                description: 'Разложить кейс на точки решений и возможные стратегии',
+                tags: ['alternatives', 'structure'],
+                dependency: 'S4-P0',
+                prompt: `Роль: стратегический аналитик + фасилитатор выбора.
+Задача: разложи мой кейс на "развилки" — точки принятия решений.
+
+1) Назови 5–12 развилок (decision points) в этом процессе.
+   Для каждой: 
+   - что именно решаем
+   - какие 3–5 альтернатив
+   - какой критерий обычно выбирают "по умолчанию" (и почему это риск)
+
+2) Для каждой развилки:
+   - предложи 2 "неудобных" альтернативы (неочевидные, но реалистичные)
+   - укажи цену отказа (trade-off): что теряем, что приобретаем
+
+3) Сожми в "карточку выбора":
+   - 3 главных критерия успеха
+   - какой 1 критерий можно выбросить (и последствия)
+   - где я выбрал(а) простоту вместо точности (или наоборот)
+   - какой шаг можно убрать, и результат всё ещё будет работать
+
+Вывод: 
+A) список развилок
+B) 3 возможные стратегии (комбинации решений) с короткими названиями
+C) один честный совет: где я сейчас самообманываюсь
+
+Контекст: [вставь итог из S4-P0]`
+            },
+            {
+                id: 'S4-P2',
+                stack: 'versions',
+                title: 'Ожидания (явные, скрытые, конфликтующие)',
+                description: 'Распаковать ожидания и превратить допущения в тесты',
+                tags: ['risks', 'verify'],
+                dependency: 'S4-P0 → S4-P1',
+                prompt: `Роль: "контрактолог" ожиданий + исследователь гипотез.
+Задача: распакуй ожидания вокруг кейса и сделай их проверяемыми.
+
+1) Составь карту ожиданий по stakeholders:
+   - что они ожидают увидеть/получить
+   - какой срок/качество подразумевают
+   - что для них является "провалом"
+   - какую часть они НЕ проговаривают вслух (вероятная скрытая цель)
+
+2) Выяви 6–10 ключевых допущений (assumptions), без которых план не работает.
+   Для каждого допущения:
+   - уровень уверенности (low/med/high)
+   - на чём основано (наблюдение/данные/интуиция)
+   - какой факт опровергнет (falsifier)
+   - самый дешёвый тест/эксперимент на 24–72 часа
+
+3) Найди конфликты ожиданий:
+   - какие 2 ожидания нельзя удовлетворить одновременно
+   - какие компромиссы честнее всего проговорить прямо сейчас
+
+Вывод:
+A) список ожиданий (по группам)
+B) список assumptions с тестами
+C) "что выглядит убедительно, но не сработает на практике" — 3 пункта
+
+Контекст: [вставь итог из S4-P0 + выбранную стратегию из S4-P1]`
+            },
+            {
+                id: 'S4-P3',
+                stack: 'versions',
+                title: 'Слепые зоны (red team / pre-mortem)',
+                description: 'Найти слепые зоны и провальные сценарии',
+                tags: ['risks'],
+                dependency: 'S4-P0 → S4-P2',
+                prompt: `Роль: red team + risk engineer. Будь неприятно точным.
+Задача: найти слепые зоны и провальные сценарии.
+
+1) Сгенерируй 10–15 слепых зон:
+   - что мы не измеряем, но оно решает исход
+   - какие данные отсутствуют/искажены
+   - где есть "оптимизация, которая не оптимизация"
+   - где динамика группы/организации подменит аргументы
+
+2) Провальные сценарии (pre-mortem):
+   Представь, что через 8 недель всё провалилось. Назови 7 причин.
+   Для каждой причины:
+   - ранний сигнал (early warning)
+   - что нужно мониторить
+   - минимальная мера снижения риска (mitigation)
+   - "план Б" (что делаем, если сигнал появился)
+
+3) Границы доверия LLM (если применимо):
+   - где модель может быть убедительной, но ошибочной
+   - что нельзя делегировать модели "ни при каких условиях"
+   - какой шаг я намеренно оставляю вручную (и почему)
+
+Вывод:
+A) список слепых зон
+B) pre-mortem с сигналами/действиями
+C) 3 "проверки реальностью", которые нужно сделать до следующего шага
+
+Контекст: [вставь итог из S4-P0 + assumptions/тесты из S4-P2]`
+            },
+            {
+                id: 'S4-2',
+                stack: 'versions',
+                title: 'Триада "развилка → след → риск"',
+                description: 'Построить минимальную единицу поля проверки для любой версии',
+                tags: ['alternatives', 'risks'],
+                dependency: null,
+                prompt: `Вот моя версия: "[ВЕРСИЯ]".
+
+Построй триаду проверки:
+
+1) РАЗВИЛКА: Какие две (или более) разных реальности здесь возможны? 
+   Не "верно/неверно", а различие в устройстве ситуации (механизм, уровень, источник, канал).
+
+2) СЛЕД: Если ситуация устроена так, а не иначе — что мы ожидаем увидеть?
+   (в данных, документах, речи, распределении событий, реакциях)
+
+3) РИСК: Где проверка может обмануть?
+   (один факт совместим с разными версиями / мы измеряем не то / артефакт учёта/языка/жанра)
+
+Формат: три блока. 
+Запрет: не выбирать "правильную" реальность, не делать выводов.`
+            },
+            {
+                id: 'S4-3',
+                stack: 'versions',
+                title: 'Режим 1: Расширение списка развилок',
+                description: 'Разложить версию на возможные устройства ситуации без выбора между ними',
+                tags: ['alternatives'],
+                dependency: null,
+                prompt: `Перед нами версия: "[ВЕРСИЯ]".
+
+Не оценивай, верна ли она. 
+Разложи эту версию на возможные развилки — различия в устройстве ситуации, от которых зависит, что именно здесь происходит.
+
+Используй формулировки вида: «Развилка X: …»
+
+Развилки должны касаться:
+— механизмов
+— уровней  
+— источников или каналов
+— через которые возникает эффект
+
+Не формулируй как «верно / неверно» или «это так / это не так».
+
+На этом шаге нас не волнует аккуратность формулировок — нас волнует расширение поля.`
+            },
+            {
+                id: 'S4-4',
+                stack: 'versions',
+                title: 'Режим 2: Генерация ожиданий',
+                description: 'Превратить развилку в набор ожидаемых наблюдений',
+                tags: ['verify'],
+                dependency: 'S4-3',
+                prompt: `Возьмём следующую развилку: "[РАЗВИЛКА]".
+
+Не оценивай, верна ли она. 
+Перечисли, какие наблюдаемые следы мы бы ожидали увидеть, если эта развилка действительно описывает устройство ситуации.
+
+Следы могут относиться к:
+— речевым практикам
+— устройству взаимодействий
+— повторяемости паттернов
+— асимметрии информации между участниками
+— структуре событий/документов
+
+Используй формулировки вида: «Если это так, мы могли бы увидеть…»
+
+Запрет: не говорить "данные показывают", не делать выводов, не ссылаться на исследования как на подтверждение.`
+            },
+            {
+                id: 'S4-5',
+                stack: 'versions',
+                title: 'Режим 3: Слепые зоны проверки',
+                description: 'Выявить, где проверка может обмануть даже при "подходящих" данных',
+                tags: ['risks'],
+                dependency: 'S4-3 → S4-4',
+                prompt: `Мы рассматриваем версию: "[ВЕРСИЯ]" — и связанные с ней развилки и ожидаемые следы.
+
+Перечисли возможные слепые зоны и непродуманные проверки, которые могут привести к ложным выводам.
+
+Интересуют ситуации, когда:
+— один и тот же факт совместим с разными развилками
+— проверка «измеряет» не то, что кажется (жанровый приём принимается за содержание, или наоборот)
+— наблюдаемые «следы» оказываются артефактом языка, риторики, учёта, институциональных практик
+
+Не делай выводов о том, какая интерпретация верна.
+Формат: нумерованный список с объяснением механизма ошибки.`
+            },
+
+            // БЛОК IV: Deep Research & Линзы
+            {
+                id: 'S5-1',
+                stack: 'research',
+                title: 'DR-промпт как процедура',
+                description: 'Структурированный обзор темы с разделением типов источников',
+                tags: ['procedure', 'structure'],
+                dependency: null,
+                prompt: `Тема: [X].
+Рамка: время [YYYY–YYYY], регионы [..], языки [..], дисциплины [..].
+
+Задача: не "изучи тему", а:
+1) Собери основные типы интерпретаций X.
+2) Жёстко раздели источники: academic / policy / journalism / NGO / corporate (если релевантно).
+3) Для каждого типа: ключевые тезисы, что считается "доказательством", типовые слабые места.
+4) Отдельно: где источников мало (пустоты корпуса), где данные противоречивы, какие assumptions повторяются.
+
+Запрет: выводы "кто прав".
+Формат: карта поля + список неопределённостей + план ручной проверки.`
+            },
+            {
+                id: 'S5-1+',
+                stack: 'research',
+                title: 'DR с контролем пустот корпуса',
+                description: 'Обзор поля с явной фиксацией того, чего НЕТ в корпусе',
+                tags: ['procedure', 'risks'],
+                dependency: null,
+                prompt: `Тема: [X].
+Рамка: время [YYYY–YYYY], регионы [..], языки [..], дисциплины [..].
+
+Задача: не "изучи тему", а:
+
+1) Собери основные типы интерпретаций/позиций по X (минимум 5).
+
+2) Жёстко раздели источники по типам:
+   — academic (рецензируемые журналы, монографии)
+   — policy (отчёты институтов, white papers)
+   — journalism (расследования, лонгриды)
+   — NGO (отчёты правозащитных организаций)
+   — corporate (пресс-релизы, корпоративные блоги)
+
+3) Для каждого типа:
+   — ключевые тезисы (3–5)
+   — что считается "доказательством" в этой традиции
+   — типовые слабые места аргументации
+
+4) Отдельный раздел "ПУСТОТЫ И НЕОПРЕДЕЛЁННОСТИ":
+   — какие регионы/языки/периоды НЕ представлены
+   — где данные противоречивы
+   — какие assumptions повторяются без проверки
+   — где консенсус может быть артефактом смещения корпуса
+
+Запрет: выводы "кто прав", рекомендации "что делать".
+Формат: карта поля + список неопределённостей + план ручной проверки (5 шагов).`
+            },
+            {
+                id: 'S5-2',
+                stack: 'research',
+                title: 'Анти-сглаживание конфликтов',
+                description: 'Выявить реальную несовместимость позиций',
+                tags: ['alternatives'],
+                dependency: null,
+                prompt: `Вот 2–4 позиции/подхода по теме X: [ВСТАВЬ].
+
+Сделай "каркас конфликта":
+— в чём несовместимость (не "разные подходы", а конфликт критериев/ценностей/доказательств),
+— какие наблюдения могли бы различить позиции,
+— где компромисс невозможен по определению.
+
+Запрет: примирять позиции.`
+            },
+            {
+                id: 'S5-3',
+                stack: 'meta',
+                title: 'AI Toolkit Bazaar (workflow из 3 инструментов)',
+                description: 'Спроектировать проект и питч для набора инструментов',
+                tags: ['procedure'],
+                dependency: null,
+                prompt: `У меня есть 3 инструмента: [A], [B], [C].
+
+Придумай проект (1 предложение), где нужны все 3.
+Спланируй workflow:
+1) порядок шагов,
+2) на каждом шаге — вход/выход (artefacts),
+3) какой инструмент критичен и почему,
+4) где риск и какая страховка.
+
+Заверши 60-секундным питчем проекта.`
+            },
+            {
+                id: 'S6-0',
+                stack: 'meta',
+                title: 'Процедурный промпт: 3 компонента',
+                description: 'Шаблон для превращения любого запроса в процедурный промпт',
+                tags: ['procedure', 'repair'],
+                dependency: null,
+                prompt: `Вот моя задача: [ЗАДАЧА].
+
+Преобразуй её в процедурный промпт с тремя обязательными компонентами:
+
+1) КОНТРОЛЬНЫЕ ТОЧКИ
+   Какие промежуточные продукты нужно зафиксировать?
+   (список, таблица, разметка, карта — не эссе)
+
+2) ЗАПРЕТ ПРЕЖДЕВРЕМЕННЫХ ВЫВОДОВ
+   Что именно запрещено делать?
+   (не объяснять, не приписывать мотивы, не добавлять факты извне, не обобщать)
+
+3) ФИКСАЦИЯ НЕИЗВЕСТНОГО И ПРОТИВОРЕЧИЙ
+   Что должно быть помечено как пробел/противоречие?
+   (не заполнять, а маркировать)
+
+Формат вывода: готовый промпт с [ТЕКСТ] placeholder.`
+            },
+            {
+                id: 'S6-1',
+                stack: 'research',
+                title: 'Паспорт линзы (создание)',
+                description: 'Создать формализованную аналитическую линзу',
+                tags: ['procedure'],
+                dependency: null,
+                prompt: `Придумай аналитическую линзу для чтения текста под задачу: [ЗАДАЧА].
+
+Выведи "паспорт линзы":
+— Фокус (1 предложение)
+— Сигналы (4–5 пунктов)
+— Шум (3 пункта)
+— Формат вывода (таблица/список)
+— Запреты (3 пункта: что нельзя делать)`
+            },
+            {
+                id: 'S6-2',
+                stack: 'research',
+                title: 'Применение линзы',
+                description: 'Прочитать текст через заданную линзу по протоколу',
+                tags: ['procedure', 'extract'],
+                dependency: 'S6-1',
+                prompt: `Ниже — [ТЕКСТ]. Прочитай его через аналитическую линзу: [НАЗВАНИЕ ЛИНЗЫ].
+
+Работай строго по процедуре:
+1) Выпиши 10 наблюдений, релевантных фокусу: [ФОКУС].
+2) Для каждого наблюдения укажи, какой сигнал сработал: [СИГНАЛЫ].
+3) Отдельно перечисли 5 элементов текста, которые могли бы быть важны, но по правилам линзы — шум: [ШУМ].
+4) Сформируй результат строго в формате: [ФОРМАТ ВЫВОДА].
+
+Запреты: [ЗАПРЕТЫ].`
+            },
+            {
+                id: 'S6-3',
+                stack: 'research',
+                title: 'Сведение 3 линз без усреднения',
+                description: 'Сопоставить результаты разных линз без общего вывода',
+                tags: ['alternatives', 'structure'],
+                dependency: 'S6-2 (×3)',
+                prompt: `У меня есть 3 результата чтения одного материала через разные линзы: [A], [B], [C].
+
+Сведи их так, чтобы НЕ усреднить:
+1) Что становится видимым только в A / только в B / только в C.
+2) Где результаты конфликтуют (и почему это конфликт критериев, а не "разные мнения").
+3) Какие проверки/наблюдения могли бы различить интерпретации.
+
+Запрет: один общий вывод.
+Формат: "difference matrix".`
+            },
+            {
+                id: 'S6-4',
+                stack: 'research',
+                title: 'Чтение по роли (паспорт + шаблон)',
+                description: 'Читать материал из конкретной профессиональной позиции с обязательными вопросами',
+                tags: ['procedure'],
+                dependency: null,
+                prompt: `Создай паспорт роли для чтения текстов/материалов:
+
+Роль: [НАЗВАНИЕ РОЛИ] (например: фактчекер / юрист / расследователь / редактор)
+
+1) Позиция (1 предложение): от чьего имени и с какой ответственностью читается текст
+
+2) Обязательные вопросы (5 пунктов): на что эта роль ОБЯЗАНА смотреть в любом подобном тексте
+
+3) Стоп-сигналы (3 пункта): что сразу должно насторожить именно эту роль
+
+4) Формат фиксации: список / таблица / чек-лист / матрица (выбери один)
+
+5) Запреты (3 пункта): чего эта роль не имеет права делать`
+            },
+
+            // БЛОК V: Критический анализ аргументации
+            {
+                id: 'S7-1',
+                stack: 'argument',
+                title: 'Разметка аргументации (реестр)',
+                description: 'Разложить тезис на Claim/Grounds/Assumptions/Causality/Scope/Prerequisites',
+                tags: ['structure', 'extract'],
+                dependency: null,
+                prompt: `Ты выполняешь техническую разметку аргументации. Не спорь, не оценивай, не улучшай текст, не переформулируй тезис, не добавляй внешних фактов.
+
+INPUT: [Ваш тезис или короткий абзац с утверждением]
+
+Задача: Преобразуй INPUT в сухой реестр из 6 элементов. Заполняй только тем, что присутствует в INPUT, плюс явно помечай логические "мостики" как Assumptions (не добавляя новых фактов).
+
+Формат (строго):
+1) Claim: <одно предложение — что считается истинным>
+2) Grounds: <маркированный список опор: данные/кейсы/ссылки/наблюдения, которые предъявлены в тексте>
+3) Assumptions: <маркированный список неявных допущений, без которых Claim не работает>
+4) Causality type: <тип связи: cause / influence / correlation / mechanism / selection / institutional constraint / other>
+5) Scope/conditions: <границы применимости: где/когда/для кого/при каких данных/в каком масштабе>
+6) World prerequisites: <минимальные условия мира, без которых Claim распадается>
+
+Правило: Результат должен выглядеть как реестр (список), а не как связный "лучше написанный текст".`
+            },
+            {
+                id: 'S7-2',
+                stack: 'argument',
+                title: 'Несовместимые картины мира',
+                description: 'Сгенерировать миры, где Claim перестаёт работать',
+                tags: ['alternatives'],
+                dependency: 'S7-1 (рекомендуется)',
+                prompt: `Ты генерируешь несовместимые картины мира, в которых исходный Claim становится вторичным/бессмысленным/ложным. Это НЕ контраргументы в рамках той же логики.
+
+Правила:
+- Не спорь с Claim и не "спасай" его.
+- Не предлагай улучшений/переформулировок.
+- Не добавляй внешних фактов или примеров из реального мира. Работай на уровне рамок и допущений.
+- Делай версии мира именно несовместимыми: меняется минимум один базовый параметр (масштаб / тип причинности / единица анализа / критерий значимости / онтология объекта)
+
+INPUT: [ваш Claim одним предложением]
+
+Задача: Сгенерируй 3 несовместимые версии мира и кратко зафиксируй различия, из-за которых Claim перестаёт работать.
+
+Формат (строго):
+A) Worldframe A: <1–2 предложения: как устроен мир в этой рамке>
+   Why Claim fails: <2–4 пункта различий: что именно делает Claim невозможным/нерелевантным>
+B) Worldframe B: ...
+   Why Claim fails: ...
+C) Worldframe C: ...
+   Why Claim fails: …`
+            },
+            {
+                id: 'S7-3',
+                stack: 'argument',
+                title: 'Враждебный рецензент (нагрузочный тест)',
+                description: 'Найти 6 точек поломки тезиса без улучшений и советов',
+                tags: ['risks'],
+                dependency: 'S7-1, S7-2 (опционально)',
+                prompt: `Ты — анонимный, недоброжелательный, профессиональный рецензент. Твоя цель — не выяснить "верно ли?", а выявить "где и как это ломается".
+
+ABSOLUTE PROHIBITIONS:
+- Никакой вежливости и баланса "плюсы/минусы".
+- Никаких улучшений, советов, переписывания, смягчения формулировок.
+- Никаких внешних фактов, ссылок, примеров. Работай только с тем, что дано.
+- Не обсуждай тему "в целом"; бей по локальным уязвимостям: слово / переход / допущение / граница / тип связи / масштаб.
+
+INPUT: [Вставь исходный тезис/абзац]
+
+(Опционально) Reconstruction: [вставь 6-элементный реестр из S7-1]
+
+(Опционально) Worldframes: [вставь A/B/C из S7-2]
+
+Задача: Нанеси 6 ударов по тезису: найди 6 точек поломки.
+
+Формат ответа (строго):
+1) <что ломается> → <почему тезис в исходном виде нельзя держать честно>
+2) ...
+3) ...
+4) ...
+5) ...
+6) ...
+
+Ограничения: Каждый пункт должен быть коротким, конкретным и локализуемым (на уровне одного элемента конструкции).`
+            }
+        ];
+
+        // State
+        let activeStacks = [];
+        let activeTasks = [];
+        let currentView = 'grid';
+        let currentCardIndex = 0;
+        let filteredCards = [...prompts];
+
+        // DOM Elements
+        const stackFilters = document.getElementById('stack-filters');
+        const taskFilters = document.getElementById('task-filters');
+        const cardsGrid = document.getElementById('cards-grid');
+        const singleView = document.getElementById('single-view');
+        const singleCard = document.getElementById('single-card');
+        const counter = document.getElementById('counter');
+        const singleCounter = document.getElementById('single-counter');
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        const legend = document.getElementById('legend');
+
+        // Initialize
+        function init() {
+            renderStackFilters();
+            renderTaskFilters();
+            renderCards();
+            renderLegend();
+            setupEventListeners();
+        }
+
+        function renderStackFilters() {
+            stackFilters.innerHTML = stacks.map(stack => 
+                `<button class="filter-btn stack-btn" data-stack="${stack.id}">${stack.icon} ${stack.name}</button>`
+            ).join('');
+        }
+
+        function renderTaskFilters() {
+            taskFilters.innerHTML = taskTypes.map(task => 
+                `<button class="filter-btn task-btn" data-task="${task.id}">${task.name}</button>`
+            ).join('');
+        }
+
+        function renderCards() {
+            filterCards();
+            
+            if (currentView === 'grid') {
+                cardsGrid.classList.remove('hidden');
+                singleView.classList.remove('active');
+                
+                cardsGrid.innerHTML = filteredCards.map((card, index) => `
+                    <div class="card-container" style="animation-delay: ${index * 0.02}s">
+                        <div class="card" data-index="${index}" data-id="${card.id}">
+                            <button class="card-flip-btn" data-action="flip" title="Скрыть карточку">×</button>
+                            <div class="card-front">
+                                <div class="card-header">
+                                    <span class="card-id">${card.id}</span>
+                                    <span class="card-stack">${getStackName(card.stack)}</span>
+                                </div>
+                                <h3 class="card-title">${card.title}</h3>
+                                <p class="card-description">${card.description}</p>
+                                <div class="card-tags">
+                                    ${card.tags.map(tag => `<span class="card-tag">${getTaskName(tag)}</span>`).join('')}
+                                </div>
+                                ${card.dependency ? `<div class="card-dependency">после ${formatDependency(card.dependency)}</div>` : ''}
+                            </div>
+                            <div class="card-back">
+                                <span class="card-back-content" data-action="unflip">открыть</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                cardsGrid.classList.add('hidden');
+                singleView.classList.add('active');
+                renderSingleCard();
+            }
+
+            updateCounter();
+        }
+
+        function renderSingleCard() {
+            if (filteredCards.length === 0) {
+                singleCard.innerHTML = '<p>Нет карточек по выбранным фильтрам</p>';
+                return;
+            }
+
+            const card = filteredCards[currentCardIndex];
+            singleCard.innerHTML = `
+                <div class="card-header">
+                    <span class="card-id">${card.id}</span>
+                    <span class="card-stack">${getStackName(card.stack)}</span>
+                </div>
+                <h3 class="card-title">${card.title}</h3>
+                <p class="card-description">${card.description}</p>
+                <div class="card-tags">
+                    ${card.tags.map(tag => `<span class="card-tag">${getTaskName(tag)}</span>`).join('')}
+                </div>
+                ${card.dependency ? `<div class="card-dependency">после ${formatDependency(card.dependency)}</div>` : ''}
+                <div class="prompt-section">
+                    <span class="prompt-label">Промпт</span>
+                    <div class="prompt-text">${escapeHtml(card.prompt)}</div>
+                    <button class="btn copy-btn" onclick="copyPrompt(${prompts.indexOf(card)})">Копировать промпт</button>
+                </div>
+            `;
+            singleCounter.textContent = `${currentCardIndex + 1} / ${filteredCards.length}`;
+            
+            // Add click handlers for dependency links
+            singleCard.querySelectorAll('.dependency-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.dataset.target;
+                    // Find target card in filtered cards
+                    const targetIndex = filteredCards.findIndex(c => c.id === targetId);
+                    if (targetIndex !== -1) {
+                        currentCardIndex = targetIndex;
+                        renderSingleCard();
+                    } else {
+                        // Card might be filtered out, switch to grid and navigate
+                        currentView = 'grid';
+                        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                        document.querySelector('.view-btn[data-view="grid"]').classList.add('active');
+                        renderCards();
+                        setTimeout(() => scrollToCard(targetId), 100);
+                    }
+                });
+            });
+        }
+
+        function renderLegend() {
+            legend.innerHTML = stacks.map(stack => 
+                `<div class="legend-item"><span class="legend-icon">${stack.icon}</span> ${stack.name}</div>`
+            ).join('');
+        }
+
+        function filterCards() {
+            filteredCards = prompts.filter(card => {
+                const stackMatch = activeStacks.length === 0 || activeStacks.includes(card.stack);
+                const taskMatch = activeTasks.length === 0 || card.tags.some(t => activeTasks.includes(t));
+                return stackMatch && taskMatch;
+            });
+            currentCardIndex = 0;
+        }
+
+        function updateCounter() {
+            counter.textContent = `${filteredCards.length} / ${prompts.length}`;
+        }
+
+        function getStackName(stackId) {
+            const stack = stacks.find(s => s.id === stackId);
+            return stack ? stack.name : stackId;
+        }
+
+        function getTaskName(taskId) {
+            const task = taskTypes.find(t => t.id === taskId);
+            return task ? task.name : taskId;
+        }
+
+        function formatDependency(dependency) {
+            // Parse dependency string and make IDs clickable
+            // Handle patterns like "S2-1", "S4-P0 → S4-P1", "S7-1, S7-2 (опционально)"
+            return dependency.replace(/S\d+-[\dP+]+/g, (match) => {
+                return `<a href="#" class="dependency-link" data-target="${match}">${match}</a>`;
+            });
+        }
+
+        function scrollToCard(cardId) {
+            const card = document.querySelector(`.card[data-id="${cardId}"]`);
+            if (card) {
+                // If card is flipped, unflip it
+                if (card.classList.contains('flipped')) {
+                    card.classList.remove('flipped');
+                }
+                // Scroll to card
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Highlight briefly
+                card.style.boxShadow = '0 0 0 3px var(--accent)';
+                setTimeout(() => {
+                    card.style.boxShadow = '';
+                }, 1500);
+            } else {
+                // Card might be filtered out, reset filters and try again
+                activeStacks = [];
+                activeTasks = [];
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                renderCards();
+                setTimeout(() => scrollToCard(cardId), 100);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function openModal(index) {
+            const card = filteredCards[index];
+            const originalIndex = prompts.indexOf(card);
+            
+            modalContent.innerHTML = `
+                <button class="modal-close" id="modal-close">×</button>
+                <span class="card-id">${card.id}</span>
+                <h3 class="card-title">${card.title}</h3>
+                <p class="card-description">${card.description}</p>
+                <div class="card-tags">
+                    ${card.tags.map(tag => `<span class="card-tag">${getTaskName(tag)}</span>`).join('')}
+                </div>
+                ${card.dependency ? `<div class="card-dependency">после ${formatDependency(card.dependency)}</div>` : ''}
+                <div class="prompt-section">
+                    <span class="prompt-label">Промпт</span>
+                    <div class="prompt-text">${escapeHtml(card.prompt)}</div>
+                    <button class="btn btn-primary copy-btn" onclick="copyPrompt(${originalIndex})">Копировать промпт</button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            
+            document.getElementById('modal-close').addEventListener('click', closeModal);
+            
+            // Add click handlers for dependency links in modal
+            modalContent.querySelectorAll('.dependency-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const targetId = link.dataset.target;
+                    closeModal();
+                    setTimeout(() => scrollToCard(targetId), 200);
+                });
+            });
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function copyPrompt(index) {
+            const prompt = prompts[index].prompt;
+            navigator.clipboard.writeText(prompt).then(() => {
+                const btns = document.querySelectorAll('.copy-btn');
+                btns.forEach(btn => {
+                    if (btn.textContent !== 'Скопировано!') return;
+                });
+                event.target.textContent = 'Скопировано!';
+                event.target.classList.add('copied');
+                setTimeout(() => {
+                    event.target.textContent = 'Копировать промпт';
+                    event.target.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function setupEventListeners() {
+            // Stack filters
+            stackFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('stack-btn')) {
+                    const stackId = e.target.dataset.stack;
+                    if (activeStacks.includes(stackId)) {
+                        activeStacks = activeStacks.filter(s => s !== stackId);
+                        e.target.classList.remove('active');
+                    } else {
+                        activeStacks.push(stackId);
+                        e.target.classList.add('active');
+                    }
+                    renderCards();
+                }
+            });
+
+            // Task filters
+            taskFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('task-btn')) {
+                    const taskId = e.target.dataset.task;
+                    if (activeTasks.includes(taskId)) {
+                        activeTasks = activeTasks.filter(t => t !== taskId);
+                        e.target.classList.remove('active');
+                    } else {
+                        activeTasks.push(taskId);
+                        e.target.classList.add('active');
+                    }
+                    renderCards();
+                }
+            });
+
+            // View toggle
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentView = btn.dataset.view;
+                    renderCards();
+                });
+            });
+
+            // Random card
+            document.getElementById('random-btn').addEventListener('click', () => {
+                if (filteredCards.length === 0) return;
+                currentCardIndex = Math.floor(Math.random() * filteredCards.length);
+                if (currentView === 'grid') {
+                    openModal(currentCardIndex);
+                } else {
+                    renderSingleCard();
+                }
+            });
+
+            // Reset filters
+            document.getElementById('reset-btn').addEventListener('click', () => {
+                activeStacks = [];
+                activeTasks = [];
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                renderCards();
+            });
+
+            // Navigation in single view
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                if (filteredCards.length === 0) return;
+                currentCardIndex = (currentCardIndex - 1 + filteredCards.length) % filteredCards.length;
+                renderSingleCard();
+            });
+
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (filteredCards.length === 0) return;
+                currentCardIndex = (currentCardIndex + 1) % filteredCards.length;
+                renderSingleCard();
+            });
+
+            // Card click -> modal, flip, unflip, or dependency link
+            cardsGrid.addEventListener('click', (e) => {
+                // Handle flip button
+                if (e.target.dataset.action === 'flip') {
+                    e.stopPropagation();
+                    const card = e.target.closest('.card');
+                    if (card) {
+                        card.classList.add('flipped');
+                    }
+                    return;
+                }
+                
+                // Handle unflip
+                if (e.target.dataset.action === 'unflip') {
+                    e.stopPropagation();
+                    const card = e.target.closest('.card');
+                    if (card) {
+                        card.classList.remove('flipped');
+                    }
+                    return;
+                }
+                
+                // Handle dependency link click
+                if (e.target.classList.contains('dependency-link')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const targetId = e.target.dataset.target;
+                    scrollToCard(targetId);
+                    return;
+                }
+                
+                // Handle card click -> open modal (only if clicking on front)
+                const card = e.target.closest('.card');
+                if (card && !card.classList.contains('flipped')) {
+                    const index = parseInt(card.dataset.index);
+                    openModal(index);
+                }
+            });
+
+            // Modal close on overlay click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // ESC to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+                if (currentView === 'single') {
+                    if (e.key === 'ArrowLeft') {
+                        document.getElementById('prev-btn').click();
+                    } else if (e.key === 'ArrowRight') {
+                        document.getElementById('next-btn').click();
+                    }
+                }
+            });
+        }
+
+        // Make copyPrompt available globally
+        window.copyPrompt = copyPrompt;
+
+        // Init
+        init();
+    </script>
+</body>
+</html>
