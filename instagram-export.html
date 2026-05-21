@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samarkand Heritage Timeline - Instagram Stories Export</title>
+
+  <!-- Export libraries -->
+  <script defer src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --brand: #e74c3c;
+      --ink: #1a1a1a;
+      --ink-2: #2c3e50;
+      --bg: #000;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      overflow: hidden;
+      touch-action: pan-y;
+    }
+
+    /* ===== Browser Preview Container ===== */
+    .stories-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .story.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 10;
+    }
+
+    .story.prev {
+      opacity: 0;
+      transform: scale(1.05);
+    }
+
+    .story-content {
+      width: 100%;
+      max-width: 500px;
+      height: 100%;
+      padding: 60px 30px 40px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* ===== Progress bars ===== */
+    .progress-bars {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      right: 30px;
+      display: flex;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: white;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .progress-bar.completed .progress-fill { width: 100%; }
+    .progress-bar.active .progress-fill { animation: progress 8s linear forwards; }
+    @keyframes progress { from { width: 0%; } to { width: 100%; } }
+
+    .story:not(.story-quote) .progress-bar { background: rgba(0, 0, 0, 0.2); }
+    .story:not(.story-quote) .progress-fill { background: var(--brand); }
+
+    /* ===== Header ===== */
+    .story-header { margin-bottom: 30px; }
+
+    .story-date {
+      display: inline-block;
+      background: var(--brand);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .story-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+
+    .story-description {
+      font-size: 1.1rem;
+      color: var(--ink-2);
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* ===== Body & Bullets ===== */
+    .story-body {
+      flex: 1;
+      overflow-y: auto;
+      margin: 20px 0;
+      padding-right: 10px;
+    }
+
+    .story-body::-webkit-scrollbar { width: 4px; }
+    .story-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 2px; }
+    .story-body::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 2px; }
+
+    .story-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .story-details li {
+      position: relative;
+      display: block;
+      padding-left: 30px;
+      margin: 0 0 12px 0;
+      color: var(--ink-2);
+      font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .story-details li::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 0.6em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      transform: translateY(-50%);
+    }
+
+    .story-impact {
+      display: inline-block;
+      padding: 10px 18px;
+      background: var(--brand);
+      color: white;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-top: 15px;
+    }
+
+    /* ===== Quote Story ===== */
+    .story-quote {
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding: 0;
+    }
+
+    .story-quote .story-content {
+      padding: 0;
+      max-width: none;
+    }
+
+    .quote-content {
+      width: 100%;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: flex-start;
+    }
+
+    .quote-top {
+      background: linear-gradient(135deg, #0099cc 0%, #007ba3 100%);
+      padding: 50px 40px 40px;
+      flex: none;
+    }
+
+    .quote-icon {
+      font-size: 3rem;
+      color: white;
+      opacity: 0.5;
+      font-family: Georgia, serif;
+      margin-bottom: 15px;
+      line-height: 1;
+    }
+
+    .quote-text {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: white;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .quote-author {
+      font-size: 1rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .quote-context {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+    }
+
+    .quote-bottom {
+      flex: 1;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 40px;
+    }
+
+    .timeline-intro {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--ink-2);
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .timeline-intro .heritage-italic {
+      font-style: italic;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    /* ===== Stats Story ===== */
+    .story-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 80px;
+    }
+
+    .story-stats .story-content {
+      align-items: center;
+    }
+
+    .stats-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 30px;
+    }
+
+    .stats-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink-2);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    .stats-grid {
+      display: grid;
+      gap: 25px;
+      width: 100%;
+      max-width: 400px;
+      padding: 0 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 35px 30px;
+      border-radius: 20px;
+      text-align: center;
+      border: 3px solid #e9ecef;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card.unesco {
+      background: linear-gradient(135deg, rgba(0, 153, 204, 0.12) 0%, rgba(0, 123, 255, 0.08) 100%);
+      border-color: #0099cc;
+      border-width: 4px;
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px rgba(0, 153, 204, 0.25);
+    }
+
+    .stat-number {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: 15px;
+      line-height: 1;
+    }
+
+    .stat-card.unesco .stat-number {
+      color: #0099cc;
+      font-size: 4.5rem;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--ink-2);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* ===== CTA Story ===== */
+    .story-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: white;
+    }
+
+    .story-cta .story-content {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cta-content {
+      max-width: 500px;
+      padding: 40px;
+    }
+
+    .cta-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--ink-2);
+      line-height: 1.4;
+      margin-bottom: 50px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-title .line-break {
+      display: block;
+      margin: 10px 0;
+    }
+
+    .heritage-emphasis {
+      font-weight: 900;
+      color: #0099cc;
+      font-style: italic;
+    }
+
+    .cta-text {
+      font-size: 2.5rem;
+      color: var(--brand);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+    }
+
+    /* ===== Navigation ===== */
+    .nav-area {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 30%;
+      z-index: 50;
+      cursor: pointer;
+    }
+
+    .nav-prev { left: 0; }
+    .nav-next { right: 0; }
+
+    .nav-button {
+      position: absolute;
+      bottom: 30px;
+      background: white;
+      border: 2px solid var(--brand);
+      color: var(--brand);
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 60;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-button:hover {
+      background: var(--brand);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-prev { left: 30px; }
+    .btn-next { right: 30px; }
+
+    /* ===== Editor Tools ===== */
+    .editor-tools {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .editor-tools button {
+      font: 600 14px/1.4 system-ui, sans-serif;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .editor-tools button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .editor-tools button.primary {
+      background: var(--brand);
+      color: white;
+    }
+
+    .editor-tools button.primary:hover {
+      background: #c0392b;
+    }
+
+    .editor-tools .status {
+      font: 500 13px/1.4 system-ui;
+      color: rgba(255, 255, 255, 0.85);
+      padding: 0 16px;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    /* Safe area guide */
+    .safe-guide {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 150;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .safe-guide.active { display: flex; }
+
+    .safe-frame {
+      width: 1080px;
+      height: 1920px;
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      position: relative;
+      transform: scale(0.4);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .safe-zone {
+      position: absolute;
+      top: 250px;
+      bottom: 300px;
+      left: 60px;
+      right: 60px;
+      border: 2px solid #0f0;
+      background: rgba(0, 255, 0, 0.1);
+    }
+
+    .safe-label {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font: 600 12px/1 monospace;
+      white-space: nowrap;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .story-content { padding: 50px 20px 30px; }
+      .progress-bars { left: 20px; right: 20px; }
+      .story-title { font-size: 1.6rem; }
+      .story-description { font-size: 1rem; }
+      .nav-button { padding: 12px 24px; font-size: 0.9rem; }
+      .btn-prev { left: 20px; }
+      .btn-next { right: 20px; }
+      .stat-number { font-size: 3rem; }
+      .stat-card.unesco .stat-number { font-size: 3.5rem; }
+      .cta-title { font-size: 1.6rem; }
+      .cta-text { font-size: 1.8rem; }
+      .quote-top { padding: 40px 25px 30px; }
+      .quote-icon { font-size: 2.5rem; }
+      .quote-text { font-size: 1rem; }
+      .timeline-intro { font-size: 1.5rem; }
+    }
+
+    /* Pause animation */
+    .story.active.paused .progress-bar.active .progress-fill {
+      animation-play-state: paused;
+    }
+
+    /* Print mode */
+    @media print {
+      body { background: white; overflow: visible; }
+      .story { position: relative !important; opacity: 1 !important; transform: none !important; page-break-after: always; }
+      .nav-area, .nav-button, .editor-tools, .safe-guide { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stories-container" id="storiesContainer">
+    <!-- Story 0: Opening Quote -->
+    <div class="story story-quote active" data-story="0">
+      <div class="progress-bars" id="progressBars"></div>
+      <div class="story-content">
+        <div class="quote-content">
+          <div class="quote-top">
+            <div class="quote-icon">"</div>
+            <p class="quote-text">Eight years ago, I took on the position of Director-General of UNESCO with the conviction that its mission had lost none of its relevance or timeliness...</p>
+            <p class="quote-author">— Audrey Azoulay</p>
+            <p class="quote-context">UNESCO Director-General<br>Samarkand, November 2025</p>
+          </div>
+          <div class="quote-bottom">
+            <p class="timeline-intro">From demolished homes to silenced activists — a <span class="heritage-italic">heritage timeline</span> to mark UNESCO's General Conference in Uzbekistan</p>
+          </div>
+        </div>
+      </div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 1: Stats -->
+    <div class="story story-stats" data-story="1">
+      <div class="story-content">
+        <div class="stats-header">
+          <p class="stats-title">To mark UNESCO's General Conference in Uzbekistan</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">1,200</div>
+            <div class="stat-label">People Evicted<br>(May 2025)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">40,000</div>
+            <div class="stat-label">Threatened with eviction<br>in Tashkent</div>
+          </div>
+          <div class="stat-card unesco">
+            <div class="stat-number">0</div>
+            <div class="stat-label">UNESCO<br>Action Taken</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 2: NOV 2018 -->
+    <div class="story" data-story="2">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">NOV 2018</span>
+          <h2 class="story-title">First Demolition Orders in Samarkand</h2>
+          <p class="story-description">City mayor orders demolition of 500 private houses affecting 6,000 residents without consultation.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>Decision taken without consultation with affected residents</li>
+            <li>Project aims to "modernise" Samarkand city center</li>
+            <li>Houses located in UNESCO buffer zone, near protected monuments</li>
+            <li>Plan to replace homes with multi-story hotels and residential buildings</li>
+            <li>Khodja Akhrar neighborhood residents given only 3 days notice</li>
+          </ul>
+          <span class="story-impact">Impact: 6,000 residents at risk</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 3: 2019 -->
+    <div class="story" data-story="3">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">2019</span>
+          <h2 class="story-title">UN Special Rapporteurs Raise Alarm</h2>
+          <p class="story-description">UN experts express serious concern about forced evictions and housing demolitions in Samarkand UNESCO World Heritage Site.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>Special Rapporteurs on housing and cultural rights issue formal communication</li>
+            <li>Highlight violations of international human rights law</li>
+            <li>Note lack of consultation, inadequate compensation, no housing alternatives</li>
+            <li>Warn about threats to cultural heritage and community ties</li>
+            <li>Call for moratorium on demolitions</li>
+          </ul>
+          <span class="story-impact">Status: Warning Ignored</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 4: 2018-2024 -->
+    <div class="story" data-story="4">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">2018-2024</span>
+          <h2 class="story-title">40,000 Threatened in Tashkent Urban Renewal</h2>
+          <p class="story-description">Massive urban regeneration project evicts at least 10,000 people, threatens 30,000 more across the capital.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>At least 10,000 already evicted from city center homes</li>
+            <li>Further 30,000 under threat as project continues</li>
+            <li>Historic mahallas destroyed, replaced by "Tashkent City" business center</li>
+            <li>Compensation much lower than property values</li>
+            <li>Temporary housing far from work, schools, community ties</li>
+            <li>300 billion UZS in compensation still unpaid by July 2019</li>
+          </ul>
+          <span class="story-impact">Pattern: Systemic violations across regions</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 5: MAY 2025 -->
+    <div class="story" data-story="5">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">MAY 2025</span>
+          <h2 class="story-title">🚨 Al-Maturidi Evictions: 1,200 People Displaced</h2>
+          <p class="story-description">Entire neighborhood near al-Maturidi mausoleum demolished in weeks. Multoni Roma community loses homes of generations.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>Over 1,200 people forcibly evicted from UNESCO protected zone</li>
+            <li>Primarily affects Multoni minority, a local Roma community</li>
+            <li>Community lived in area for generations with deep cultural connections</li>
+            <li>No alternatives explored, no resettlement plan agreed upon</li>
+            <li>Expropriation under severe police and judicial pressure</li>
+            <li>Lawyer defending homeowner threatened and detained</li>
+            <li>Utilities disconnected to force residents out</li>
+            <li>Compensation insufficient to buy similar housing in city center</li>
+          </ul>
+          <span class="story-impact">Human Rights Crisis: Targeting of ethnic minority</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 6: OCT 2025 -->
+    <div class="story" data-story="6">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">OCT 2025</span>
+          <h2 class="story-title">UN Condemns, Activists Silenced</h2>
+          <p class="story-description">UN experts condemn forced evictions. Government responds by blocking phones and intimidating activists ahead of UNESCO conference.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>UN experts express grave concern about Samarkand evictions and criticize UNESCO for inaction</li>
+            <li>Government launches crackdown on activists and bloggers</li>
+            <li>Abdurahmon Tashanov (Ezgulik director): Phone blocked 4 days</li>
+            <li>Xudoyberdi Zominiy: Questioned by counter-terrorism unit</li>
+            <li>Zafar Xandamov: Internet and mobile completely blocked</li>
+            <li>Multiple activists report similar intimidation tactics</li>
+          </ul>
+          <span class="story-impact">Repression: Restrictions on freedom of expression during UNESCO visit</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 7: NOV 2025 -->
+    <div class="story" data-story="7">
+      <div class="story-content">
+        <div class="story-header">
+          <span class="story-date">NOV 2025</span>
+          <h2 class="story-title">UNESCO Conference Begins in Samarkand</h2>
+          <p class="story-description">43rd General Conference held in Samarkand—first time in 40 years outside Paris. President speaks on heritage protection.</p>
+        </div>
+        <div class="story-body">
+          <ul class="story-details">
+            <li>First UNESCO General Conference outside Paris in 40 years</li>
+            <li>President Mirziyoyev proposes UNESCO Academy for Women's Leadership</li>
+            <li>Calls for resolution on preserving cultural heritage</li>
+            <li>Government celebrates hosting "prestigious" event</li>
+            <li>No acknowledgment of 1,200 people evicted months earlier</li>
+            <li>Activists remain silenced, phones still blocked</li>
+            <li>UNESCO fails to address human rights violations in host city</li>
+          </ul>
+          <span class="story-impact">The Irony: Celebrating "heritage" built on forced evictions</span>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <div class="nav-area nav-next" onclick="nextStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+      <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+    </div>
+
+    <!-- Story 8: Final CTA -->
+    <div class="story story-cta" data-story="8">
+      <div class="story-content">
+        <div class="cta-content">
+          <h2 class="cta-title">
+            <span class="line-break">Share this timeline with</span>
+            <span class="line-break">thoughts on what</span>
+            <span class="line-break"><span class="heritage-emphasis">"protecting heritage"</span> means.</span>
+          </h2>
+          <p class="cta-text">DEMAND ACCOUNTABILITY.</p>
+        </div>
+      </div>
+      <div class="nav-area nav-prev" onclick="prevStory()"></div>
+      <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+    </div>
+  </div>
+
+  <!-- Editor Tools -->
+  <div class="editor-tools">
+    <button id="btnExportCurrent" class="primary">📸 Export Current (PNG)</button>
+    <button id="btnExportAll" class="primary">📦 Export All (ZIP)</button>
+    <span class="status" id="exportStatus"></span>
+    <button id="btnToggleSafe">🎯 Safe Area</button>
+  </div>
+
+  <!-- Safe Area Guide -->
+  <div class="safe-guide" id="safeGuide">
+    <div class="safe-frame">
+      <div class="safe-zone"></div>
+      <div class="safe-label">1080×1920 | Safe: 960×1370</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Story Navigation =====
+    let currentStory = 0;
+    const totalStories = 9;
+    let autoPlayTimer = null;
+    let isPaused = false;
+
+    function initProgressBars() {
+      const progressBars = document.getElementById('progressBars');
+      if (!progressBars) return;
+
+      progressBars.innerHTML = '';
+      for (let i = 0; i < totalStories; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'progress-bar';
+        if (i < currentStory) bar.classList.add('completed');
+        bar.innerHTML = '<div class="progress-fill"></div>';
+        progressBars.appendChild(bar);
+      }
+
+      document.querySelectorAll('.story').forEach(story => {
+        const existing = story.querySelector('.progress-bars');
+        if (!existing) {
+          story.insertAdjacentHTML('afterbegin', progressBars.outerHTML);
+        } else {
+          existing.innerHTML = progressBars.innerHTML;
+        }
+      });
+    }
+
+    function updateProgressBars() {
+      document.querySelectorAll('.story').forEach(story => {
+        const bars = story.querySelectorAll('.progress-bar');
+        bars.forEach((bar, idx) => {
+          bar.classList.remove('active', 'completed');
+          if (idx < currentStory) bar.classList.add('completed');
+          else if (idx === currentStory) bar.classList.add('active');
+        });
+      });
+    }
+
+    function showStory(index) {
+      const stories = document.querySelectorAll('.story');
+      stories.forEach((story, i) => {
+        story.classList.remove('active', 'prev');
+        if (i === index) story.classList.add('active');
+        else if (i < index) story.classList.add('prev');
+      });
+      updateProgressBars();
+      startAutoPlay();
+    }
+
+    function nextStory() {
+      if (currentStory < totalStories - 1) {
+        currentStory++;
+        showStory(currentStory);
+      }
+    }
+
+    function prevStory() {
+      if (currentStory > 0) {
+        currentStory--;
+        showStory(currentStory);
+      }
+    }
+
+    function startAutoPlay() {
+      clearTimeout(autoPlayTimer);
+      if (!isPaused && currentStory < totalStories - 1) {
+        autoPlayTimer = setTimeout(nextStory, 8000);
+      }
+    }
+
+    function pauseStory() {
+      isPaused = true;
+      clearTimeout(autoPlayTimer);
+      const active = document.querySelector('.story.active');
+      if (active) active.classList.add('paused');
+    }
+
+    function resumeStory() {
+      isPaused = false;
+      const active = document.querySelector('.story.active');
+      if (active) active.classList.remove('paused');
+      startAutoPlay();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextStory();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevStory();
+      }
+    });
+
+    let pressTimer = null;
+    document.querySelectorAll('.story').forEach(story => {
+      story.addEventListener('mousedown', () => {
+        pressTimer = setTimeout(pauseStory, 200);
+      });
+      story.addEventListener('mouseup', () => {
+        clearTimeout(pressTimer);
+        resumeStory();
+      });
+      story.addEventListener('touchstart', () => {
+        pressTimer = setTimeout(pauseStory, 200);
+      });
+      story.addEventListener('touchend', () => {
+        clearTimeout(pressTimer);
+        resumeStory();
+      });
+    });
+
+    // ===== Export Functions =====
+
+    function setStatus(msg, isError = false) {
+      const status = document.getElementById('exportStatus');
+      if (status) {
+        status.textContent = msg;
+        status.style.color = isError ? '#ff6b6b' : 'rgba(255,255,255,0.85)';
+      }
+      console.log(msg);
+    }
+
+    async function waitForLibraries() {
+      const maxWait = 15000;
+      const start = Date.now();
+
+      while (Date.now() - start < maxWait) {
+        if (window.htmlToImage && window.JSZip && window.saveAs) {
+          setStatus('Libraries loaded ✓');
+          return true;
+        }
+        await new Promise(r => setTimeout(r, 100));
+      }
+
+      throw new Error('Export libraries failed to load. Check internet connection.');
+    }
+
+    async function waitForFonts() {
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+          await new Promise(r => setTimeout(r, 500));
+          setStatus('Fonts ready ✓');
+          return true;
+        } catch (e) {
+          console.warn('Font loading:', e);
+        }
+      }
+      return false;
+    }
+
+    function createExportFrame(storyEl) {
+      // Create 1080×1920 frame
+      const frame = document.createElement('div');
+      frame.style.cssText = `
+        width: 1080px;
+        height: 1920px;
+        position: fixed;
+        top: -10000px;
+        left: -10000px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 250px 60px 300px;
+        background: ${getComputedStyle(storyEl).background || 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'};
+      `;
+
+      // Clone and clean content
+      const content = storyEl.querySelector('.story-content');
+      if (content) {
+        const clone = content.cloneNode(true);
+
+        // Remove UI elements
+        clone.querySelectorAll('.nav-area, .nav-button, .progress-bars').forEach(el => el.remove());
+
+        // Adjust for export
+        clone.style.cssText = `
+          width: 100%;
+          max-width: ${storyEl.classList.contains('story-quote') || storyEl.classList.contains('story-cta') ? 'none' : '960px'};
+          height: auto;
+          padding: ${storyEl.classList.contains('story-quote') || storyEl.classList.contains('story-cta') ? '0' : '0 30px'};
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+        `;
+
+        // Fix scrollable body
+        const body = clone.querySelector('.story-body');
+        if (body) {
+          body.style.cssText = 'flex: none; overflow: visible; height: auto; max-height: none;';
+        }
+
+        frame.appendChild(clone);
+      }
+
+      return frame;
+    }
+
+    async function exportCurrentPNG() {
+      const active = document.querySelector('.story.active');
+      if (!active) {
+        setStatus('No active story', true);
+        return;
+      }
+
+      try {
+        setStatus('Preparing export...');
+        await waitForLibraries();
+        await waitForFonts();
+
+        const frame = createExportFrame(active);
+        document.body.appendChild(frame);
+
+        await new Promise(r => setTimeout(r, 800));
+
+        setStatus('Rendering PNG...');
+        const dataUrl = await window.htmlToImage.toPng(frame, {
+          width: 1080,
+          height: 1920,
+          pixelRatio: 2,
+          quality: 0.95,
+          cacheBust: true,
+          backgroundColor: '#ffffff'
+        });
+
+        const link = document.createElement('a');
+        const storyNum = active.getAttribute('data-story') || '0';
+        link.download = `story-${storyNum.padStart(2, '0')}-samarkand.png`;
+        link.href = dataUrl;
+        link.click();
+
+        setStatus('✓ Exported!');
+        setTimeout(() => setStatus(''), 3000);
+
+        frame.remove();
+      } catch (err) {
+        console.error('Export error:', err);
+        setStatus(`Export failed: ${err.message}`, true);
+        setTimeout(() => setStatus(''), 5000);
+      }
+    }
+
+    async function exportAllZIP() {
+      try {
+        setStatus('Starting batch export...');
+        await waitForLibraries();
+        await waitForFonts();
+
+        const stories = Array.from(document.querySelectorAll('.story'));
+        const zip = new window.JSZip();
+        let count = 0;
+
+        for (let i = 0; i < stories.length; i++) {
+          const story = stories[i];
+          const storyNum = story.getAttribute('data-story') || i;
+
+          setStatus(`Exporting ${i + 1}/${stories.length}...`);
+
+          const frame = createExportFrame(story);
+          document.body.appendChild(frame);
+
+          try {
+            await new Promise(r => setTimeout(r, 800));
+
+            const dataUrl = await window.htmlToImage.toPng(frame, {
+              width: 1080,
+              height: 1920,
+              pixelRatio: 2,
+              quality: 0.95,
+              cacheBust: true,
+              backgroundColor: '#ffffff'
+            });
+
+            const blob = dataURLtoBlob(dataUrl);
+            if (blob && blob.size > 0) {
+              zip.file(`story-${String(storyNum).padStart(2, '0')}-samarkand.png`, blob);
+              count++;
+            }
+          } catch (err) {
+            console.error(`Failed story ${storyNum}:`, err);
+          } finally {
+            frame.remove();
+          }
+        }
+
+        if (count === 0) {
+          setStatus('Export failed - no images created', true);
+          return;
+        }
+
+        setStatus(`Creating ZIP with ${count} images...`);
+        const zipBlob = await zip.generateAsync({
+          type: 'blob',
+          compression: 'DEFLATE',
+          compressionOptions: { level: 6 }
+        });
+
+        window.saveAs(zipBlob, 'samarkand-timeline-instagram-stories.zip');
+        setStatus(`✓ Exported ${count} stories!`);
+        setTimeout(() => setStatus(''), 4000);
+
+      } catch (err) {
+        console.error('Batch export error:', err);
+        setStatus(`Batch export failed: ${err.message}`, true);
+        setTimeout(() => setStatus(''), 5000);
+      }
+    }
+
+    function dataURLtoBlob(dataURL) {
+      const parts = dataURL.split(',');
+      const mime = parts[0].match(/:(.*?);/)[1];
+      const bstr = atob(parts[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime });
+    }
+
+    // ===== UI Wiring =====
+    function wireUI() {
+      const btnCurrent = document.getElementById('btnExportCurrent');
+      const btnAll = document.getElementById('btnExportAll');
+      const btnSafe = document.getElementById('btnToggleSafe');
+
+      if (btnCurrent) btnCurrent.addEventListener('click', exportCurrentPNG);
+      if (btnAll) btnAll.addEventListener('click', exportAllZIP);
+      if (btnSafe) {
+        btnSafe.addEventListener('click', () => {
+          document.getElementById('safeGuide').classList.toggle('active');
+        });
+      }
+    }
+
+    // ===== Init =====
+    window.addEventListener('load', () => {
+      initProgressBars();
+      updateProgressBars();
+      startAutoPlay();
+      wireUI();
+
+      console.log('%c📸 Instagram Stories Exporter Ready', 'background:#e74c3c;color:#fff;padding:8px 16px;border-radius:4px;font-weight:bold');
+      console.log('Export: 1080×1920px @ 2x (2160×3840)');
+      console.log('Safe zone: 250px top, 300px bottom, 60px sides');
+    });
+  </script>
+</body>
+</html>

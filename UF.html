@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samarkand Heritage Timeline - Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .stories-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .story.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        .story.prev {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+
+        .story-content {
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            padding: 60px 30px 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Progress bars */
+        .progress-bars {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            right: 30px;
+            display: flex;
+            gap: 6px;
+            z-index: 100;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .progress-bar.completed .progress-fill {
+            width: 100%;
+        }
+
+        .progress-bar.active .progress-fill {
+            animation: progress 8s linear forwards;
+        }
+
+        @keyframes progress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .story:not(.story-quote) .progress-bar {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .story:not(.story-quote) .progress-fill {
+            background: #e74c3c;
+        }
+
+        /* Story header */
+        .story-header {
+            margin-bottom: 30px;
+        }
+
+        .story-date {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .story-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .story-description {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Story body */
+        .story-body {
+            flex: 1;
+            overflow-y: auto;
+            margin: 20px 0;
+            padding-right: 10px;
+        }
+
+        .story-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .story-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+        }
+
+        .story-body::-webkit-scrollbar-thumb {
+            background: #e74c3c;
+            border-radius: 2px;
+        }
+
+        .story-details {
+            list-style: none;
+            padding: 0;
+        }
+
+        .story-details li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #2c3e50;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .story-details li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #e74c3c;
+            font-size: 1.8rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .story-impact {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        /* Navigation */
+        .nav-area {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            z-index: 50;
+            cursor: pointer;
+        }
+
+        .nav-prev {
+            left: 0;
+        }
+
+        .nav-next {
+            right: 0;
+        }
+
+        .nav-button {
+            position: absolute;
+            bottom: 30px;
+            background: white;
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 60;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-button:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-prev {
+            left: 30px;
+        }
+
+        .btn-next {
+            right: 30px;
+        }
+
+        .btn-close {
+            right: 30px;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-close:hover {
+            background: #c0392b;
+        }
+
+        /* Quote story */
+        .story-quote {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            padding: 0;
+        }
+
+        .quote-content {
+            width: 100%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: flex-start;
+        }
+
+        .quote-top {
+            background: linear-gradient(135deg, #0099cc 0%, #007ba3 100%);
+            padding: 50px 40px 40px;
+            flex: none;
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: white;
+            opacity: 0.5;
+            font-family: Georgia, serif;
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+        .quote-text {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: white;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .quote-context {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .quote-bottom {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 40px;
+        }
+
+        .timeline-intro {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #2c3e50;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .timeline-intro .heritage-italic {
+            font-style: italic;
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        /* Stats story */
+        .story-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 80px;
+        }
+
+        .stats-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 30px;
+        }
+
+        .stats-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 25px;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid #e9ecef;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.unesco {
+            background: linear-gradient(135deg, rgba(0, 153, 204, 0.12) 0%, rgba(0, 123, 255, 0.08) 100%);
+            border-color: #0099cc;
+            border-width: 4px;
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 153, 204, 0.25);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+        .stat-card.unesco .stat-number {
+            color: #0099cc;
+            font-size: 4.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        /* Final CTA story */
+        .story-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: white;
+        }
+
+        .cta-content {
+            max-width: 500px;
+            padding: 40px;
+        }
+
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #2c3e50;
+            line-height: 1.4;
+            margin-bottom: 50px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-title .line-break {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .heritage-emphasis {
+            font-weight: 900;
+            color: #0099cc;
+            font-style: italic;
+        }
+
+        .cta-text {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .story-content {
+                padding: 50px 20px 30px;
+            }
+
+            .progress-bars {
+                left: 20px;
+                right: 20px;
+            }
+
+            .story-title {
+                font-size: 1.6rem;
+            }
+
+            .story-description {
+                font-size: 1rem;
+            }
+
+            .nav-button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            .btn-prev {
+                left: 20px;
+            }
+
+            .btn-next, .btn-close {
+                right: 20px;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+            }
+
+            .stat-card.unesco .stat-number {
+                font-size: 3.5rem;
+            }
+
+            .cta-title {
+                font-size: 1.6rem;
+            }
+
+            .cta-text {
+                font-size: 1.8rem;
+            }
+
+            .quote-top {
+                padding: 40px 25px 30px;
+            }
+
+            .quote-icon {
+                font-size: 2.5rem;
+            }
+
+            .quote-text {
+                font-size: 1rem;
+            }
+
+            .quote-author {
+                font-size: 0.9rem;
+            }
+
+            .quote-context {
+                font-size: 0.75rem;
+            }
+
+            .quote-bottom {
+                padding: 40px 25px;
+            }
+
+            .timeline-intro {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Pause on hover/touch */
+        .story.active.paused .progress-bar.active .progress-fill {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <div class="stories-container" id="storiesContainer">
+        <!-- Story 0: Opening Quote -->
+        <div class="story story-quote active" data-story="0">
+            <div class="progress-bars" id="progressBars"></div>
+            <div class="quote-content">
+                <div class="quote-top">
+                    <div class="quote-icon">"</div>
+                    <p class="quote-text">Eight years ago, I took on the position of Director-General of UNESCO with the conviction that its mission had lost none of its relevance or timeliness...</p>
+                    <p class="quote-author">— Audrey Azoulay</p>
+                    <p class="quote-context">UNESCO Director-General<br>Samarkand, November 2025</p>
+                </div>
+                <div class="quote-bottom">
+                    <p class="timeline-intro">From demolished homes to silenced activists — a <span class="heritage-italic">heritage timeline</span> to mark UNESCO's General Conference in Uzbekistan</p>
+                </div>
+            </div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 1: Stats -->
+        <div class="story story-stats" data-story="1">
+            <div class="stats-header">
+                <p class="stats-title">To mark UNESCO's General Conference in Uzbekistan</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,200</div>
+                    <div class="stat-label">People Evicted<br>May 2025</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">40,000</div>
+                    <div class="stat-label">Threatened with eviction<br>in Tashkent</div>
+                </div>
+                <div class="stat-card unesco">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">UNESCO<br>Action Taken</div>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 2: NOV 2018 -->
+        <div class="story" data-story="2">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">NOV 2018</span>
+                    <h2 class="story-title">First Demolition Orders in Samarkand</h2>
+                    <p class="story-description">City mayor orders demolition of 500 private houses affecting 6,000 residents without consultation.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>Decision taken without consultation with affected residents</li>
+                        <li>Project aims to "modernise" Samarkand city center</li>
+                        <li>Houses located in UNESCO buffer zone, near protected monuments</li>
+                        <li>Plan to replace homes with multi-story hotels and residential buildings</li>
+                        <li>Khodja Akhrar neighborhood residents given only 3 days notice</li>
+                    </ul>
+                    <span class="story-impact">Impact: 6,000 residents at risk</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 3: 2019 -->
+        <div class="story" data-story="3">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">2019</span>
+                    <h2 class="story-title">UN Special Rapporteurs Raise Alarm</h2>
+                    <p class="story-description">UN experts express serious concern about forced evictions and housing demolitions in Samarkand UNESCO World Heritage Site.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>Special Rapporteurs on housing and cultural rights issue formal communication</li>
+                        <li>Highlight violations of international human rights law</li>
+                        <li>Note lack of consultation, inadequate compensation, no housing alternatives</li>
+                        <li>Warn about threats to cultural heritage and community ties</li>
+                        <li>Call for moratorium on demolitions</li>
+                    </ul>
+                    <span class="story-impact">Status: Warning Ignored</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 4: 2018-2024 -->
+        <div class="story" data-story="4">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">2018-2024</span>
+                    <h2 class="story-title">40,000 Threatened in Tashkent Urban Renewal</h2>
+                    <p class="story-description">Massive urban regeneration project evicts at least 10,000 people, threatens 30,000 more across the capital.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>At least 10,000 already evicted from city center homes</li>
+                        <li>Further 30,000 under threat as project continues</li>
+                        <li>Historic mahallas destroyed, replaced by "Tashkent City" business center</li>
+                        <li>Compensation much lower than property values</li>
+                        <li>Temporary housing far from work, schools, community ties</li>
+                        <li>300 billion UZS in compensation still unpaid by July 2019</li>
+                    </ul>
+                    <span class="story-impact">Pattern: Systemic violations across regions</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 5: MAY 2025 -->
+        <div class="story" data-story="5">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">MAY 2025</span>
+                    <h2 class="story-title">🚨 Al-Maturidi Evictions: 1,200 People Displaced</h2>
+                    <p class="story-description">Entire neighborhood near al-Maturidi mausoleum demolished in weeks. Multoni Roma community loses homes of generations.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>Over 1,200 people forcibly evicted from UNESCO protected zone</li>
+                        <li>Primarily affects Multoni minority, a local Roma community</li>
+                        <li>Community lived in area for generations with deep cultural connections</li>
+                        <li>No alternatives explored, no resettlement plan agreed upon</li>
+                        <li>Expropriation under severe police and judicial pressure</li>
+                        <li>Lawyer defending homeowner threatened and detained</li>
+                        <li>Utilities disconnected to force residents out</li>
+                        <li>Compensation insufficient to buy similar housing in city center</li>
+                    </ul>
+                    <span class="story-impact">Human Rights Crisis: Targeting of ethnic minority</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 6: OCT 2025 -->
+        <div class="story" data-story="6">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">OCT 2025</span>
+                    <h2 class="story-title">UN Condemns, Activists Silenced</h2>
+                    <p class="story-description">UN experts condemn forced evictions. Government responds by blocking phones and intimidating activists ahead of UNESCO conference.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>UN experts express grave concern about Samarkand evictions and criticize UNESCO for inaction</li>
+                        <li>Government launches crackdown on activists and bloggers</li>
+                        <li>Abdurahmon Tashanov (Ezgulik director): Phone blocked 4 days</li>
+                        <li>Xudoyberdi Zominiy: Questioned by counter-terrorism unit</li>
+                        <li>Zafar Xandamov: Internet and mobile completely blocked</li>
+                        <li>Multiple activists report similar intimidation tactics</li>
+                    </ul>
+                    <span class="story-impact">Repression: Restrictions on freedom of expression during UNESCO visit</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 7: NOV 2025 -->
+        <div class="story" data-story="7">
+            <div class="story-content">
+                <div class="story-header">
+                    <span class="story-date">NOV 2025</span>
+                    <h2 class="story-title">UNESCO Conference Begins in Samarkand</h2>
+                    <p class="story-description">43rd General Conference held in Samarkand—first time in 40 years outside Paris. President speaks on heritage protection.</p>
+                </div>
+                <div class="story-body">
+                    <ul class="story-details">
+                        <li>First UNESCO General Conference outside Paris in 40 years</li>
+                        <li>President Mirziyoyev proposes UNESCO Academy for Women's Leadership</li>
+                        <li>Calls for resolution on preserving cultural heritage</li>
+                        <li>Government celebrates hosting "prestigious" event</li>
+                        <li>No acknowledgment of 1,200 people evicted months earlier</li>
+                        <li>Activists remain silenced, phones still blocked</li>
+                        <li>UNESCO fails to address human rights violations in host city</li>
+                    </ul>
+                    <span class="story-impact">The Irony: Celebrating "heritage" built on forced evictions</span>
+                </div>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <div class="nav-area nav-next" onclick="nextStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-next" onclick="nextStory()">Next →</button>
+        </div>
+
+        <!-- Story 8: Final CTA -->
+        <div class="story story-cta" data-story="8">
+            <div class="cta-content">
+                <h2 class="cta-title">
+                    <span class="line-break">Share this timeline with</span>
+                    <span class="line-break">thoughts on what</span>
+                    <span class="line-break"><span class="heritage-emphasis">"protecting heritage"</span> means.</span>
+                </h2>
+                <p class="cta-text">Demand accountability.</p>
+            </div>
+            <div class="nav-area nav-prev" onclick="prevStory()"></div>
+            <button class="nav-button btn-prev" onclick="prevStory()">← Back</button>
+            <button class="nav-button btn-close" onclick="closeStories()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStory = 0;
+        const totalStories = 9;
+        let autoPlayTimer = null;
+        let isPaused = false;
+
+        // Initialize progress bars
+        function initProgressBars() {
+            const progressBars = document.getElementById('progressBars');
+            progressBars.innerHTML = '';
+            for (let i = 0; i < totalStories; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'progress-bar';
+                if (i < currentStory) {
+                    bar.classList.add('completed');
+                }
+                bar.innerHTML = '<div class="progress-fill"></div>';
+                progressBars.appendChild(bar);
+            }
+
+            // Clone progress bars to all stories
+            document.querySelectorAll('.story').forEach(story => {
+                const existingBars = story.querySelector('.progress-bars');
+                if (!existingBars) {
+                    story.insertAdjacentHTML('afterbegin', progressBars.outerHTML);
+                } else {
+                    existingBars.innerHTML = progressBars.innerHTML;
+                }
+            });
+        }
+
+        function updateProgressBars() {
+            document.querySelectorAll('.story').forEach(story => {
+                const bars = story.querySelectorAll('.progress-bar');
+                bars.forEach((bar, index) => {
+                    bar.classList.remove('active', 'completed');
+                    if (index < currentStory) {
+                        bar.classList.add('completed');
+                    } else if (index === currentStory) {
+                        bar.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        function showStory(index) {
+            const stories = document.querySelectorAll('.story');
+            stories.forEach((story, i) => {
+                story.classList.remove('active', 'prev');
+                if (i === index) {
+                    story.classList.add('active');
+                } else if (i < index) {
+                    story.classList.add('prev');
+                }
+            });
+            updateProgressBars();
+            startAutoPlay();
+        }
+
+        function nextStory() {
+            if (currentStory < totalStories - 1) {
+                currentStory++;
+                showStory(currentStory);
+            }
+        }
+
+        function prevStory() {
+            if (currentStory > 0) {
+                currentStory--;
+                showStory(currentStory);
+            }
+        }
+
+        function startAutoPlay() {
+            clearTimeout(autoPlayTimer);
+            if (!isPaused && currentStory < totalStories - 1) {
+                autoPlayTimer = setTimeout(() => {
+                    nextStory();
+                }, 8000); // 8 seconds per story
+            }
+        }
+
+        function pauseStory() {
+            isPaused = true;
+            clearTimeout(autoPlayTimer);
+            document.querySelector('.story.active').classList.add('paused');
+        }
+
+        function resumeStory() {
+            isPaused = false;
+            document.querySelector('.story.active').classList.remove('paused');
+            startAutoPlay();
+        }
+
+        function closeStories() {
+            alert('Timeline complete! Share your thoughts on what "protecting heritage" should mean.');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextStory();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevStory();
+            } else if (e.key === 'Escape') {
+                closeStories();
+            }
+        });
+
+        // Touch/mouse pause functionality
+        let pressTimer = null;
+        document.querySelectorAll('.story').forEach(story => {
+            story.addEventListener('mousedown', () => {
+                pressTimer = setTimeout(pauseStory, 200);
+            });
+
+            story.addEventListener('mouseup', () => {
+                clearTimeout(pressTimer);
+                resumeStory();
+            });
+
+            story.addEventListener('touchstart', () => {
+                pressTimer = setTimeout(pauseStory, 200);
+            });
+
+            story.addEventListener('touchend', () => {
+                clearTimeout(pressTimer);
+                resumeStory();
+            });
+        });
+
+        // Initialize
+        initProgressBars();
+        updateProgressBars();
+        startAutoPlay();
+    </script>
+</body>
+</html>
