@@ -79,6 +79,7 @@
       section: 'Codex case',
       note: 'От любопытства к плану',
       anchors: [
+        { label: 'От задачи к skill', href: '#task-to-skill' },
         { label: 'Материалы', href: '#materials' },
         { label: 'Диалог Codex', href: 'codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71' }
       ]
