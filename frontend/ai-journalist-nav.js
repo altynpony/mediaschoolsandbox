@@ -51,6 +51,18 @@
       note: 'Нарния выходит из шкафа'
     },
     {
+      path: 'connectors-mcp.html',
+      title: 'Коннекторы и MCP-протокол',
+      section: 'Коннекторы и MCP',
+      note: 'Розетки, инструменты, разрешения',
+      anchors: [
+        { label: 'Коннектор', href: '#connectors' },
+        { label: 'MCP', href: '#mcp' },
+        { label: 'Tool use', href: '#tool-use' },
+        { label: 'Разрешения', href: '#permissions' }
+      ]
+    },
+    {
       path: 'codex-case.html',
       title: 'Сценарии и агенты',
       section: 'Codex case',
@@ -96,6 +108,7 @@
       links: [
         { label: 'Roadmap', href: 'vibecoder.html', note: 'Путь занятия' },
         { label: 'Агентность модели', href: 'model-agency.html', note: 'Нарния выходит из шкафа' },
+        { label: 'Коннекторы и MCP', href: 'connectors-mcp.html', note: 'Инструменты и доступы' },
         { label: 'Сценарии и агенты', href: 'codex-case.html', note: 'Кейс Codex' }
       ]
     },
