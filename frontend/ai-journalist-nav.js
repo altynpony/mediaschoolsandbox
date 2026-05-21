@@ -28,6 +28,12 @@
       ]
     },
     {
+      path: 'prompts-2022-2025.html',
+      title: 'Промпты 2022-2025',
+      section: 'Промпты 2022-2025',
+      note: 'Oldies but goodies'
+    },
+    {
       path: 'vibecoder.html',
       title: 'Vibecoder',
       section: 'Roadmap',
@@ -74,6 +80,7 @@
       title: 'Промпты',
       links: [
         { label: 'Neurologic prompts', href: 'neurologic-prompts.html', note: 'Библиотека промптов' },
+        { label: 'Промпты 2022-2025', href: 'prompts-2022-2025.html', note: 'Oldies but goodies' },
         { label: 'Hypotesis', href: 'hypothesis.html#ai-prompt', note: 'Процедурный AI prompt' }
       ]
     },

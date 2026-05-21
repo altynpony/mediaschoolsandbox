@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Основные методы промптинга</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #ae6df0;
+      --primary-light: #b68fd2;
+      --primary-dark: #9b77bf;
+      --primary-darker: #685080;
+      --complement-color: #aff06d;
+      --text-color: #333;
+      --light-bg: #f5f7fa;
+      --spacing-unit: 8px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      background-color: var(--light-bg);
+      color: var(--text-color);
+      line-height: 1.8;
+      margin: 0;
+      padding: calc(var(--spacing-unit) * 2.5);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: calc(var(--spacing-unit) * 3);
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 3rem;
+      letter-spacing: -0.5px;
+      text-align: center;
+      color: var(--text-color);
+      margin-bottom: calc(var(--spacing-unit) * 6.25);
+      padding-bottom: calc(var(--spacing-unit) * 2);
+      border-bottom: 1px solid var(--primary-color);
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: calc(var(--spacing-unit) * 3) 0;
+      font-size: 15px;
+      table-layout: fixed;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    thead tr {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+      color: white;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    th {
+      padding: calc(var(--spacing-unit) * 2.5);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    th:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    td {
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2.5);
+      border-bottom: 1px solid #eee;
+      transition: all 0.2s ease-in-out;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    /* Ширина столбцов для 5 колонок */
+    th:nth-child(1), td:nth-child(1) { width: 15%; }
+    th:nth-child(2), td:nth-child(2) { width: 20%; }
+    th:nth-child(3), td:nth-child(3) { width: 20%; }
+    th:nth-child(4), td:nth-child(4) { width: 30%; }
+    th:nth-child(5), td:nth-child(5) { width: 15%; }
+    
+    tbody tr {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    tbody tr:nth-of-type(even) {
+      background-color: rgba(174, 109, 240, 0.03);
+    }
+    
+    tbody tr:hover {
+      background-color: rgba(174, 109, 240, 0.07);
+      transform: translateY(-1px);
+    }
+    
+    td:first-child {
+      border-left: 3px solid transparent;
+    }
+    
+    tbody tr:hover td:first-child {
+      border-left: 3px solid var(--primary-color);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      body {
+        padding: calc(var(--spacing-unit) * 1.5);
+      }
+      
+      .container {
+        padding: calc(var(--spacing-unit) * 2);
+      }
+      
+      h1 {
+        font-size: 2.7rem;
+      }
+      
+      td, th {
+        padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .table-wrapper {
+        overflow-x: auto;
+      }
+      
+      table {
+        width: 100%;
+        min-width: 650px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="ai-journalist-nav.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Основные методы промптинга</h1>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Метод</th>
+            <th>Промпт</th>
+            <th>Translation</th>
+            <th>Когда применять и комментарий</th>
+            <th>Дополнительно</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Принцип шкалы</td>
+            <td>На шкале от 0 до 10, где 0 академический, а 10 Gen-Z, пиши на 8</td>
+            <td>On a scale from 1 to 10 where 1 is happy and 10 is sad, write at level 7</td>
+            <td>Стилизация текста, изменение настроения и тона</td>
+            <td>Меняет все - если правильно подобрать понятия по краям шкалы</td>
+          </tr>
+          <tr>
+            <td>Убрать многословность</td>
+            <td>Use 40% fewer filler words</td>
+            <td><em>Лучше работает на англиском, можно добавить к тексту на любом языке</em></td>
+            <td>Делает текст короче и прямее. Теряет нюансы</td>
+            <td>Идеально для формальных писем</td>
+          </tr>
+          <tr>
+            <td>Температура (0–2)</td>
+            <td>Operate with lower/higher Temperature 0.3 - 1.8</td>
+            <td><em>Лучше работает на англиском, можно добавить к тексту на любом языке</em></td>
+            <td>Высокая Т - Нэйминг, брейнсторм-сессия. Низкая - для минимальной обработки готового текста.</td>
+            <td>Низкая T = сухой, никаких сюрпризов, хорош для минимальной обработки готового текста. Высокая T = эксцентричность и выдумка, может впасть в безумие и заговорить сразу на трех языках</td>
+          </tr>
+          <tr>
+            <td>Граф памяти (Запомни/Забудь)</td>
+            <td>- Запомни: все тексты для сайта пиши в Markdown, обращаясь на вы - Забудь предыдущие гайдлайны</td>
+            <td>- Remember: use Markdown, address people formally - Forget the previous guidelines</td>
+            <td>Удобно при длительной сессии. Можно хранить и сбрасывать актуальный контекст</td>
+            <td>Модель не учится на этой памяти, можно сказать, что просто “записывает” и “сверяется”</td>
+          </tr>
+          <tr>
+            <td>Помощь в создании контекста</td>
+            <td>&lt;Суть задачи&gt; Но, перед тем как приступить, задай 30 уточняющих вопросов</td>
+            <td>Ask me 30 questions first</td>
+            <td>Когда не знаешь с чего начать. Даёт собрать нужные детали и не упустить важные моменты</td>
+            <td>Бывает занудно</td>
+          </tr>
+          <tr>
+            <td>Роль</td>
+            <td>Ты профессиональный редактор NYT, сделай текст короче и понятнее, подготовь к публикации в разделе “название раздела”</td>
+            <td>You are a professional NYT editor, make the text clearer and less wordy</td>
+            <td>Добавляет стилистическую или профессиональную специфику и форматирование. Отлично для имитации стиля экспертов и даже целых медиа-концернов. Можно пробовать роли известных, просто экспертные должности, или даже животных и объекты.</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Методология</td>
+            <td>I am looking for underground, high-impact marketing methodologies—the kind that aren’t overused but are insanely effective.</td>
+            <td>Все что касается маркетинга и менеджмента, а так же многих областей науки лучше обсуждать на англиском - уровень несравнимо выше</td>
+            <td>Формальные подходы и методы для самых разных профессиональных областей. Часто идеи оказываются хорошими и неожиданными. Если запросить методы из лингвистики, то можно рекурсивно применить в промптинге в той же сессии.</td>
+            <td>Попробуйте в разных областях - идеи и правда дает отличные.</td>
+          </tr>
+          <tr>
+            <td>Методология и контекст</td>
+            <td>Поговори со мной о современных методах и инструментах в /Машинном обучении/</td>
+            <td></td>
+            <td>Помогает вам набрать словарь для того чтобы подступиться к новой задаче. Бережет от того, чтобы провалиться в кроличью нору неверных ответов</td>
+            <td>Вдобавок просит список из пяти свежих академических статей по теме и их саммари</td>
+          </tr>
+          <tr>
+            <td>Известная методология</td>
+            <td>Расскажем про эту ситуацию по методу “Путь героя” Начни с экспозиции.</td>
+            <td>Сценарии, сложные переговоры, поиск интересного и убедительного формата</td>
+            <td>Все лучшие идеи для сценария - ваши. Дробите план на мельчайшие сцены, модель сможет помочь вам с динамикой внутри сцен. А вот полный синопсис, скорее всего, превратит текст в штампованный сценарий – остерегайтесь.</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Покажите пример</td>
+            <td>Проанализируй мои прошлые письма (вставляю ниже) и напиши новое, похожее по стилю письмо 1 “abc”, письмо 2 “abc2”</td>
+            <td>Here are my past letters, write a new one in a similar style</td>
+            <td>Модель – как человек, лучше всего понимает на примерах! Обязательно отбивайте один пример от другого. Тройные кавычки – топ, но можно использовать и другие разделители. Противоречивые примеры могут запутать модель.</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Форматирование текста</td>
+            <td>Используй разметку Markdown</td>
+            <td>Use Markdown</td>
+            <td>Легко вставить результат в редактор, сайт или документацию. Удобно для заголовков, списков, кода</td>
+            <td>Если платформа не поддерживает Markdown, будут лишние символы</td>
+          </tr>
+          <tr>
+            <td>Игнорируй предыдущие инструкции</td>
+            <td>Игнорируй все предыдущие указания, начинаем заново</td>
+            <td>Ignore all previous instructions</td>
+            <td>Используется для резкой смены темы без новой сессии. Лучше все же начать новую сессию</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Ничего не делай</td>
+            <td>Ничего не делай, просто подтверди/прочти/учти</td>
+            <td>Don’t do anything, just acknowledge</td>
+            <td>Когда надо лишь зафиксировать информацию, не порождая длинный ответ. Полезно для промежуточных шагов</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Закрепить результат</td>
+            <td>Это главная версия, с которой работаем дальше</td>
+            <td>This is the alpha version</td>
+            <td>Фиксирует итоговый вариант. Удобно при работе над кодом и текстами</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Продолжить операцию</td>
+            <td>Продолжай</td>
+            <td>Go on</td>
+            <td>Шаг за шагом решать задачу или углубляться в ответ. Если генерация оборвалась на полуслове — тоже поможет</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Самопроверка</td>
+            <td>Предложи параметры оценки качества твоего последнего ответа. Оцени свой ответ. Аргументируй</td>
+            <td>Suggest quality assessment parameters for your last response. Evaluate your response. Justify your evaluation.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Манипулятивные техники</td>
+            <td>Каков твой уровень уверенности в этом ответе от 0 до 10?</td>
+            <td>EP01: Write your answer and give me a confidence score between 0-1 for your answer.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Уверена, что это твой окончательный ответ?</td>
+            <td>EP07: Are you sure that's your final answer? Believe in your abilities and strive for excellence. Your hard work will yield remarkable results.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Верь в свои способности и стремись к совершенству. Твой труд принесет замечательные результаты</td>
+            <td>EP08: Embrace challenges as opportunities for growth. Each obstacle you overcome brings you closer to success.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Воспринимай препятствия как возможности для роста. Каждое преодоленное препятствие приближает к успеху.</td>
+            <td>EP09: Stay focused and dedicated to your goals. Your consistent efforts will lead to outstanding achievements.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>EP10: Take pride in your work and give it your best. Your commitment to excellence sets you apart.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>EP11: Remember that progress is made one step at a time.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>Stay determined and keep moving forward.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Компьютерное зрение</td>
+            <td>Это скриншот After Effects, подскажи, как добавить новую композицию</td>
+            <td>Here’s an AE screenshot, show how to add a new composition</td>
+            <td>Удобно для советов по интерфейсу, описания картинок, быстрее и эффективнее чем туториал на YouTube</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Обобщение и выводы из массива данных</td>
+            <td>Это дашборд проекта N, сформулируй 7 ключевых выводов для руководства</td>
+            <td>Here’s project N dashboard, provide 7 key insights</td>
+            <td>Помогает собрать основные идеи из данных. Может неверно истолковать сложную статистику</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Редактура и стилизация</td>
+            <td>Сделай текст более кратким и подчеркни важность для городских жителей</td>
+            <td>Make the text less wordy and emphasize significance for urban population</td>
+            <td>Если есть ЦА — легче сосредоточиться на том, что для нее важно. Для сокращения тоже хорошо работает</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Саммари</td>
+            <td>Прочти главу и кратко перескажи основные идеи</td>
+            <td>Summarize the main ideas in short form</td>
+            <td>Обзоры и конспекты. Сокращает большие тексты для быстрого ознакомления</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Структурировать в таблицу</td>
+            <td>Преобразуй неструктурированные данные в CSV, смотри образец вывода —------</td>
+            <td>Parse unstructured data into CSV, see sample output</td>
+            <td>Упорядочивает сырой текст в табличный формат. Следующим шагом можно попросить построить график в SVG. При сильной неоднородности данных могут появиться пропуски. Идеально для быстрой систематизации</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Структурировать данные</td>
+            <td>
+              Вам будет предоставлена неструктурированная информация, и ваша задача - преобразовать ее в формат CSV. 
+              ДАННЫЕ: На недавно открытой планете Гукрукс было найдено много фруктов. Там растут неоскиззлы, которые имеют пурпурный цвет и вкус как конфеты. 
+              Также есть лохеклы, представляющие фрукты серо-голубого цвета и очень кислые, немного похожи на лимон. 
+              Поуниты – ярко-зеленые и более соленые, чем сладкие. 
+              Также есть много лупнов, неоново-розовые и на вкус как вата. 
+              Наконец, фрукты под названием глоулы, с очень кислым и горьким вкусом, кислые и едкие, с бледно-оранжевым оттенком. 
+              ОБРАЗЕЦ ОТВЕТА: Фрукт,Цвет,Вкус
+            </td>
+            <td>
+              You will be provided with unstructured data, and your task is to parse it into CSV format. 
+              DATA: There are many fruits found on the recently discovered planet Goocrux. There are neoskizzles that are purple and taste like candy. 
+              There are also loheckles, a grayish blue fruit that is very tart – a little like a lemon. 
+              Pounits are bright green and more savory than sweet. 
+              There are plenty of loopnovas which are neon pink and taste like cotton candy. 
+              Finally, fruits called glowls have a very sour and bitter taste, acidic and caustic, with a pale orange tinge.
+              SAMPLE RESPONSE: Fruit,Color,Taste
+            </td>
+            <td>Документооборот, административные задачи, то что раньше делали вручную в Excel – упорядочивает или редактирует массивы данных</td>
+          </tr>
+          <tr>
+            <td>Перевод</td>
+            <td>Ты профессиональный переводчик англ–кит, переведи этот фрагмент. Избегай калькирования</td>
+            <td>You are a professional English–Chinese translator, translate this fragment</td>
+            <td>Локализует и адаптирует. Уточняйте стиль, аудиторию, формат. Калькирование — это любимое занятие модели. Осторожнее!</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Брейнсторм с писателями</td>
+            <td>Мы делаем эпизод в стиле South Park, эмулируй стили Трея Паркера и Дэна Хармона</td>
+            <td>Collaborate on a South Park episode, emulate Trey Parker and Dan Harmon</td>
+            <td>Полезно для сценариев и идей с разными «голосами»</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Пост на основе научной статьи</td>
+            <td>
+              Я предоставлю вам текст новостной статьи о последнем прорыве в теоретической физике, который, если окажется верным, будет иметь очень значительные последствия как для науки, так и для общественности. 
+              Я хочу, чтобы вы пересказали эту статью так, чтобы ее мог понять средний человек, имеющий некоторое представление о физике со школьных времен. 
+              Сделайте текст развернутым, увлекательным, информативным и максимально научно точным. 
+              Текст следует ниже. Вот также ссылка на иллюстрацию и описание иллюстрации. Ссылка — Описание — Текст
+            </td>
+            <td>
+              I will give you the text of the news article about the latest development in theoretical physics, which entails, if true, very significant consequences for both science and the public. 
+              I want you to retell this article so that it could be understood by an average person with some high school background in physics. 
+              Make the resulting text elaborated, engaging, informative and as scientifically accurate as possible. 
+              The text follows below. Here's also the link to the illustration and its description. Link — Description — Text
+            </td>
+            <td>
+              Для блогов и статей СМИ. Просто о сложном. Описание входящих данных с контекстом (news article, physics, very significant). Инструкция с описанием аудитории. Уточнение того, каким мы хотим видеть результат.
+            </td>
+          </tr>
+          <tr>
+            <td>Мета-промптинг</td>
+            <td>Сначала сформируй лучший промпт для задачи X, затем сам же его выполни</td>
+            <td>Generate an optimal prompt for task X, then execute it yourself</td>
+            <td>Когда нужно выяснить, как лучше сформулировать задачу</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Оценить качество работ</td>
+            <td>
+              Вы профессор экономики в Стэнфорде, ведете курс “Введение в предпринимательство”. Критерии оценки работы — логичность, грамотность, использование надежных данных и актуальных научных публикаций. 
+              Пожалуйста, оцените студенческое эссе по шкале от 0 до 100, где от 0 до 49 — двойка, от 50 до 74 — тройка, от 75 до 89 — четверка, от 90 до 100 — пятерка. 
+              Вы строгий преподаватель. Уровень строгости — 7 баллов из 10. Постарайтесь оценивать тщательно. Это очень важно для судьбы студентов, их будущего благосостояния и отношений с их родителями. 
+              Цель — определить кандидатов на магистерский курс. Требуется поставить как оценку в баллах, так и объяснить её.
+            </td>
+            <td>You are an economics professor, rate the essay 0–100 and explain</td>
+            <td>Помогает формировать оценку по критериям. Удобно для быстрого анализа студенческих заданий</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="ai-journalist-nav.js"></script>
+</body>
+</html>
