@@ -74,6 +74,19 @@
       ]
     },
     {
+      path: 'md-skills-automation.html',
+      title: '.md Skills / Автоматизации',
+      section: '.md Skills / Автоматизации',
+      note: 'Собираем и передаём опыт',
+      anchors: [
+        { label: '.md', href: '#markdown' },
+        { label: 'Скиллы', href: '#skills' },
+        { label: 'Версии', href: '#versioning' },
+        { label: 'Кейс дайджеста', href: '#digest-case' },
+        { label: 'Мечты автоматизации', href: '#automation-dreams' }
+      ]
+    },
+    {
       path: 'codex-case.html',
       title: 'Сценарии и агенты',
       section: 'Codex case',
@@ -122,6 +135,7 @@
         { label: 'Агентность модели', href: 'model-agency.html', note: 'Нарния выходит из шкафа' },
         { label: 'Коннекторы и MCP', href: 'connectors-mcp.html', note: 'Инструменты и доступы' },
         { label: 'Cowork & Codex', href: 'cowork-codex.html', note: 'Cowork / Codex / Gemini' },
+        { label: '.md Skills / Автоматизации', href: 'md-skills-automation.html', note: 'Собираем опыт в инструкции' },
         { label: 'Сценарии и агенты', href: 'codex-case.html', note: 'Кейс Codex' }
       ]
     },

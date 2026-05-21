@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>.md Skills / Автоматизации</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #7d45cf;
+      --purple-soft: #f6f0ff;
+      --green: #83c84b;
+      --green-soft: #f1faea;
+      --text: #2f2d35;
+      --muted: #74717d;
+      --line: #e8e2f2;
+      --bg: #fbfafc;
+      --shadow: 0 14px 38px rgba(46, 46, 54, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 32px;
+      background:
+        radial-gradient(circle at top left, rgba(125, 69, 207, 0.10), transparent 34%),
+        radial-gradient(circle at top right, rgba(131, 200, 75, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 42px;
+    }
+
+    .logo {
+      color: #111;
+      font-size: 25px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .logo span,
+    .kicker,
+    .card h2,
+    .points strong,
+    .route-step b {
+      color: var(--purple);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(46, 46, 54, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    header {
+      max-width: 980px;
+      margin-bottom: 30px;
+    }
+
+    .kicker {
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+      color: #22222a;
+      font-size: clamp(42px, 6vw, 78px);
+      font-weight: 200;
+      line-height: 0.98;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      max-width: 920px;
+      color: #4b4652;
+      font-size: clamp(18px, 2vw, 24px);
+    }
+
+    .big-note {
+      max-width: 1060px;
+      margin: 30px 0;
+      padding: 24px 28px;
+      border-left: 4px solid var(--purple);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      color: var(--purple);
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.25;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 28px rgba(46, 46, 54, 0.05);
+    }
+
+    .card h2 {
+      margin-bottom: 12px;
+      font-size: clamp(23px, 2vw, 31px);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .card p {
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .points {
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+      padding-left: 20px;
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    .points strong {
+      font-weight: 400;
+    }
+
+    .code-card {
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbf8ff;
+    }
+
+    .code-card pre {
+      padding: 18px;
+      overflow-x: auto;
+      color: #393540;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .route-step {
+      min-height: 126px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #4b4652;
+      font-size: 14px;
+    }
+
+    .route-step b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .info-table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .info-table th,
+    .info-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .info-table th {
+      background: var(--purple-soft);
+      color: var(--purple);
+      font-weight: 400;
+    }
+
+    .info-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .warning {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid #ead9ff;
+      border-radius: 8px;
+      background: #fbf8ff;
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    @media (max-width: 980px) {
+      .grid,
+      .route {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 20px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="ai-journalist-nav.css">
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="logo" href="ai-journalist.html">pragueschool<span>.media</span></a>
+      <a class="back" href="vibecoder.html"><i class="fa-solid fa-arrow-left"></i> Roadmap</a>
+    </div>
+
+    <header>
+      <div class="kicker">.md Skills / Автоматизации</div>
+      <h1>MD, автоматизации и Skills</h1>
+      <p class="lead">Собираем, передаём и не теряем опыт. Из обычных .md-файлов складывается автоматизация: инструкции, скиллы, память, правила проекта и повторяемые редакционные процедуры.</p>
+    </header>
+
+    <div class="big-note">Формула: не просто делаем задачу — делаем так, чтобы из неё осталась инструкция.</div>
+
+    <section class="grid">
+      <article class="card" id="markdown">
+        <h2>1. Что такое .md</h2>
+        <p>Markdown (.md) — простой текст с лёгкой разметкой. Он читается человеком и машиной, правится в любом редакторе, хранится где угодно, версионируется и пересылается коллеге. Агент сам читает и пишет .md.</p>
+        <div class="code-card">
+          <pre># Заголовок 1
+## Заголовок 2
+- маркированный список
+1. нумерованный список
+**жирный**  *курсив*  `код`
+[текст ссылки](https://...)
+> цитата
+| столбец | столбец |
+``` блок кода ```</pre>
+        </div>
+        <div class="warning">Всё дальнейшее — скиллы, память, файлы-инструкции — это просто .md. Открыл и прочитал, никакой магии.</div>
+      </article>
+
+      <article class="card" id="mcp-automation">
+        <h2>2. Автоматизации через MCP</h2>
+        <p>Автоматизация = связка: LLM думает → коннекторы через MCP приносят и уносят данные → расписание запускает без вас.</p>
+        <ul class="points">
+          <li><strong>Cowork Routines:</strong> по расписанию в облаке, работают даже при закрытом ноутбуке.</li>
+          <li><strong>Codex Automations:</strong> расписания и триггеры: поминутно, ежедневно, сложные паттерны.</li>
+          <li><strong>Журналистский пример:</strong> будни 8:00 — агент собирает упоминания за ночь и кладёт сводку в общую папку к планёрке.</li>
+        </ul>
+      </article>
+
+      <article class="card wide" id="skills">
+        <h2>3. Создание собственных скиллов</h2>
+        <p>Каждую повторяемую задачу можно постепенно превратить в Skill. Можно взять готовый шаблон, но важнее уметь извлекать свой: пройти задачу один раз с агентом и в конце попросить описать процесс как <code>SKILL.md</code>.</p>
+        <div class="route">
+          <div class="route-step"><b>Сделали</b> Задачу один раз.</div>
+          <div class="route-step"><b>Поняли</b> Шаги и правила.</div>
+          <div class="route-step"><b>Зафиксировали</b> Входы, запреты, формат.</div>
+          <div class="route-step"><b>Сгенерировали</b> Агент пишет SKILL.md.</div>
+          <div class="route-step"><b>Отредактировали</b> Человек проверяет.</div>
+          <div class="route-step"><b>Сохранили</b> В проекте или библиотеке.</div>
+          <div class="route-step"><b>Повторили</b> Применяем снова.</div>
+        </div>
+        <div class="code-card">
+          <pre>---
+name: design-critique
+description: когда применять — "review this design", скриншот, ссылка на Figma...
+---
+# тело: что нужно на входе → процедура → шаблон вывода</pre>
+        </div>
+        <div class="warning">Главная строка — <code>description</code>: по ней агент решает, когда включить скилл.</div>
+      </article>
+
+      <article class="card wide" id="instruction-files">
+        <h2>4. Системные соглашения</h2>
+        <p>Это «всегда включённый бриф» агента: открытый файл-инструкция, который он подгружает первым.</p>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>Файл</th>
+              <th>Для кого</th>
+              <th>Что это</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>CLAUDE.md</code></td>
+              <td>Claude</td>
+              <td>Самый распространённый файл инструкций проекта.</td>
+            </tr>
+            <tr>
+              <td><code>AGENTS.md</code></td>
+              <td>Codex и другие агенты</td>
+              <td>Открытый вендоронезависимый стандарт; попытка сделать один файл, понятный любому агенту.</td>
+            </tr>
+            <tr>
+              <td><code>GEMINI.md</code></td>
+              <td>Gemini CLI</td>
+              <td>Инструкции для Gemini; имя можно настраивать.</td>
+            </tr>
+            <tr>
+              <td><code>SKILL.md</code></td>
+              <td>Стандарт скилла</td>
+              <td>Описание одного навыка: когда включать, что делать, какой результат вернуть.</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card" id="libraries">
+        <h2>5. Библиотеки скиллов</h2>
+        <p>Скиллы не пишут с нуля каждый раз. Их берут из библиотек, публикуют свои и обмениваются с коллегами — как плагинами.</p>
+        <ul class="points">
+          <li><strong>Папка агента</strong> может хранить инструкции, скиллы и память.</li>
+          <li><strong>Общая папка</strong> помогает команде подхватить один и тот же накопленный опыт.</li>
+          <li><strong>.md-формат</strong> не привязан к одному вендору.</li>
+        </ul>
+      </article>
+
+      <article class="card" id="versioning">
+        <h2>6. Версионирование</h2>
+        <p>Агент правит файлы на месте. Если разрешить крупное изменение без снимков, можно потерять хорошо сделанную работу.</p>
+        <ul class="points">
+          <li>Добавьте в инструкции правило: «перед крупным изменением сохраняй версию / делай чекпоинт».</li>
+          <li>Просите явно: «сохрани текущую версию отдельным файлом, прежде чем переписывать».</li>
+          <li>Держите проект там, где есть история версий: Git, Dropbox, облачный диск.</li>
+        </ul>
+      </article>
+
+      <article class="card wide" id="files">
+        <h2>7. Облако vs ваш диск</h2>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>Где лежит</th>
+              <th>Плюс</th>
+              <th>Минус</th>
+              <th>Когда выбирать</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Локальный диск</td>
+              <td>Приватность, выбранная папка, контроль.</td>
+              <td>Работает, пока компьютер включён.</td>
+              <td>Черновики, чувствительные источники, внутренняя работа.</td>
+            </tr>
+            <tr>
+              <td>Облако</td>
+              <td>Доступно отовсюду, удобно для команды, работает в фоне.</td>
+              <td>Нужны доступы и доверие к сервису.</td>
+              <td>Общие материалы, планёрки, командные папки.</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card wide" id="digest-case">
+        <h2>8. Сквозной журналистский кейс</h2>
+        <p>Задача: каждое утро готовить медиа-дайджест по теме X и складывать в общую папку команды.</p>
+        <ol class="points">
+          <li>Recurrent task запускает агента в 7:30.</li>
+          <li>LLM читает инструкцию из скилла .md: источники, формат, тон.</li>
+          <li>Через MCP-коннектор агент собирает свежие материалы.</li>
+          <li>LLM фильтрует, реферирует и группирует по сюжетам.</li>
+          <li>Результат сохраняется как .md/документ в облачную папку команды.</li>
+          <li>В память агент пишет, что уже показывал, чтобы завтра не повторяться.</li>
+        </ol>
+      </article>
+
+      <article class="card" id="examples">
+        <h2>9. Примеры для журналистики</h2>
+        <ul class="points">
+          <li>Расшифровка и реферирование интервью; авторазметка спикеров.</li>
+          <li>Мониторинг госзакупок, реестров, открытых данных.</li>
+          <li>Перевод и адаптация материалов между языками.</li>
+          <li>Фактчекинг-ассистент: первоисточники, «за/против».</li>
+          <li>Посты под разные платформы из одного материала.</li>
+          <li>Поиск по собственному архиву редакции.</li>
+        </ul>
+      </article>
+
+      <article class="card" id="route">
+        <h2>10. Практический маршрут</h2>
+        <ol class="points">
+          <li>Найти готовый скилл, если задача типовая.</li>
+          <li>Нет готового — пройти задачу один раз с агентом.</li>
+          <li>Попросить: «опиши этот процесс как SKILL.md».</li>
+          <li>Отредактировать вручную.</li>
+          <li>Сохранить в проекте / библиотеке скиллов.</li>
+          <li>Использовать при следующем похожем запросе.</li>
+          <li>После каждого сбоя — улучшать скилл.</li>
+        </ol>
+      </article>
+
+      <article class="card wide" id="automation-dreams">
+        <h2>Дискуссия: мечты автоматизации редакции</h2>
+        <p>Выберите одну задачу своей редакции или команды и разложите её по шаблону.</p>
+        <ol class="points">
+          <li><strong>Задача:</strong> что за рутина одним предложением?</li>
+          <li><strong>Боль:</strong> сколько времени съедает сейчас и у кого?</li>
+          <li><strong>Данные:</strong> откуда брать, какие коннекторы нужны, куда класть результат?</li>
+          <li><strong>Инструкция:</strong> что должно быть в скилле?</li>
+          <li><strong>Ритм:</strong> разово, по запросу или по расписанию?</li>
+          <li><strong>Граница человека:</strong> где обязательна проверка живым редактором?</li>
+        </ol>
+      </article>
+
+      <article class="card wide" id="takeaways">
+        <h2>Куда всё идёт</h2>
+        <ul class="points">
+          <li><strong>Из чата — в действие:</strong> поставил задачу — получил результат.</li>
+          <li><strong>MCP как общий стандарт:</strong> подключения становятся универсальными.</li>
+          <li><strong>Фоновые задачи:</strong> routines и облачные агенты работают без постоянного участия.</li>
+          <li><strong>В привычных инструментах:</strong> агент приходит туда, где вы уже работаете.</li>
+          <li><strong>Много агентов:</strong> главный агент раздаёт подзадачи суб-агентам.</li>
+        </ul>
+        <div class="warning">Агент ускоряет рутину, но ответственность за факты, источники и этику остаётся на человеке. Любой вывод агента — черновик.</div>
+      </article>
+    </section>
+  </main>
+
+  <script src="ai-journalist-nav.js"></script>
+</body>
+</html>
