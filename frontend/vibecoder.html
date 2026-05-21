@@ -435,193 +435,6 @@
       line-height: 1.35;
     }
 
-    .case-study {
-      margin-bottom: 28px;
-      border: 1px solid rgba(232, 226, 242, 0.88);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .case-header {
-      display: grid;
-      grid-template-columns: 74px 1fr auto;
-      gap: 20px;
-      align-items: center;
-      padding: 28px;
-      border-bottom: 1px solid var(--line);
-      background:
-        radial-gradient(circle at top left, rgba(174, 109, 240, 0.14), transparent 36%),
-        radial-gradient(circle at top right, rgba(143, 208, 90, 0.14), transparent 34%),
-        #fff;
-    }
-
-    .case-mark {
-      width: 74px;
-      height: 74px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 34px;
-      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-      box-shadow: 0 12px 28px rgba(174, 109, 240, 0.22);
-    }
-
-    .case-kicker {
-      color: var(--purple-dark);
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .case-title {
-      font-size: clamp(28px, 4.2vw, 54px);
-      line-height: 1;
-      font-weight: 200;
-      letter-spacing: 0.01em;
-      text-transform: uppercase;
-      color: #22222a;
-      margin-bottom: 9px;
-    }
-
-    .case-copy {
-      color: #4b4652;
-      max-width: 720px;
-      font-size: 15px;
-    }
-
-    .case-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 12px 16px;
-      border-radius: 999px;
-      color: #fff;
-      text-decoration: none;
-      white-space: nowrap;
-      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-      box-shadow: 0 10px 24px rgba(174, 109, 240, 0.24);
-      font-size: 13px;
-      font-weight: 400;
-    }
-
-    .case-body {
-      padding: 28px;
-      display: grid;
-      gap: 24px;
-    }
-
-    .path {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .path-step {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-    }
-
-    .path-step b {
-      display: block;
-      color: var(--purple-dark);
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: uppercase;
-      margin-bottom: 7px;
-    }
-
-    .path-step span {
-      display: block;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
-    .materials {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .materials-table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid var(--line);
-      font-size: 13px;
-    }
-
-    .materials-table th,
-    .materials-table td {
-      padding: 14px 15px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .materials-table th {
-      color: var(--purple-dark);
-      font-weight: 400;
-      text-transform: uppercase;
-      background: var(--purple-soft);
-      font-size: 12px;
-    }
-
-    .materials-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .file-window {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(46, 46, 54, 0.06);
-    }
-
-    .file-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--line);
-      background: #fbf8ff;
-      color: var(--purple-dark);
-      font-size: 12px;
-      font-weight: 400;
-    }
-
-    .file-dots {
-      display: inline-flex;
-      gap: 5px;
-    }
-
-    .file-dots span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--line);
-    }
-
-    .file-window pre {
-      padding: 16px;
-      white-space: pre-wrap;
-      color: #393540;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
     @media (max-width: 1040px) {
       body {
         padding: 24px;
@@ -645,15 +458,6 @@
 
       .bottom {
         grid-template-columns: repeat(2, 1fr);
-      }
-
-      .case-header,
-      .materials {
-        grid-template-columns: 1fr;
-      }
-
-      .path {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .bottom-item:nth-child(2) {
@@ -701,14 +505,6 @@
         padding: 20px;
       }
 
-      .case-header,
-      .case-body {
-        padding: 20px;
-      }
-
-      .path {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media print {
@@ -815,11 +611,11 @@
             </div>
           </div>
 
-          <a class="item item-link" href="codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71">
+          <a class="item item-link" href="codex-case.html" target="_blank" rel="noopener">
             <div class="mini-icon"><i class="fa-solid fa-robot"></i></div>
             <div>
               <strong>Сценарии и агенты</strong>
-              <span>Открыть кейс в Codex: как появляется помощник под задачу редакции.</span>
+              <span>Как появляются помощники под задачи редакции.</span>
             </div>
           </a>
         </div>
@@ -930,97 +726,6 @@
           </div>
         </div>
       </article>
-    </section>
-
-    <section class="case-study" id="codex-case">
-      <div class="case-header">
-        <div class="case-mark"><i class="fa-solid fa-diagram-project"></i></div>
-        <div>
-          <div class="case-kicker">Кейс Codex</div>
-          <div class="case-title">От любопытства к плану</div>
-          <p class="case-copy">Этот диалог показывает спокойный рабочий маршрут: не “напиши код”, а сначала понять интерес, сформулировать запрос, собрать материалы и превратить всё в план действий.</p>
-        </div>
-        <a class="case-button" href="codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          Открыть кейс
-        </a>
-      </div>
-
-      <div class="case-body">
-        <div class="path" aria-label="Путь от идеи к плану">
-          <div class="path-step">
-            <b>1. Любопытство</b>
-            <span>Начинаем с живого вопроса: что можно автоматизировать, показать студентам или превратить в маленький инструмент.</span>
-          </div>
-          <div class="path-step">
-            <b>2. Промпт</b>
-            <span>Формулируем задачу для агента: контекст, аудитория, желаемый результат, ограничения и формат ответа.</span>
-          </div>
-          <div class="path-step">
-            <b>3. Рабочие материалы</b>
-            <span>Складываем в диалог заметки, HTML, markdown, ссылки, черновики и уточнения, чтобы агент видел фактуру.</span>
-          </div>
-          <div class="path-step">
-            <b>4. План</b>
-            <span>На выходе получаем не магию, а исполнимый план: шаги, файлы, проверки, публикация и следующий вопрос.</span>
-          </div>
-        </div>
-
-        <div class="materials">
-          <table class="materials-table">
-            <thead>
-              <tr>
-                <th>Материал</th>
-                <th>Что видно в диалоге</th>
-                <th>Зачем нужен</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>prompt.md</code></td>
-                <td>Первичный запрос, роль агента, критерии результата.</td>
-                <td>Не даёт задаче расплыться.</td>
-              </tr>
-              <tr>
-                <td><code>notes.md</code></td>
-                <td>Наброски, вопросы, ограничения, аудитория занятия.</td>
-                <td>Сохраняет человеческий замысел.</td>
-              </tr>
-              <tr>
-                <td><code>plan.md</code></td>
-                <td>Разбитый на шаги маршрут: что делаем сейчас, что потом.</td>
-                <td>Превращает разговор в работу.</td>
-              </tr>
-              <tr>
-                <td><code>frontend/*.html</code></td>
-                <td>Готовые страницы, которые можно открыть, проверить и задеплоить.</td>
-                <td>Показывает студентам результат, а не только текст.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="file-window" aria-label="Пример рабочего markdown-файла">
-            <div class="file-bar">
-              <span><i class="fa-regular fa-file-lines"></i> plan.md</span>
-              <span class="file-dots"><span></span><span></span><span></span></span>
-            </div>
-            <pre># Мини-кейс для занятия
-
-## Вопрос
-Как из редакционного любопытства сделать рабочий сценарий с агентом?
-
-## Промпт
-Опиши задачу, аудиторию, ограничения и желаемый артефакт.
-
-## План
-1. Собрать материалы диалога.
-2. Выделить повторяемые действия.
-3. Описать сценарий агента.
-4. Проверить результат на маленькой странице.
-5. Опубликовать и показать группе.</pre>
-          </div>
-        </div>
-      </div>
     </section>
 
     <section class="bottom" aria-label="Общие параметры">

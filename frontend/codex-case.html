@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сценарии и агенты — кейс Codex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #ae6df0;
+      --purple-dark: #7d45cf;
+      --purple-soft: #f4edff;
+      --green: #8fd05a;
+      --green-soft: #eff9e9;
+      --text: #2e2e36;
+      --muted: #74717d;
+      --line: #e8e2f2;
+      --bg: #fbfafc;
+      --shadow: 0 14px 38px rgba(46, 46, 54, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(174, 109, 240, 0.12), transparent 34%),
+        radial-gradient(circle at top right, rgba(143, 208, 90, 0.12), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.55;
+      padding: 32px;
+    }
+
+    .page {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 46px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--purple-dark);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      box-shadow: 0 8px 24px rgba(46, 46, 54, 0.06);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-card,
+    .panel {
+      border: 1px solid rgba(232, 226, 242, 0.88);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 32px;
+    }
+
+    .mark {
+      width: 78px;
+      height: 78px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 34px;
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+      box-shadow: 0 12px 28px rgba(174, 109, 240, 0.22);
+    }
+
+    .kicker {
+      color: var(--purple-dark);
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 6.4vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+      font-weight: 200;
+      text-transform: uppercase;
+      color: #22222a;
+      margin-bottom: 18px;
+    }
+
+    .lead {
+      color: #4b4652;
+      font-size: 17px;
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .primary,
+    .secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+      box-shadow: 0 10px 24px rgba(174, 109, 240, 0.24);
+    }
+
+    .secondary {
+      color: var(--purple-dark);
+      background: var(--purple-soft);
+    }
+
+    .file-window {
+      overflow: hidden;
+    }
+
+    .file-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--line);
+      background: #fbf8ff;
+      color: var(--purple-dark);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .file-dots {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .file-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+
+    pre {
+      padding: 18px;
+      white-space: pre-wrap;
+      color: #393540;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .path {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .path-step,
+    .material-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .path-step b,
+    .material-card b {
+      display: block;
+      color: var(--purple-dark);
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .path-step span,
+    .material-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .panel {
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+
+    .panel-title {
+      font-size: 22px;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: var(--purple-dark);
+      margin-bottom: 18px;
+    }
+
+    .materials-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .materials-table th,
+    .materials-table td {
+      padding: 14px 15px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .materials-table th {
+      color: var(--purple-dark);
+      font-weight: 400;
+      text-transform: uppercase;
+      background: var(--purple-soft);
+      font-size: 12px;
+    }
+
+    .materials-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 1040px) {
+      .hero,
+      .path,
+      .materials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-card,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div class="logo">pragueschool<span>.</span>media</div>
+      <a class="back" href="vibecoder.html"><i class="fa-solid fa-arrow-left"></i> назад к дорожной карте</a>
+    </div>
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="mark"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="kicker">Сценарии и агенты</div>
+        <h1>От любопытства к плану</h1>
+        <p class="lead">Кейс показывает рабочий маршрут: не “напиши код”, а сначала понять интерес, сформулировать запрос, собрать материалы и превратить всё в исполнимый план.</p>
+        <div class="button-row">
+          <a class="primary" href="codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            открыть диалог в Codex
+          </a>
+          <a class="secondary" href="#materials">
+            <i class="fa-regular fa-file-lines"></i>
+            рабочие материалы
+          </a>
+        </div>
+      </div>
+
+      <div class="file-window panel" aria-label="Окно рабочего markdown-файла">
+        <div class="file-bar">
+          <span><i class="fa-regular fa-file-lines"></i> prompt.md</span>
+          <span class="file-dots"><span></span><span></span><span></span></span>
+        </div>
+        <pre># Задача
+Показать студентам, как из редакционного интереса появляется сценарий для агента.
+
+## Контекст
+Есть живой диалог, HTML-страницы, GitHub, Vercel и необходимость быстро собрать учебный пример.
+
+## Нужен результат
+1. Понятный путь от вопроса к плану.
+2. Видимые рабочие материалы.
+3. Ссылка на исходный диалог Codex.
+4. Страница, которую можно открыть в браузере.</pre>
+      </div>
+    </section>
+
+    <section class="path" aria-label="Путь от идеи к плану">
+      <div class="path-step">
+        <b>1. Любопытство</b>
+        <span>Начинаем с живого вопроса: что можно автоматизировать, показать студентам или превратить в маленький инструмент.</span>
+      </div>
+      <div class="path-step">
+        <b>2. Промпт</b>
+        <span>Формулируем задачу для агента: контекст, аудитория, желаемый результат, ограничения и формат ответа.</span>
+      </div>
+      <div class="path-step">
+        <b>3. Материалы</b>
+        <span>Складываем в диалог заметки, HTML, markdown, ссылки, черновики и уточнения, чтобы агент видел фактуру.</span>
+      </div>
+      <div class="path-step">
+        <b>4. План</b>
+        <span>На выходе получаем не магию, а исполнимый план: шаги, файлы, проверки, публикация и следующий вопрос.</span>
+      </div>
+    </section>
+
+    <section class="panel" id="materials">
+      <div class="panel-title">Рабочие материалы диалога</div>
+      <div class="materials-grid">
+        <div class="material-card">
+          <b>prompt.md</b>
+          <span>Первичный запрос, роль агента, критерии результата.</span>
+        </div>
+        <div class="material-card">
+          <b>notes.md</b>
+          <span>Наброски, вопросы, ограничения и аудитория занятия.</span>
+        </div>
+        <div class="material-card">
+          <b>plan.md</b>
+          <span>Шаги: что делаем сейчас, что потом, как проверяем.</span>
+        </div>
+        <div class="material-card">
+          <b>frontend/*.html</b>
+          <span>Готовые страницы, которые можно открыть, проверить и задеплоить.</span>
+        </div>
+      </div>
+
+      <table class="materials-table">
+        <thead>
+          <tr>
+            <th>Этап</th>
+            <th>Что делает человек</th>
+            <th>Что делает агент</th>
+            <th>Артефакт</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Интерес</td>
+            <td>Формулирует, что хочется понять или показать.</td>
+            <td>Уточняет рамку и предлагает возможный формат.</td>
+            <td><code>notes.md</code></td>
+          </tr>
+          <tr>
+            <td>Промпт</td>
+            <td>Даёт контекст, ограничения и желаемый результат.</td>
+            <td>Превращает запрос в рабочую спецификацию.</td>
+            <td><code>prompt.md</code></td>
+          </tr>
+          <tr>
+            <td>План</td>
+            <td>Проверяет, что шаги соответствуют замыслу.</td>
+            <td>Разбивает работу на файлы, проверки и деплой.</td>
+            <td><code>plan.md</code></td>
+          </tr>
+          <tr>
+            <td>Публикация</td>
+            <td>Смотрит страницу глазами аудитории.</td>
+            <td>Коммитит, пушит, проверяет URL и статус деплоя.</td>
+            <td><code>vibecoder.html</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">Фрагмент плана</div>
+      <div class="file-window">
+        <div class="file-bar">
+          <span><i class="fa-regular fa-file-lines"></i> plan.md</span>
+          <span class="file-dots"><span></span><span></span><span></span></span>
+        </div>
+        <pre># Мини-кейс для занятия
+
+## Вопрос
+Как из редакционного любопытства сделать рабочий сценарий с агентом?
+
+## План
+1. Собрать материалы диалога.
+2. Выделить повторяемые действия.
+3. Описать сценарий агента.
+4. Проверить результат на отдельной HTML-странице.
+5. Опубликовать и показать группе.</pre>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
