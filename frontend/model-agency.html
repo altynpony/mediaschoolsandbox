@@ -74,6 +74,71 @@
       height: auto;
     }
 
+    .lesson-block {
+      margin-top: 28px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(51, 51, 51, 0.06);
+      line-height: 1.65;
+    }
+
+    .lesson-block h1 {
+      margin-bottom: 22px;
+      color: var(--purple);
+      font-size: clamp(28px, 3vw, 44px);
+      font-weight: 300;
+      line-height: 1.18;
+    }
+
+    .lesson-block h2 {
+      margin: 24px 0 12px;
+      color: #333;
+      font-size: clamp(22px, 2vw, 30px);
+      font-weight: 300;
+      line-height: 1.25;
+    }
+
+    .lesson-block p {
+      max-width: 1040px;
+      margin: 0 0 14px;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .agent-list {
+      display: grid;
+      gap: 12px;
+      max-width: 1040px;
+      margin: 18px 0;
+      list-style: none;
+    }
+
+    .agent-list li {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fafafa;
+      font-size: 17px;
+    }
+
+    .agent-list strong,
+    .formula strong {
+      color: var(--purple);
+      font-weight: 400;
+    }
+
+    .formula {
+      max-width: 1040px;
+      margin: 20px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--purple);
+      background: #f7f0ff;
+      color: #333;
+      font-size: 20px;
+    }
+
     .sources {
       display: flex;
       flex-wrap: wrap;
@@ -118,6 +183,27 @@
     <figure class="slide">
       <img src="assets/images/model-agency-rack.jpeg" alt="Одна модель = вся стойка">
     </figure>
+
+    <section class="lesson-block">
+      <h1>Блок 1. Что такое агент и при чём тут LLM (30 мин)</h1>
+
+      <h2>1.1. Что такое LLM — фундамент</h2>
+      <p>Большая языковая модель (LLM, Large Language Model) — это очень мощный предсказатель следующего слова, обученный на огромном объёме текста. Её суперспособность одна: получив текст на входе, выдать правдоподобное продолжение.</p>
+      <p>Модели, с которыми мы работаем на этом курсе — ChatGPT, Claude, Gemini — настолько большие, что их нельзя запустить на собственном компьютере. Им нужен GPU (Graphic Processor Unit) — специализированное «железо» для тяжёлых вычислений. Обученная модель запускается вот на такой штуке (см. фото). В ней — практически все знания, которые произвела письменная культура человечества.</p>
+
+      <h2>1.2. Что добавляет «агентность»</h2>
+      <p>Агент — это та же LLM, но которой дали три вещи:</p>
+
+      <ul class="agent-list">
+        <li><strong>Руки (инструменты, tools)</strong> — возможность не только говорить, но и действовать: открыть файл, отправить письмо, выполнить поиск, запустить код.</li>
+        <li><strong>Доступы (коннекторы, разрешения)</strong> — ключи к вашим приложениям и данным: почта, диск, календарь, базы.</li>
+        <li><strong>Право на цикл (автономию)</strong> — разрешение действовать в несколько шагов самому: попробовать → посмотреть результат → исправить → продолжить, пока задача не решена.</li>
+      </ul>
+
+      <div class="formula">Формула урока: <strong>Агент = LLM + инструменты + доступы + автономный цикл.</strong></div>
+
+      <p>Аналогия: если LLM сама по себе — это очень начитанный консультант, который умеет только говорить, то агент — это тот же консультант, которому выдали ноутбук, ключи от офиса, доступ к корпоративной почте и сказали: "вот задача, действуй, отчитайся, когда сделаешь".</p>
+    </section>
 
     <div class="sources">
       <span>Исходные материалы:</span>
