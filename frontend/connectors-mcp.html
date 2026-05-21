@@ -120,6 +120,23 @@
       line-height: 1.25;
     }
 
+    .rule {
+      max-width: 1080px;
+      margin: 0 0 28px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(46, 46, 54, 0.06);
+      font-size: clamp(19px, 2vw, 27px);
+      line-height: 1.45;
+    }
+
+    .rule strong {
+      color: var(--purple);
+      font-weight: 400;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -162,8 +179,82 @@
       font-weight: 400;
     }
 
+    .can-list li::marker {
+      color: var(--green);
+    }
+
+    .cannot-list li::marker {
+      color: var(--purple);
+    }
+
     .wide {
       grid-column: 1 / -1;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .section-label i {
+      color: var(--green);
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .loop-step {
+      min-height: 140px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .loop-step span {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      background: var(--purple);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .loop-step h3 {
+      margin-bottom: 6px;
+      color: var(--purple);
+      font-size: 17px;
+      font-weight: 400;
+    }
+
+    .loop-step p {
+      color: #4b4652;
+      font-size: 14px;
+    }
+
+    .warning {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid #ead9ff;
+      border-radius: 8px;
+      background: #fbf8ff;
+      color: #3d3944;
+      font-size: 16px;
     }
 
     .diagram {
@@ -220,7 +311,8 @@
       }
 
       .grid,
-      .compare {
+      .compare,
+      .loop {
         grid-template-columns: 1fr;
       }
     }
@@ -242,19 +334,29 @@
 
     <div class="formula">Агенту нужны не только «мозги», но и подключённые руки.</div>
 
+    <div class="rule">
+      Через <strong>MCP</strong> подключается всё, у чего есть программный вход — API, файлы, база данных. Не подключается то, у чего есть только «человеческий» вход — экран, мышь. Для второго нужен <strong>computer use</strong> или браузерная автоматизация.
+    </div>
+
     <section class="grid">
-      <article class="card" id="connectors">
-        <h2>1. Коннектор</h2>
-        <p>Коннектор — это доступ к конкретному сервису или данным: почта, диск, календарь, репозиторий, база, CRM.</p>
-        <ul class="points">
-          <li><strong>Куда:</strong> какой сервис подключаем.</li>
-          <li><strong>Что можно:</strong> читать, писать, искать, создавать, изменять.</li>
-          <li><strong>Под чьим доступом:</strong> личный аккаунт, команда, отдельный токен.</li>
+      <article class="card wide" id="connectors">
+        <div class="section-label"><i class="fa-solid fa-plug-circle-check"></i> Есть «розетка»: API / файлы / БД</div>
+        <h2>Что можно подключить через MCP</h2>
+        <ul class="points can-list">
+          <li><strong>Почта и календарь</strong> — Gmail, Outlook, Google Calendar.</li>
+          <li><strong>Файлы и облака</strong> — Google Drive, Dropbox, Box, OneDrive, локальная файловая система.</li>
+          <li><strong>Мессенджеры и каналы</strong> — Slack, Telegram, Discord через их API.</li>
+          <li><strong>Базы данных</strong> — Postgres, MySQL, внутренняя база редакции.</li>
+          <li><strong>Таск-трекеры и базы знаний</strong> — Notion, Asana, Linear, Jira.</li>
+          <li><strong>Код и репозитории</strong> — GitHub, GitLab.</li>
+          <li><strong>Веб-поиск и выгрузка страниц</strong> — через сервер, который даёт это как инструмент.</li>
+          <li><strong>Открытые данные с API</strong> — реестры, госзакупки, статистика, карты.</li>
+          <li><strong>Созвоны и транскрипты</strong> — Zoom через API.</li>
         </ul>
       </article>
 
       <article class="card" id="mcp">
-        <h2>2. MCP</h2>
+        <h2>MCP</h2>
         <p>MCP (Model Context Protocol) — универсальная «розетка» для внешних цифровых инструментов и источников данных.</p>
         <ul class="points">
           <li><strong>Один формат:</strong> агенту не нужно заново учиться каждому сервису.</li>
@@ -263,35 +365,62 @@
         </ul>
       </article>
 
-      <article class="card wide" id="tool-use">
-        <h2>3. Tool use / function calling</h2>
-        <p>Tool use — это само действие: модель не просто говорит «надо открыть файл», а вызывает инструмент и получает результат обратно.</p>
-        <div class="diagram">Промпт → LLM → выбор инструмента → вызов → наблюдение → следующий шаг</div>
-        <div class="compare">
-          <div class="mini"><strong>LLM без tool use</strong> Советует, объясняет, пишет текст.</div>
-          <div class="mini"><strong>LLM с tool use</strong> Вызывает поиск, файл, код или другое действие.</div>
-          <div class="mini"><strong>MCP</strong> Стандартная розетка, через которую часть инструментов подключается.</div>
+      <article class="card" id="not-mcp">
+        <h2>Что нельзя подключить через MCP</h2>
+        <p>Если нет программного входа, нужен другой механизм. На то есть computer use.</p>
+        <ul class="points cannot-list">
+          <li><strong>Приложение без API</strong> — например, древняя редакционная CMS: только computer use или браузер.</li>
+          <li><strong>Сайт без API</strong> — браузерная автоматизация в окне, не MCP.</li>
+          <li><strong>Закрытая чужая система без ключей</strong> — даже если API есть, без доступа MCP бессилен. Это вопрос разрешений, а не протокола.</li>
+          <li><strong>Прямое управление экраном, мышью, скриншотами рабочего стола</strong> — это computer use, отдельный механизм.</li>
+        </ul>
+      </article>
+
+      <article class="card wide" id="computer-use">
+        <div class="section-label"><i class="fa-solid fa-display"></i> Без MCP — тяжело</div>
+        <h2>Как работает computer use</h2>
+        <div class="loop">
+          <div class="loop-step">
+            <span>1</span>
+            <h3>Скриншот</h3>
+            <p>Система снимает изображение экрана или окна и отдаёт модели.</p>
+          </div>
+          <div class="loop-step">
+            <span>2</span>
+            <h3>Зрение</h3>
+            <p>Мультимодальная LLM распознаёт кнопки, поля, текст и координаты в пикселях.</p>
+          </div>
+          <div class="loop-step">
+            <span>3</span>
+            <h3>Решение</h3>
+            <p>Модель выбирает действие: кликнуть, напечатать, прокрутить, перетащить, нажать клавишу.</p>
+          </div>
+          <div class="loop-step">
+            <span>4</span>
+            <h3>Действие</h3>
+            <p>Контроллер выполняет это на реальной ОС: двигает курсор, кликает, эмулирует клавиши.</p>
+          </div>
+          <div class="loop-step">
+            <span>5</span>
+            <h3>Снова скриншот</h3>
+            <p>Агент смотрит, что изменилось, и решает следующий шаг. И так по кругу.</p>
+          </div>
         </div>
       </article>
 
-      <article class="card" id="not-mcp">
-        <h2>4. Не всё идёт через MCP</h2>
-        <p>Веб-доступ, зрение и управление компьютером могут быть отдельными механизмами.</p>
-        <ul class="points">
-          <li><strong>Веб:</strong> поиск и чтение страниц.</li>
-          <li><strong>Зрение:</strong> понимание изображения или экрана.</li>
-          <li><strong>Computer use:</strong> мышь, клавиатура, реальный интерфейс.</li>
-        </ul>
+      <article class="card wide" id="tool-use">
+        <h2>MCP vs computer use</h2>
+        <div class="compare">
+          <div class="mini"><strong>MCP</strong> Структурный вход: «вызови функцию отправить_письмо с такими аргументами». Быстро, точно, надёжно.</div>
+          <div class="mini"><strong>Computer use</strong> Человеческий вход: агент действует глазами по пикселям и руками по мыши.</div>
+          <div class="mini"><strong>Цена универсальности</strong> Работает с тем, что видно на экране, но медленно и хрупко: поехала вёрстка, сдвинулась кнопка, всплыло окно.</div>
+        </div>
       </article>
 
-      <article class="card" id="permissions">
-        <h2>5. Разрешения</h2>
-        <p>Коннекторы дают агенту ключи, но не отменяют границы.</p>
-        <ul class="points">
-          <li><strong>Заранее:</strong> папки, сервисы, аккаунты, токены.</li>
-          <li><strong>На красных линиях:</strong> отправить, опубликовать, удалить, потратить деньги.</li>
-          <li><strong>Практическая формула:</strong> свободно внутри периметра, стоп перед необратимым.</li>
-        </ul>
+      <article class="card wide" id="permissions">
+        <h2>Обязательно под разрешениями</h2>
+        <p>Computer use действует на реальной машине, не в песочнице, поэтому он огорожен правами: где-то экран только «видно» (читать можно, кликать нельзя), где-то разрешён лишь клик, а перед необратимым — отправить, опубликовать, удалить — агент останавливается и спрашивает.</p>
+        <div class="warning">За computer use нужно присматривать, особенно на необратимых действиях, и не доверять ему чувствительные операции без подтверждения.</div>
       </article>
     </section>
   </main>

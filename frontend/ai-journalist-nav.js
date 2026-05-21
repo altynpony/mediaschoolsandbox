@@ -56,9 +56,10 @@
       section: 'Коннекторы и MCP',
       note: 'Розетки, инструменты, разрешения',
       anchors: [
-        { label: 'Коннектор', href: '#connectors' },
+        { label: 'Что можно', href: '#connectors' },
         { label: 'MCP', href: '#mcp' },
-        { label: 'Tool use', href: '#tool-use' },
+        { label: 'Что нельзя', href: '#not-mcp' },
+        { label: 'Computer use', href: '#computer-use' },
         { label: 'Разрешения', href: '#permissions' }
       ]
     },
