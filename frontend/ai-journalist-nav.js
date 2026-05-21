@@ -98,24 +98,12 @@
     return pages.findIndex((page) => page.path === name);
   }
 
-  function makeLink(className, page, direction) {
-    const arrow = direction === 'prev' ? '←' : '→';
-    const text = direction === 'prev' ? `${arrow} ${page.title}` : `${page.title} ${arrow}`;
-    return `<a class="aj-nav-link aj-nav-${direction}" href="${page.path}">${text}</a>`;
-  }
-
   function renderQuickNav(index) {
     const current = pages[index];
-    const prev = pages[(index - 1 + pages.length) % pages.length];
-    const next = pages[(index + 1) % pages.length];
     const nav = document.createElement('nav');
     nav.className = 'aj-quick-nav';
-    nav.setAttribute('aria-label', 'AI journalist page navigation');
-    nav.innerHTML = [
-      makeLink('', prev, 'prev'),
-      `<div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>`,
-      makeLink('', next, 'next')
-    ].join('');
+    nav.setAttribute('aria-label', 'Current AI journalist page');
+    nav.innerHTML = `<div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>`;
     document.body.appendChild(nav);
   }
 
