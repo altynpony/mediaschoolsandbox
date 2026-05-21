@@ -211,6 +211,26 @@
       font-weight: 400;
     }
 
+    .call-title {
+      display: grid;
+      gap: 4px;
+      max-width: 900px;
+      color: var(--purple);
+      font-size: clamp(40px, 5vw, 74px);
+      font-weight: 200;
+      line-height: 1.02;
+    }
+
+    .call-title span {
+      display: block;
+    }
+
+    .emoji-row {
+      margin: 14px 0 4px;
+      font-size: clamp(34px, 4vw, 54px);
+      letter-spacing: 0.18em;
+    }
+
     .note {
       margin-top: 16px;
       padding: 18px;
@@ -307,7 +327,12 @@
       </article>
 
       <article class="card wide" id="how-tools-are-called">
-        <h2>Как вызываются инструменты</h2>
+        <h2 class="call-title">
+          <span>Что вызывают</span>
+          <span>Слэш <code>/</code></span>
+          <span>и Собака <code>@</code></span>
+        </h2>
+        <div class="emoji-row" aria-label="laughing emoji and unicorns">😂 🦄 🦄 😂</div>
         <div class="matrix">
           <div class="mini">
             <strong>Слэш <code>/</code></strong>
@@ -328,11 +353,10 @@
       <article class="card wide" id="class-task">
         <h2>Что сравниваем на занятии</h2>
         <ul class="points">
-          <li><strong>Язык общения:</strong> Cowork спокойно принимает русский; Claude, Codex и Gemini тоже понимают, но интерфейс и документация часто остаются англоязычными.</li>
-          <li><strong>Файлы:</strong> где агент реально видит локальные папки, где работает через облако, где нужно отдельно дать доступ.</li>
+          <li><strong>Голосовой ввод:</strong> Codex понимает всё и всех. Cowork и Gemini даже с английским тяжело справляются.</li>
           <li><strong>Skills / инструкции:</strong> Claude и Codex особенно явно работают с <code>.md</code>-инструкциями; это удобный формат для повторяемых процедур.</li>
-          <li><strong>Автоматизации:</strong> у Codex и Cowork есть scheduled/recurring задачи; важно понять, что именно работает локально, а что живёт в облаке.</li>
-          <li><strong>Визуальное:</strong> Claude силён в UX и вёрстке, Gemini силён в Google-мультимодальности, Codex умеет работать с изображениями и собирать рабочие материалы.</li>
+          <li><strong>Автоматизации:</strong> у Codex и Cowork есть scheduled/recurring задачи; выбирайте правильную модель: на простые задачи модель попроще — экономит токены.</li>
+          <li><strong>Сильные стороны:</strong> Claude силён в UX и вёрстке, Gemini — в мультимодальности и уже пишет музыку, Codex — лучший программист из троих и умеет рисовать.</li>
         </ul>
       </article>
 
