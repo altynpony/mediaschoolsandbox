@@ -40,8 +40,15 @@
       note: 'Карта занятия',
       anchors: [
         { label: 'Этапы', href: '#top' },
+        { label: 'Агентность модели', href: 'model-agency.html' },
         { label: 'Сценарии и агенты', href: 'codex-case.html' }
       ]
+    },
+    {
+      path: 'model-agency.html',
+      title: 'Агентность модели',
+      section: 'Агентность модели',
+      note: 'Нарния выходит из шкафа'
     },
     {
       path: 'codex-case.html',
@@ -88,6 +95,7 @@
       title: 'Vibecoder',
       links: [
         { label: 'Roadmap', href: 'vibecoder.html', note: 'Путь занятия' },
+        { label: 'Агентность модели', href: 'model-agency.html', note: 'Нарния выходит из шкафа' },
         { label: 'Сценарии и агенты', href: 'codex-case.html', note: 'Кейс Codex' }
       ]
     },
