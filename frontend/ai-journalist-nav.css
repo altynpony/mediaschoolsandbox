@@ -1,41 +1,57 @@
-.aj-quick-nav,
+.aj-current-page,
 .aj-materials-footer {
   box-sizing: border-box;
   font-family: Inter, Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.aj-quick-nav *,
+.aj-current-page *,
 .aj-materials-footer * {
   box-sizing: border-box;
 }
 
-.aj-quick-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  z-index: 9999;
-  width: min(360px, calc(100vw - 36px));
-  padding: 10px 18px;
+.aj-current-page {
+  position: relative;
+  width: min(1180px, calc(100vw - 36px));
+  margin: 28px auto 34px;
+}
+
+.fixed + .aj-current-page {
+  margin-top: 104px;
+}
+
+.aj-current-page::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(139, 92, 246, 0.18);
+}
+
+.aj-current-card {
+  position: relative;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 14px 24px 16px;
   border: 1px solid rgba(139, 92, 246, 0.22);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 38px rgba(36, 28, 64, 0.14);
-  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 42px rgba(36, 28, 64, 0.10);
 }
 
 .aj-nav-meta {
   text-align: center;
   color: #6d5b94;
-  font-size: 12px;
-  line-height: 1.25;
+  font-size: 22px;
+  line-height: 1.18;
 }
 
 .aj-nav-meta strong {
   display: block;
   color: #7d45cf;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 26px;
 }
 
 .aj-materials-footer {
@@ -86,6 +102,10 @@
   text-decoration: none;
 }
 
+.aj-footer-current {
+  margin: 0 auto 24px;
+}
+
 .aj-footer-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -122,8 +142,26 @@
 }
 
 @media (max-width: 820px) {
-  .aj-quick-nav {
-    width: min(340px, calc(100vw - 20px));
+  .aj-current-page {
+    width: min(100% - 20px, 720px);
+    margin-top: 22px;
+    margin-bottom: 28px;
+  }
+
+  .fixed + .aj-current-page {
+    margin-top: 92px;
+  }
+
+  .aj-current-card {
+    padding: 12px 18px 14px;
+  }
+
+  .aj-nav-meta {
+    font-size: 18px;
+  }
+
+  .aj-nav-meta strong {
+    font-size: 22px;
   }
 
   .aj-footer-head {
@@ -136,12 +174,20 @@
 }
 
 @media (max-width: 540px) {
-  .aj-quick-nav {
-    bottom: 10px;
+  .aj-current-card {
+    border-radius: 28px;
+  }
+
+  .aj-nav-meta {
+    font-size: 16px;
+  }
+
+  .aj-nav-meta strong {
+    font-size: 20px;
   }
 
   .aj-materials-footer {
-    margin-bottom: 72px;
+    margin-bottom: 42px;
     padding: 20px;
   }
 

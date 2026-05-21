@@ -98,16 +98,30 @@
     return pages.findIndex((page) => page.path === name);
   }
 
-  function renderQuickNav(index) {
-    const current = pages[index];
-    const nav = document.createElement('nav');
-    nav.className = 'aj-quick-nav';
-    nav.setAttribute('aria-label', 'Current AI journalist page');
-    nav.innerHTML = `<div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>`;
-    document.body.appendChild(nav);
+  function pageMarker(current, extraClass) {
+    return `
+      <div class="aj-current-card ${extraClass || ''}">
+        <div class="aj-nav-meta"><strong>${current.section}</strong>${current.note}</div>
+      </div>
+    `;
   }
 
-  function renderFooter() {
+  function renderCurrentPage(index) {
+    const current = pages[index];
+    const nav = document.createElement('nav');
+    nav.className = 'aj-current-page';
+    nav.setAttribute('aria-label', 'Current AI journalist page');
+    nav.innerHTML = pageMarker(current);
+    const main = document.querySelector('main');
+    if (main) {
+      document.body.insertBefore(nav, main);
+    } else {
+      document.body.prepend(nav);
+    }
+  }
+
+  function renderFooter(index) {
+    const current = pages[index];
     const footer = document.createElement('footer');
     footer.className = 'aj-materials-footer';
     footer.setAttribute('aria-label', 'AI journalist materials index');
@@ -118,6 +132,9 @@
           <p class="aj-footer-copy">Быстрые переходы между разделами и подразделами занятия.</p>
         </div>
         <a class="aj-footer-home" href="ai-journalist.html">Все материалы</a>
+      </div>
+      <div class="aj-footer-current">
+        ${pageMarker(current)}
       </div>
       <div class="aj-footer-grid">
         ${groups.map((group) => `
@@ -151,8 +168,8 @@
   document.addEventListener('DOMContentLoaded', function () {
     const index = currentPage();
     if (index < 0) return;
-    renderQuickNav(index);
-    renderFooter();
+    renderCurrentPage(index);
+    renderFooter(index);
     renderLocalSubnav(index);
   });
 })();
