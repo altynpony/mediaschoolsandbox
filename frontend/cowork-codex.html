@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cowork & Codex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #7d45cf;
+      --purple-soft: #f6f0ff;
+      --green: #83c84b;
+      --green-soft: #f1faea;
+      --text: #2f2d35;
+      --muted: #74717d;
+      --line: #e8e2f2;
+      --bg: #fbfafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 32px;
+      background:
+        radial-gradient(circle at top left, rgba(125, 69, 207, 0.10), transparent 34%),
+        radial-gradient(circle at top right, rgba(131, 200, 75, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 42px;
+    }
+
+    .logo {
+      color: #111;
+      font-size: 25px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .logo span,
+    .kicker,
+    .card h2,
+    .points strong {
+      color: var(--purple);
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 15px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(46, 46, 54, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    header {
+      max-width: 960px;
+      margin-bottom: 30px;
+    }
+
+    .kicker {
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+      color: #22222a;
+      font-size: clamp(42px, 6vw, 78px);
+      font-weight: 200;
+      line-height: 0.98;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      max-width: 900px;
+      color: #4b4652;
+      font-size: clamp(18px, 2vw, 24px);
+    }
+
+    .principle {
+      max-width: 980px;
+      margin: 30px 0;
+      padding: 24px 28px;
+      border-left: 4px solid var(--purple);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 34px rgba(46, 46, 54, 0.07);
+      color: var(--purple);
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.25;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 10px 28px rgba(46, 46, 54, 0.05);
+    }
+
+    .card h2 {
+      margin-bottom: 12px;
+      font-size: clamp(23px, 2vw, 31px);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .card p {
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .points {
+      display: grid;
+      gap: 9px;
+      margin-top: 14px;
+      padding-left: 20px;
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    .points strong {
+      font-weight: 400;
+    }
+
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .link-row a {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--purple);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mini {
+      padding: 16px;
+      border-radius: 8px;
+      background: var(--purple-soft);
+      color: #3a3345;
+      font-size: 15px;
+    }
+
+    .mini:nth-child(2) {
+      background: var(--green-soft);
+    }
+
+    .mini strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--purple);
+      font-weight: 400;
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 18px;
+      border: 1px solid #ead9ff;
+      border-radius: 8px;
+      background: #fbf8ff;
+      color: #3d3944;
+      font-size: 16px;
+    }
+
+    .source-list a {
+      color: var(--purple);
+      text-decoration: none;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 20px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .grid,
+      .matrix {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="ai-journalist-nav.css">
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="logo" href="ai-journalist.html">pragueschool<span>.media</span></a>
+      <a class="back" href="vibecoder.html"><i class="fa-solid fa-arrow-left"></i> Roadmap</a>
+    </div>
+
+    <header>
+      <div class="kicker">Рабочие среды для агента</div>
+      <h1>Cowork & Codex</h1>
+      <p class="lead">Что предлагают лидеры: Claude Cowork, OpenAI Codex и Google Gemini. Вместо тысячи сравнений — предлагаем попробовать и обменяться впечатлениями.</p>
+    </header>
+
+    <div class="principle">Модель + инструменты + рабочее место с файлами: ваш компьютер, облако или оба сразу.</div>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Claude Cowork</h2>
+        <p>Cowork — режим Claude Desktop для знаний и рабочих файлов: поручить задачу, дать папку, получить готовый документ, таблицу или отчёт.</p>
+        <ul class="points">
+          <li><strong>Сильная сторона:</strong> работа с файлами, отчётами, папками, заметками, документами.</li>
+          <li><strong>Skills:</strong> инструкции в формате <code>.md</code>, которые можно переиспользовать.</li>
+          <li><strong>Мобильный сценарий:</strong> можно отправлять задачу с телефона, но Cowork исполняется в desktop-среде.</li>
+        </ul>
+        <div class="link-row">
+          <a href="https://claude.com/product/cowork"><i class="fa-solid fa-arrow-up-right-from-square"></i> Cowork</a>
+          <a href="https://claude.com/download"><i class="fa-solid fa-download"></i> Download</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>OpenAI Codex</h2>
+        <p>Codex — командный центр для агентной работы с кодом и файлами: локально, в IDE, CLI, web и desktop-приложении.</p>
+        <ul class="points">
+          <li><strong>Сильная сторона:</strong> работа с репозиториями, файлами, shell, browser, computer use, параллельными агентами.</li>
+          <li><strong>Skills и Automations:</strong> процедуры и повторяющиеся задачи можно оформлять как отдельные рабочие сценарии.</li>
+          <li><strong>Мобильный сценарий:</strong> Codex можно контролировать через ChatGPT mobile, включая удалённые задачи.</li>
+        </ul>
+        <div class="link-row">
+          <a href="https://openai.com/codex/"><i class="fa-solid fa-arrow-up-right-from-square"></i> Codex</a>
+          <a href="https://developers.openai.com/codex/app"><i class="fa-solid fa-book"></i> Docs</a>
+          <a href="https://chatgpt.com/download"><i class="fa-solid fa-download"></i> Download</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Google Gemini</h2>
+        <p>Gemini — AI-среда Google: web, mobile, macOS app, Google ecosystem и CLI для разработчиков.</p>
+        <ul class="points">
+          <li><strong>Сильная сторона:</strong> связка с Google-сервисами, поиск, multimodal, Canvas, Drive/Docs-подход.</li>
+          <li><strong>Автоматизация:</strong> в CLI есть команды, @-контекст, shell mode и кастомные команды.</li>
+          <li><strong>Desktop:</strong> официальный native app сейчас есть для macOS; на остальных desktop-сценариях надёжнее идти через web/CLI.</li>
+        </ul>
+        <div class="link-row">
+          <a href="https://gemini.google.com/app"><i class="fa-solid fa-arrow-up-right-from-square"></i> Gemini</a>
+          <a href="https://gemini.google/mac"><i class="fa-solid fa-desktop"></i> macOS</a>
+          <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.bard"><i class="fa-brands fa-google-play"></i> Android</a>
+          <a href="https://apps.apple.com/us/app/google-gemini/id6477489729"><i class="fa-brands fa-apple"></i> iOS</a>
+          <a href="https://google-gemini.github.io/gemini-cli/"><i class="fa-solid fa-terminal"></i> CLI</a>
+        </div>
+      </article>
+
+      <article class="card wide" id="how-tools-are-called">
+        <h2>Как вызываются инструменты</h2>
+        <div class="matrix">
+          <div class="mini">
+            <strong>Слэш <code>/</code></strong>
+            Команды и навыки: <code>/schedule</code>, <code>/personality</code>, <code>/review</code>, пользовательские процедуры.
+          </div>
+          <div class="mini">
+            <strong>Собака <code>@</code></strong>
+            Указание файла, папки, контекста или участника: «посмотри вот это», «возьми этот документ».
+          </div>
+          <div class="mini">
+            <strong>Горячие клавиши</strong>
+            Быстро вызвать панель, открыть контекст, подтвердить действие, переключить режим или автодопуск.
+          </div>
+        </div>
+        <div class="note">Главная разница не в кнопках, а в рабочем контуре: насколько легко дать агенту доступ к файлам, подключить инструменты, сохранить процедуру и вернуться к задаче позже.</div>
+      </article>
+
+      <article class="card wide" id="class-task">
+        <h2>Что сравниваем на занятии</h2>
+        <ul class="points">
+          <li><strong>Язык общения:</strong> Cowork спокойно принимает русский; Claude, Codex и Gemini тоже понимают, но интерфейс и документация часто остаются англоязычными.</li>
+          <li><strong>Файлы:</strong> где агент реально видит локальные папки, где работает через облако, где нужно отдельно дать доступ.</li>
+          <li><strong>Skills / инструкции:</strong> Claude и Codex особенно явно работают с <code>.md</code>-инструкциями; это удобный формат для повторяемых процедур.</li>
+          <li><strong>Автоматизации:</strong> у Codex и Cowork есть scheduled/recurring задачи; важно понять, что именно работает локально, а что живёт в облаке.</li>
+          <li><strong>Визуальное:</strong> Claude силён в UX и вёрстке, Gemini силён в Google-мультимодальности, Codex умеет работать с изображениями и собирать рабочие материалы.</li>
+        </ul>
+      </article>
+
+      <article class="card wide source-list">
+        <h2>Официальные ссылки</h2>
+        <ul class="points">
+          <li><a href="https://claude.com/product/cowork">Claude Cowork</a> / <a href="https://claude.com/download">Claude download</a></li>
+          <li><a href="https://openai.com/codex/">OpenAI Codex</a> / <a href="https://developers.openai.com/codex/app">Codex app docs</a> / <a href="https://chatgpt.com/download">ChatGPT & Codex download</a></li>
+          <li><a href="https://gemini.google.com/app">Gemini web</a> / <a href="https://gemini.google/mac">Gemini for macOS</a> / <a href="https://google-gemini.github.io/gemini-cli/">Gemini CLI</a></li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="ai-journalist-nav.js"></script>
+</body>
+</html>

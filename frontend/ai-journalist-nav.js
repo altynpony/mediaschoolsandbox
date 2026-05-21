@@ -64,6 +64,16 @@
       ]
     },
     {
+      path: 'cowork-codex.html',
+      title: 'Cowork & Codex',
+      section: 'Cowork & Codex',
+      note: 'Cowork / Codex / Gemini',
+      anchors: [
+        { label: 'Как вызываются инструменты', href: '#how-tools-are-called' },
+        { label: 'Что сравниваем', href: '#class-task' }
+      ]
+    },
+    {
       path: 'codex-case.html',
       title: 'Сценарии и агенты',
       section: 'Codex case',
@@ -110,6 +120,7 @@
         { label: 'Roadmap', href: 'vibecoder.html', note: 'Путь занятия' },
         { label: 'Агентность модели', href: 'model-agency.html', note: 'Нарния выходит из шкафа' },
         { label: 'Коннекторы и MCP', href: 'connectors-mcp.html', note: 'Инструменты и доступы' },
+        { label: 'Cowork & Codex', href: 'cowork-codex.html', note: 'Cowork / Codex / Gemini' },
         { label: 'Сценарии и агенты', href: 'codex-case.html', note: 'Кейс Codex' }
       ]
     },
