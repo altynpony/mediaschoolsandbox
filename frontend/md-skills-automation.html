@@ -185,6 +185,56 @@
       white-space: pre-wrap;
     }
 
+    .skill-examples {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .md-window {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(46, 46, 54, 0.04);
+    }
+
+    .md-window summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbf8ff;
+      color: var(--purple);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 400;
+      list-style: none;
+    }
+
+    .md-window summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .md-window summary span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    .md-window pre {
+      max-height: 560px;
+      padding: 20px;
+      overflow: auto;
+      color: #37333d;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
     .route {
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -330,6 +380,343 @@ name: design-critique
 description: когда применять — "review this design", скриншот, ссылка на Figma...
 ---
 # тело: что нужно на входе → процедура → шаблон вывода</pre>
+        </div>
+      </article>
+
+      <article class="card wide" id="skill-examples">
+        <h2>Примеры SKILL.md</h2>
+        <p>Два полюса: скилл-процедура и скилл-стандарт. Оба выглядят как обычные markdown-файлы: метаданные сверху, дальше тело инструкции.</p>
+        <div class="skill-examples">
+          <details class="md-window" open>
+            <summary>01_design-critique.SKILL.md <span>скилл-процедура</span></summary>
+            <pre>---
+name: design-critique
+description: Get structured design feedback on usability, hierarchy, and consistency. Trigger with "review this design", "critique this mockup", "what do you think of this screen?", or when sharing a Figma link or screenshot for feedback at any stage from exploration to final polish.
+argument-hint: "&lt;Figma URL, screenshot, or description&gt;"
+---
+
+# /design-critique
+
+&gt; If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).
+
+Get structured design feedback across multiple dimensions.
+
+## Usage
+
+```
+/design-critique $ARGUMENTS
+```
+
+Review the design: @$1
+
+If a Figma URL is provided, pull the design from Figma. If a file is referenced, read it. Otherwise, ask the user to describe or share their design.
+
+## What I Need From You
+
+- **The design**: Figma URL, screenshot, or detailed description
+- **Context**: What is this? Who is it for? What stage (exploration, refinement, final)?
+- **Focus** (optional): "Focus on mobile" or "Focus on the onboarding flow"
+
+## Critique Framework
+
+### 1. First Impression (2 seconds)
+- What draws the eye first? Is that correct?
+- What's the emotional reaction?
+- Is the purpose immediately clear?
+
+### 2. Usability
+- Can the user accomplish their goal?
+- Is the navigation intuitive?
+- Are interactive elements obvious?
+- Are there unnecessary steps?
+
+### 3. Visual Hierarchy
+- Is there a clear reading order?
+- Are the right elements emphasized?
+- Is whitespace used effectively?
+- Is typography creating the right hierarchy?
+
+### 4. Consistency
+- Does it follow the design system?
+- Are spacing, colors, and typography consistent?
+- Do similar elements behave similarly?
+
+### 5. Accessibility
+- Color contrast ratios
+- Touch target sizes
+- Text readability
+- Alternative text for images
+
+## How to Give Feedback
+
+- **Be specific**: "The CTA competes with the navigation" not "the layout is confusing"
+- **Explain why**: Connect feedback to design principles or user needs
+- **Suggest alternatives**: Don't just identify problems, propose solutions
+- **Acknowledge what works**: Good feedback includes positive observations
+- **Match the stage**: Early exploration gets different feedback than final polish
+
+## Output
+
+```markdown
+## Design Critique: [Design Name]
+
+### Overall Impression
+[1-2 sentence first reaction — what works, what's the biggest opportunity]
+
+### Usability
+| Finding | Severity | Recommendation |
+|---------|----------|----------------|
+| [Issue] | 🔴 Critical / 🟡 Moderate / 🟢 Minor | [Fix] |
+
+### Visual Hierarchy
+- **What draws the eye first**: [Element] — [Is this correct?]
+- **Reading flow**: [How does the eye move through the layout?]
+- **Emphasis**: [Are the right things emphasized?]
+
+### Consistency
+| Element | Issue | Recommendation |
+|---------|-------|----------------|
+| [Typography/spacing/color] | [Inconsistency] | [Fix] |
+
+### Accessibility
+- **Color contrast**: [Pass/fail for key text]
+- **Touch targets**: [Adequate size?]
+- **Text readability**: [Font size, line height]
+
+### What Works Well
+- [Positive observation 1]
+- [Positive observation 2]
+
+### Priority Recommendations
+1. **[Most impactful change]** — [Why and how]
+2. **[Second priority]** — [Why and how]
+3. **[Third priority]** — [Why and how]
+```
+
+## If Connectors Available
+
+If **~~design tool** is connected:
+- Pull the design directly from Figma and inspect components, tokens, and layers
+- Compare against the existing design system for consistency
+
+If **~~user feedback** is connected:
+- Cross-reference design decisions with recent user feedback and support tickets
+
+## Tips
+
+1. **Share the context** — "This is a checkout flow for a B2B SaaS" helps me give relevant feedback.
+2. **Specify your stage** — Early exploration gets different feedback than final polish.
+3. **Ask me to focus** — "Just look at the navigation" gives you more depth on one area.</pre>
+          </details>
+
+          <details class="md-window">
+            <summary>02_pragueschool-media-design.SKILL.md <span>скилл-стандарт</span></summary>
+            <pre>---
+name: pragueschool.media-design
+description: This skill should be used when the user asks to create, refine, interpret, review, or apply PSM / pragueschool.media design guidance; draft design-guide recommendations; organize design standards; review design decisions against PSM principles; turn rough notes into polished guide content; create PSM-styled frontend HTML/CSS; or create readable PSM-styled PDFs and visual materials.
+version: 0.1.0
+---
+
+# pragueschool.media design
+
+## Mission
+
+Helps create, refine, and apply practical PSM design guidance.
+
+This skill supports PSM Design Guide work, including creating, interpreting, improving, and applying design guidance related to PSM. Use it to draft clear recommendations, organize design standards, review design decisions against guide principles, and turn rough notes into polished guide content.
+
+## Operating principles
+
+- Keep responses practical, organized, and focused on usable design guidance.
+- Ask clarifying questions when the acronym PSM or the intended domain is ambiguous, while still offering useful structure and examples when enough context is available.
+- Avoid inventing official standards, proprietary requirements, or legal/compliance claims unless the user provides the source material.
+- Distinguish between confirmed guide content and suggested best-practice wording when relevant.
+- Be concise, but include enough detail to support decisions.
+- Use tables, checklists, examples, and templates when they make the guidance easier to apply.
+
+## Default visual style
+
+Apply the PSM media-school style by default.
+
+### Color palette
+
+| Token | Value | Use |
+|---|---:|---|
+| Primary purple | `#ae6df0` | Primary accents, table headers, method names, links, emphasis |
+| Complementary green | `#aff06d` | Tags, labels, positive accents |
+| Text dark | `#333333` | Main text |
+| Text muted | `#666666` | Secondary text |
+| Light grey text | `#999999` | Metadata, captions, footer notes |
+| Borders | `#e0e0e0` | Dividers, table rules, card outlines |
+| Page background | `#ffffff` or `#f9f9f9` | Main page surfaces |
+| Card background | `#ffffff` | Cards and content blocks |
+| Hover tint | `#f7f0ff` | Hover rows, subtle interactive feedback |
+
+### Typography
+
+Use Montserrat as the primary font.
+
+```css
+font-family: 'Montserrat', sans-serif;
+font-weight: 300; /* Light - general text */
+font-weight: 400; /* Regular - emphasis/highlights */
+```
+
+Use airy, elegant headings with large sizes and light or regular weight. Inter Regular Italic may be used in grey for footer metadata or secondary "meta" information.
+
+### Page layout
+
+Use a clean media-school layout:
+
+```css
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  font-weight: 300;
+  padding: 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+```
+
+Prefer generous spacing, clean grids, card-like sections, and responsive layouts.
+
+### Cards
+
+Use subtle, light cards:
+
+```css
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+```
+
+### Tables
+
+Use purple headers, generous cell padding, clean borders, and a light purple hover state:
+
+```css
+th {
+  background-color: #ae6df0;
+  color: white;
+  font-weight: 400;
+}
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+tr:hover {
+  background-color: #f7f0ff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+```
+
+### Headings
+
+Use clear hierarchy and optional bottom borders:
+
+```css
+h1 {
+  font-size: 36px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 40px;
+}
+h2 {
+  font-size: 24px;
+  font-weight: 300;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 12px;
+}
+```
+
+### Tags and labels
+
+Use green accents for language tags, labels, and compact metadata chips:
+
+```css
+.tag {
+  background-color: #aff06d;
+  color: #333;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-weight: 400;
+}
+```
+
+Use purple for method names or important values:
+
+```css
+.method-name {
+  color: #ae6df0;
+  font-weight: 400;
+}
+```
+
+## Logo and SVG assets
+
+Use the PSM logo when asked.
+
+Available bundled SVG assets:
+
+- `lib/svg/psm-logo-long.svg`
+- `lib/svg/psm-illo.svg`
+
+When producing HTML, embed these as relative paths when the output will live beside the skill folder, or copy them into the generated project's asset folder and update the paths accordingly.
+
+## Frontend output rule
+
+When creating frontend work, always provide both:
+
+1. The HTML/CSS code.
+2. A downloadable `.html` file.
+
+For frontend files, apply the PSM visual style unless the user explicitly requests another style. Use Montserrat, the purple/green palette, card-based layouts, generous spacing, clean tables, and responsive structure.
+
+## PDF layout rules
+
+When creating PDFs, prioritize readability and reliable layout over visual complexity.
+
+Text must stay inside its intended area: cards, boxes, table cells, captions, headers, footers, and page margins. When content does not fit, wrap it, shorten it, reduce the font size slightly, increase the container size, split it, or move it to a new page.
+
+For infographics, use generous padding, simple grids, and short labels. Avoid overcrowded diagrams. Prefer extra pages over squeezed content.
+
+For tables, wrap text inside cells, use sufficient row height, and never allow text to cross cell borders. When a table is too wide or dense, split it into smaller tables, use landscape orientation, or move detailed text into notes.
+
+Before final export, check every page for overflow, clipping, overlap, cramped spacing, and unreadably small text.
+
+## Guide-writing workflow
+
+When helping with PSM design guidance:
+
+1. Identify the target artifact: guide section, checklist, pattern, page template, critique, frontend, PDF, or visual standard.
+2. Separate confirmed requirements from suggested best practices.
+3. Convert rough notes into clear, reusable guidance.
+4. Use concise headings, examples, tables, and checklists where helpful.
+5. Apply the PSM style first unless the user requests a different visual direction.
+6. Flag ambiguities rather than inventing official rules.
+7. Provide implementation-ready wording or code when appropriate.
+
+## Review checklist
+
+Use this checklist when reviewing PSM-styled work:
+
+- Does the work follow the PSM palette: purple `#ae6df0`, green `#aff06d`, dark text `#333333`, muted text `#666666`, borders `#e0e0e0`?
+- Is Montserrat used as the primary typeface with light or regular weights?
+- Are headings airy, spacious, and clearly hierarchical?
+- Are cards subtle, white, rounded, and lightly shadowed?
+- Are tables readable, with purple headers, padded cells, borders, and hover tint where relevant?
+- Are labels or language tags styled with the green accent?
+- Are important method names or values highlighted in purple?
+- Is spacing generous and the layout clean, gridded, and responsive?
+- For PDFs, is all text contained, readable, and free from clipping or overlap?
+- For official guide claims, is the source confirmed by the user?</pre>
+          </details>
         </div>
       </article>
 

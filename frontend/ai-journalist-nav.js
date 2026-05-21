@@ -81,6 +81,7 @@
       anchors: [
         { label: '.md', href: '#markdown' },
         { label: 'Скиллы', href: '#skills' },
+        { label: 'Примеры SKILL.md', href: '#skill-examples' },
         { label: 'Версии', href: '#versioning' },
         { label: 'Кейс дайджеста', href: '#digest-case' },
         { label: 'Мечты автоматизации', href: '#automation-dreams' }
