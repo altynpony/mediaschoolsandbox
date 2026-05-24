@@ -6,113 +6,323 @@
   <title>Занятие 1</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --purple: #7d45cf;
-      --purple-soft: #f6f0ff;
+      --purple-soft: #f7f0ff;
       --green: #83c84b;
+      --green-soft: #f1faea;
       --text: #2f2d35;
-      --muted: #74717d;
-      --line: #e8e2f2;
+      --muted: #706d78;
+      --line: #e5def0;
       --bg: #fbfafc;
+      --card: #ffffff;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      min-height: 100vh;
-      padding: 36px;
-      background:
-        radial-gradient(circle at top left, rgba(125, 69, 207, 0.10), transparent 34%),
-        radial-gradient(circle at top right, rgba(131, 200, 75, 0.10), transparent 30%),
-        var(--bg);
+      margin: 0;
+      background: var(--bg);
       color: var(--text);
       font-family: 'Montserrat', sans-serif;
       font-weight: 300;
-      line-height: 1.55;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--purple);
+      text-decoration: none;
     }
 
     main {
-      max-width: 1040px;
+      width: min(1180px, calc(100% - 32px));
       margin: 0 auto;
+      padding: 28px 0 64px;
     }
 
     header {
-      margin-bottom: 34px;
+      padding: 30px 0 24px;
+      border-bottom: 1px solid var(--line);
     }
 
     .kicker {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       color: var(--purple);
       font-size: 13px;
       font-weight: 400;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-weight: 300;
+      line-height: 1.18;
     }
 
     h1 {
-      color: #22222a;
-      font-size: clamp(44px, 7vw, 92px);
-      font-weight: 200;
-      line-height: 0.98;
+      max-width: 720px;
+      color: #25242b;
+      font-size: clamp(34px, 5vw, 64px);
       text-transform: uppercase;
     }
 
-    .sections {
-      display: grid;
-      gap: 16px;
+    h2 {
+      color: var(--purple);
+      font-size: clamp(28px, 3vw, 42px);
     }
 
-    section {
-      display: grid;
-      grid-template-columns: 72px 1fr;
-      gap: 22px;
-      align-items: start;
-      padding: 26px;
+    h3 {
+      color: #34313b;
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    ul,
+    ol {
+      margin: 14px 0 0;
+      padding-left: 22px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    strong,
+    b {
+      color: #2f2d35;
+      font-weight: 500;
+    }
+
+    code,
+    pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .nav a {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--purple);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .section {
+      margin-top: 28px;
+      padding: 28px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 10px 28px rgba(46, 46, 54, 0.05);
+      background: var(--card);
+      box-shadow: 0 8px 24px rgba(47, 45, 53, 0.04);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 22px;
     }
 
     .num {
       display: grid;
-      width: 58px;
-      height: 58px;
+      width: 52px;
+      height: 52px;
       place-items: center;
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #ae6df0, var(--purple));
       color: #fff;
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 400;
     }
 
-    h2 {
-      margin-bottom: 8px;
-      color: var(--purple);
-      font-size: clamp(25px, 3vw, 39px);
-      font-weight: 300;
-      line-height: 1.15;
+    .lead {
+      max-width: 860px;
+      color: #5f5b68;
+      font-size: 20px;
     }
 
-    p {
-      max-width: 780px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card,
+    .note,
+    .formula,
+    .diagram {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .card {
+      padding: 20px;
+    }
+
+    .card h3 + p,
+    .card h3 + ul,
+    .card h3 + ol {
+      margin-top: 10px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 18px 20px;
+      background: var(--purple-soft);
+      color: #57505f;
+      font-size: 18px;
+    }
+
+    .formula {
+      margin-top: 16px;
+      padding: 20px;
+      background: var(--green-soft);
+      color: #2f2d35;
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 400;
+    }
+
+    .diagram {
+      margin-top: 16px;
+      padding: 18px;
+      overflow-x: auto;
+      background: #fbfafc;
+      color: #34313b;
+      font-size: 14px;
+      white-space: pre;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .step {
+      padding: 16px;
+      border-radius: 8px;
+      background: var(--purple-soft);
       color: var(--muted);
-      font-size: clamp(18px, 2vw, 25px);
+      font-size: 16px;
     }
 
-    @media (max-width: 680px) {
-      body {
+    .step b {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .links a {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: var(--purple-soft);
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 14px;
+      border-collapse: collapse;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--purple);
+      color: #fff;
+      font-weight: 400;
+    }
+
+    .code {
+      margin-top: 14px;
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 8px;
+      background: #f6f4f8;
+      color: #34313b;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre;
+    }
+
+    .warning {
+      margin-top: 14px;
+      padding: 16px;
+      border: 1px solid #f1d6d6;
+      border-radius: 8px;
+      background: #fff8f8;
+      color: #6a4b4b;
+      font-size: 16px;
+    }
+
+    @media (max-width: 780px) {
+      main {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .section {
         padding: 20px;
       }
 
-      section {
+      .section-head,
+      .grid,
+      .steps {
         grid-template-columns: 1fr;
+      }
+
+      .num {
+        width: 46px;
+        height: 46px;
       }
     }
   </style>
@@ -122,49 +332,457 @@
     <header>
       <div class="kicker">Занятие 1</div>
       <h1>Что разберём</h1>
+      <nav class="nav" aria-label="Разделы занятия">
+        <a href="#agency">Агентность модели</a>
+        <a href="#mcp">Коннекторы и MCP</a>
+        <a href="#cowork-codex">Cowork & Codex</a>
+        <a href="#skills">.md Skills / Автоматизации</a>
+        <a href="#scenarios">Сценарии и агенты</a>
+      </nav>
     </header>
 
-    <div class="sections">
-      <section>
+    <section class="section" id="agency">
+      <div class="section-head">
         <div class="num">1</div>
         <div>
           <h2>Агентность модели</h2>
-          <p>Что меняется, когда LLM получает инструменты, доступы и цикл действий.</p>
+          <p class="lead">Что меняется, когда LLM получает инструменты, доступы и цикл действий.</p>
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div class="grid">
+        <article class="card">
+          <h3>Что такое LLM</h3>
+          <p>Большая языковая модель (LLM, Large Language Model) — это очень мощный предсказатель следующего слова, обученный на огромном объёме текста. Её суперспособность одна: получив текст на входе, выдать правдоподобное продолжение.</p>
+          <p>Модели, с которыми мы работаем на этом курсе — ChatGPT, Claude, Gemini — настолько большие, что их нельзя запустить на собственном компьютере. Им нужен GPU (Graphic Processor Unit) — специализированное «железо» для тяжёлых вычислений.</p>
+        </article>
+
+        <article class="card">
+          <h3>Что добавляет «агентность»</h3>
+          <p>Агент — это та же LLM, но которой дали три вещи:</p>
+          <ul>
+            <li><strong>Руки</strong> — инструменты, tools: открыть файл, отправить письмо, выполнить поиск, запустить код.</li>
+            <li><strong>Доступы</strong> — коннекторы, разрешения: почта, диск, календарь, базы.</li>
+            <li><strong>Право на цикл</strong> — попробовать → посмотреть результат → исправить → продолжить, пока задача не решена.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="formula">Агент = LLM + инструменты + доступы + автономный цикл.</div>
+
+      <div class="diagram">ЧАТ-БОТ: вы → [LLM] → ответ текстом → вы делаете руками
+
+АГЕНТ:   вы → [LLM] ⟲ план → действие → наблюдение → коррекция → ... → готовый результат
+                 ↑__________ агентный цикл (agent loop) __________↑
+                 ↓
+           инструменты + доступы (файлы, почта, веб, код)</div>
+
+      <div class="card wide">
+        <h3>Словарь</h3>
+        <ul>
+          <li><strong>LLM — речь.</strong> Способность к любым языкам — и к нашим, человеческим, и к Питону.</li>
+          <li><strong>GPU — нейроны.</strong> GPU — железо, на котором LLM «живёт».</li>
+          <li><strong>MCP — универсальная розетка.</strong> Единый способ подключать к агенту внешние цифровые инструменты и источники данных.</li>
+          <li><strong>Tool use / function calling — механизм рук.</strong> Способность модели вызвать инструмент, а не только описать его.</li>
+          <li><strong>Веб, зрение, управление компьютером — другие руки.</strong> Не каждый инструмент идёт через MCP.</li>
+          <li><strong>.md — язык инструкций и памяти.</strong> Простой текст с лёгкой разметкой, читаемый и человеком, и машиной.</li>
+          <li><strong>Скилл ≠ память.</strong> Скилл = процедура, память = состояние и факты.</li>
+          <li><strong>Контекстное окно и токены — рабочая память.</strong> Окно — сколько модель удерживает за раз.</li>
+          <li><strong>Терминал ≠ ВМ ≠ песочница.</strong> Терминал — дверь, ВМ — отдельный компьютер, песочница — огороженная среда.</li>
+          <li><strong>Разрешения / OAuth — ключи и красные линии.</strong> Свободно внутри периметра, стоп на красных линиях.</li>
+          <li><strong>Системный промпт — должностная инструкция.</strong> Скрытый текст с ролью, правилами и границами агента.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="mcp">
+      <div class="section-head">
         <div class="num">2</div>
         <div>
           <h2>Коннекторы и MCP-протокол</h2>
-          <p>Как сервисы, данные и инструменты соединяются между собой.</p>
+          <p class="lead">Как сервисы, данные и инструменты соединяются между собой.</p>
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div class="note">Через MCP подключается всё, у чего есть программный вход — API, файлы, база данных. Не подключается то, у чего есть только «человеческий» вход — экран, мышь. Для второго нужен computer use или браузерная автоматизация.</div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Что можно подключить через MCP</h3>
+          <ul>
+            <li>Почта и календарь — Gmail, Outlook, Google Calendar.</li>
+            <li>Файлы и облака — Google Drive, Dropbox, Box, OneDrive, локальная файловая система.</li>
+            <li>Мессенджеры и каналы — Slack, Telegram, Discord через их API.</li>
+            <li>Базы данных — Postgres, MySQL, внутренняя база редакции.</li>
+            <li>Таск-трекеры и базы знаний — Notion, Asana, Linear, Jira.</li>
+            <li>Код и репозитории — GitHub, GitLab.</li>
+            <li>Веб-поиск и выгрузка страниц — через сервер, который даёт это как инструмент.</li>
+            <li>Открытые данные с API — реестры, госзакупки, статистика, карты.</li>
+            <li>Созвоны и транскрипты — Zoom через API.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Что нельзя подключить через MCP</h3>
+          <ul>
+            <li>Приложение без API — только computer use или браузер.</li>
+            <li>Сайт без API — браузерная автоматизация в окне, не MCP.</li>
+            <li>Закрытая чужая система без ключей — без доступа MCP бессилен.</li>
+            <li>Прямое управление экраном, мышью, скриншотами рабочего стола — computer use, отдельный механизм.</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <h3>Computer use</h3>
+          <p>Агент прикидывается человеком на уровне операционной системы. GUI — это всё, чем программа повёрнута к человеку: окна, кнопки, поля, меню. Противоположность — API, программный интерфейс: им пользуется не человек, а другая программа.</p>
+          <div class="steps">
+            <div class="step"><b>Снимок</b> Контроллер просит ОС сделать скриншот экрана и отдаёт его модели.</div>
+            <div class="step"><b>Локализация</b> Модель по картинке находит нужный элемент и его координаты в пикселях.</div>
+            <div class="step"><b>Команда</b> Модель выдаёт структурный tool call: click(540, 320) или type("текст").</div>
+            <div class="step"><b>Впрыск</b> Контроллер передаёт событие штатному механизму ввода ОС.</div>
+            <div class="step"><b>Слияние</b> ОС вбрасывает синтетический клик в тот же поток, куда идут сигналы от настоящей мыши.</div>
+            <div class="step"><b>Повтор</b> Новый скриншот → модель смотрит, что изменилось → следующий шаг.</div>
+          </div>
+        </article>
+
+        <article class="card wide">
+          <h3>MCP vs computer use</h3>
+          <p><strong>MCP</strong> — структурный вход: «вызови функцию отправить_письмо с такими аргументами». Быстро, точно, надёжно.</p>
+          <p><strong>Computer use</strong> — человеческий вход: агент действует глазами по пикселям и руками по мыши. Работает с тем, что видно на экране, но медленно и хрупко.</p>
+          <div class="warning">Computer use действует на реальной машине, не в песочнице, поэтому он огорожен правами. За computer use нужно присматривать, особенно на необратимых действиях.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="cowork-codex">
+      <div class="section-head">
         <div class="num">3</div>
         <div>
           <h2>Cowork & Codex</h2>
-          <p>Что предлагают лидеры: Cowork / Codex / Gemini.</p>
+          <p class="lead">Что предлагают лидеры: Cowork / Codex / Gemini.</p>
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div class="note">Модель + инструменты + рабочее место с файлами: ваш компьютер, облако или оба сразу.</div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Claude Cowork</h3>
+          <p>Cowork — режим Claude Desktop для знаний и рабочих файлов: поручить задачу, дать папку, получить готовый документ, таблицу или отчёт.</p>
+          <ul>
+            <li>Работа с файлами, отчётами, папками, заметками, документами.</li>
+            <li>Skills — инструкции в формате .md, которые можно переиспользовать.</li>
+            <li>Можно отправлять задачу с телефона, но Cowork исполняется в desktop-среде.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>OpenAI Codex</h3>
+          <p>Codex — командный центр для агентной работы с кодом и файлами: локально, в IDE, CLI, web и desktop-приложении.</p>
+          <ul>
+            <li>Репозитории, файлы, shell, browser, computer use, параллельные агенты.</li>
+            <li>Skills и Automations: процедуры и повторяющиеся задачи можно оформлять как рабочие сценарии.</li>
+            <li>Codex можно контролировать через ChatGPT mobile, включая удалённые задачи.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Google Gemini</h3>
+          <p>Gemini — AI-среда Google: web, mobile, macOS app, Google ecosystem и CLI для разработчиков.</p>
+          <ul>
+            <li>Связка с Google-сервисами, поиск, multimodal, Canvas, Drive/Docs-подход.</li>
+            <li>В CLI есть команды, @-контекст, shell mode и кастомные команды.</li>
+            <li>Официальный native app сейчас есть для macOS; на остальных desktop-сценариях надёжнее идти через web/CLI.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Что вызывают слэш / и собака @</h3>
+          <ul>
+            <li><strong>Слэш /</strong> — команды и навыки: /schedule, /personality, /review, пользовательские процедуры.</li>
+            <li><strong>Собака @</strong> — указание файла, папки, контекста или участника.</li>
+            <li><strong>Горячие клавиши</strong> — вызвать панель, открыть контекст, подтвердить действие, переключить режим или автодопуск.</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <h3>Что сравниваем на занятии</h3>
+          <ul>
+            <li><strong>Голосовой ввод:</strong> Codex понимает всё и всех. Cowork и Gemini даже с английским тяжело справляются.</li>
+            <li><strong>Skills / инструкции:</strong> Claude и Codex особенно явно работают с .md-инструкциями.</li>
+            <li><strong>Автоматизации:</strong> у Codex и Cowork есть scheduled/recurring задачи; выбирайте правильную модель.</li>
+            <li><strong>Сильные стороны:</strong> Claude силён в UX и вёрстке, Gemini — в мультимодальности, Codex — лучший программист из троих и умеет рисовать.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="links">
+        <a href="https://claude.com/product/cowork">Claude Cowork</a>
+        <a href="https://claude.com/download">Claude download</a>
+        <a href="https://openai.com/codex/">OpenAI Codex</a>
+        <a href="https://developers.openai.com/codex/app">Codex app docs</a>
+        <a href="https://chatgpt.com/download">ChatGPT & Codex download</a>
+        <a href="https://gemini.google.com/app">Gemini web</a>
+        <a href="https://gemini.google/mac">Gemini for macOS</a>
+        <a href="https://google-gemini.github.io/gemini-cli/">Gemini CLI</a>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section-head">
         <div class="num">4</div>
         <div>
           <h2>.md Skills / Автоматизации</h2>
-          <p>Как собирать, передавать и не терять редакционный опыт.</p>
+          <p class="lead">Как собирать, передавать и не терять редакционный опыт.</p>
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div class="note">Формула: не просто делаем задачу — делаем так, чтобы из неё осталась инструкция.</div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Что такое .md</h3>
+          <p>Markdown (.md) — простой текст с лёгкой разметкой. Он читается человеком и машиной, правится в любом редакторе, хранится где угодно, версионируется и пересылается коллеге. Агент сам читает и пишет .md.</p>
+          <pre class="code"># Заголовок 1
+## Заголовок 2
+- маркированный список
+1. нумерованный список
+**жирный**  *курсив*  `код`
+[текст ссылки](https://...)
+> цитата
+| столбец | столбец |
+``` блок кода ```</pre>
+        </article>
+
+        <article class="card">
+          <h3>Автоматизации через MCP</h3>
+          <p>Автоматизация = связка: LLM думает → коннекторы через MCP приносят и уносят данные → расписание запускает без вас.</p>
+          <ul>
+            <li>Cowork Routines: по расписанию в облаке, работают даже при закрытом ноутбуке.</li>
+            <li>Codex Automations: расписания и триггеры — поминутно, ежедневно, сложные паттерны.</li>
+            <li>Будни 8:00 — агент собирает упоминания за ночь и кладёт сводку в общую папку к планёрке.</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <h3>Создание собственных скиллов</h3>
+          <p>Каждую повторяемую задачу можно постепенно превратить в Skill. Можно взять готовый шаблон, но важнее уметь извлекать свой: пройти задачу один раз с агентом и в конце попросить описать процесс как SKILL.md.</p>
+          <div class="steps">
+            <div class="step"><b>Сделали</b> Задачу один раз.</div>
+            <div class="step"><b>Поняли</b> Шаги и правила.</div>
+            <div class="step"><b>Зафиксировали</b> Входы, запреты, формат.</div>
+            <div class="step"><b>Сгенерировали</b> Агент пишет SKILL.md.</div>
+            <div class="step"><b>Отредактировали</b> Человек проверяет.</div>
+            <div class="step"><b>Повторили</b> Применяем снова.</div>
+          </div>
+          <pre class="code">---
+name: design-critique
+description: когда применять — "review this design", скриншот, ссылка на Figma...
+---
+# тело: что нужно на входе → процедура → шаблон вывода</pre>
+        </article>
+
+        <article class="card wide">
+          <h3>Системные соглашения</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Файл</th>
+                <th>Для кого</th>
+                <th>Что это</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>CLAUDE.md</code></td>
+                <td>Claude</td>
+                <td>Самый распространённый файл инструкций проекта.</td>
+              </tr>
+              <tr>
+                <td><code>AGENTS.md</code></td>
+                <td>Codex и другие агенты</td>
+                <td>Открытый вендоронезависимый стандарт; попытка сделать один файл, понятный любому агенту.</td>
+              </tr>
+              <tr>
+                <td><code>GEMINI.md</code></td>
+                <td>Gemini CLI</td>
+                <td>Инструкции для Gemini; имя можно настраивать.</td>
+              </tr>
+              <tr>
+                <td><code>SKILL.md</code></td>
+                <td>Стандарт скилла</td>
+                <td>Описание одного навыка: когда включать, что делать, какой результат вернуть.</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card">
+          <h3>Библиотеки скиллов</h3>
+          <p>Скиллы не пишут с нуля каждый раз. Их берут из библиотек, публикуют свои и обмениваются с коллегами — как плагинами.</p>
+          <ul>
+            <li>Папка агента может хранить инструкции, скиллы и память.</li>
+            <li>Общая папка помогает команде подхватить один и тот же накопленный опыт.</li>
+            <li>.md-формат не привязан к одному вендору.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Версионирование</h3>
+          <p>Агент правит файлы на месте. Если разрешить крупное изменение без снимков, можно потерять хорошо сделанную работу.</p>
+          <ul>
+            <li>Перед крупным изменением сохраняй версию / делай чекпоинт.</li>
+            <li>Сохрани текущую версию отдельным файлом, прежде чем переписывать.</li>
+            <li>Держите проект там, где есть история версий: Git, Dropbox, облачный диск.</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <h3>Облако vs ваш диск</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Где лежит</th>
+                <th>Плюс</th>
+                <th>Минус</th>
+                <th>Когда выбирать</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Локальный диск</td>
+                <td>Приватность, выбранная папка, контроль.</td>
+                <td>Работает, пока компьютер включён.</td>
+                <td>Черновики, чувствительные источники, внутренняя работа.</td>
+              </tr>
+              <tr>
+                <td>Облако</td>
+                <td>Доступно отовсюду, удобно для команды, работает в фоне.</td>
+                <td>Нужны доступы и доверие к сервису.</td>
+                <td>Общие материалы, планёрки, командные папки.</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card">
+          <h3>Сквозной редакционный кейс</h3>
+          <p>Задача: каждое утро готовить медиа-дайджест по теме X и складывать в общую папку команды.</p>
+          <ol>
+            <li>Recurrent task запускает агента в 7:30.</li>
+            <li>LLM читает инструкцию из скилла .md.</li>
+            <li>Через MCP-коннектор агент собирает свежие материалы.</li>
+            <li>LLM фильтрует, реферирует и группирует по сюжетам.</li>
+            <li>Результат сохраняется как .md/документ в облачную папку команды.</li>
+            <li>В память агент пишет, что уже показывал, чтобы завтра не повторяться.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>Примеры</h3>
+          <ul>
+            <li>Разметка документов.</li>
+            <li>Мониторинг.</li>
+            <li>Адаптация материалов.</li>
+            <li>Fact-checking ассистент.</li>
+            <li>Разбор информации.</li>
+            <li>Repack.</li>
+            <li>Поиск по собственному архиву.</li>
+          </ul>
+        </article>
+
+        <article class="card wide">
+          <h3>Практический маршрут</h3>
+          <ol>
+            <li>Найти готовый скилл, если задача типовая.</li>
+            <li>Нет готового — пройти задачу один раз с агентом.</li>
+            <li>Попросить: «опиши этот процесс как SKILL.md».</li>
+            <li>Отредактировать вручную.</li>
+            <li>Сохранить в проекте / библиотеке скиллов.</li>
+            <li>Использовать при следующем похожем запросе.</li>
+            <li>После каждого сбоя — улучшать скилл.</li>
+          </ol>
+          <div class="warning">Агент ускоряет рутину, но ответственность за факты, источники и этику остаётся на человеке. Любой вывод агента — черновик.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="scenarios">
+      <div class="section-head">
         <div class="num">5</div>
         <div>
           <h2>Сценарии и агенты</h2>
-          <p>Как появляются помощники под задачи редакции.</p>
+          <p class="lead">Как появляются помощники под задачи редакции.</p>
         </div>
-      </section>
-    </div>
+      </div>
+
+      <div class="grid">
+        <article class="card wide">
+          <h3>От любопытства к плану</h3>
+          <p>Кейс показывает рабочий маршрут: не “напиши код”, а сначала понять интерес, сформулировать запрос, собрать материалы и превратить всё в исполнимый план.</p>
+          <div class="steps">
+            <div class="step"><b>Любопытство</b> Начинаем с живого вопроса: что можно автоматизировать, показать студентам или превратить в маленький инструмент.</div>
+            <div class="step"><b>Промпт</b> Формулируем задачу для агента: контекст, аудитория, желаемый результат, ограничения и формат ответа.</div>
+            <div class="step"><b>Материалы</b> Складываем в диалог заметки, HTML, markdown, ссылки, черновики и уточнения.</div>
+            <div class="step"><b>План</b> Получаем исполнимый план: шаги, файлы, проверки, публикация и следующий вопрос.</div>
+          </div>
+        </article>
+
+        <article class="card wide">
+          <h3>От задачи к skill</h3>
+          <p>Кейс с созданием видео показывает, как разовая просьба превращается в повторяемую инструкцию: что спросить, какие материалы собрать, как проверить результат и где остановиться перед публикацией.</p>
+          <div class="steps">
+            <div class="step"><b>Задача</b> Сформулировать, какое видео нужно: аудитория, длительность, формат, исходники, ограничения.</div>
+            <div class="step"><b>Процедура</b> Разложить работу на шаги: сценарий, подбор материалов, монтажные решения, титры, проверка.</div>
+            <div class="step"><b>Skill</b> Сохранить повторяемый рецепт в .md, чтобы агент мог выполнять похожие видео-задачи снова.</div>
+          </div>
+        </article>
+
+        <article class="card wide">
+          <h3>Рабочие материалы диалога</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Этап</th>
+                <th>Что делает человек</th>
+                <th>Что делает агент</th>
+                <th>Артефакт</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Интерес</td>
+                <td>Формулирует, что хочется понять или показать.</td>
+                <td>Уточняет рамку и предлагает возможный формат.</td>
+                <td><code>notes.md</code></td>
+              </tr>
+              <tr>
+                <td>Промпт</td>
+                <td>Даёт контекст, ограничения и желаемый результат.</td>
+                <td>Превращает запрос в рабочую спецификацию.</td>
+                <td><code>prompt.md</code></td>
+              </tr>
+              <tr>
+                <td>План</td>
+                <td>Проверяет, что шаги соответствуют замыслу.</td>
+                <td>Разбивает работу на файлы, проверки и деплой.</td>
+                <td><code>plan.md</code></td>
+              </tr>
+              <tr>
+                <td>Публикация</td>
+                <td>Смотрит страницу глазами аудитории.</td>
+                <td>Коммитит, пушит, проверяет URL и статус деплоя.</td>
+                <td><code>frontend/*.html</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="links">
+            <a href="codex://threads/019e48e2-1460-70c2-a208-69db86ea1c71">открыть диалог в Codex</a>
+            <a href="codex://threads/019e48e8-018a-78b2-bfb6-e769b51dacea">открыть утренний thread</a>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 </body>
 </html>
